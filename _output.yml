@@ -1,3 +1,4 @@
-bookdown::gitbook: default
-bookdown::pdf_book: default
-bookdown::epub_book: default
+bookdown::gitbook:
+  config:
+    toc:
+      collapse: section

@@ -1,1 +1,7 @@
 book_filename: introspatialdata
+language:
+  ui:
+    chapter_name: "Chapter "
+delete_merged_file: true
+output_dir: "docs"
+edit: https://github.com/spatialanalysis/workshop-notes/edit/master/%s
