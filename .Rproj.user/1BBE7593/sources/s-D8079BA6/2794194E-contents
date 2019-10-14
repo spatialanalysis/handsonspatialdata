@@ -1,4 +1,0 @@
-bookdown::gitbook:
-  config:
-    toc:
-      collapse: section
