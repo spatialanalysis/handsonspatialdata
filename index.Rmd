@@ -1,0 +1,11 @@
+---
+title: "Introduction to Spatial Data Science with R"
+author: "Angela Li"
+documentclass: "book"
+site: bookdown::bookdown_site
+---
+
+# Preface {-}
+
+Start writing your book here. If you are in RStudio,
+Click the Build button to build the book.
