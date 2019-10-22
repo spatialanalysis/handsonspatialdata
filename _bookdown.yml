@@ -1,7 +1,7 @@
-book_filename: introspatialdata
+book_filename: handsonspatialdata
 language:
   ui:
     chapter_name: "Chapter "
 delete_merged_file: true
 output_dir: "docs"
-edit: https://github.com/spatialanalysis/introspatialdata/edit/master/%s
+edit: https://github.com/spatialanalysis/handsonspatialdata/edit/master/%s
