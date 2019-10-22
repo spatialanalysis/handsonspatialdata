@@ -119,7 +119,7 @@ The **tmap** package is extremely powerful,
 and there are many features that we do not cover. Detailed information on **tmap** functionality can
 be found at [tmap documentation](https://cran.r-project.org/web/packages/tmap/tmap.pdf). In addition, several
 extensive examples are listed in 
-the review in the *Journal of Statistical Software* by @tmap18. Another useful resource
+the review in the *Journal of Statistical Software* by @tennekes_tmap_2018. Another useful resource
 is the [chapter on mapping](https://geocompr.robinlovelace.net/adv-map.html) in Lovelace, Nowosad,
 and Muenchow's *Geocomputation with R* book.
 
@@ -1209,17 +1209,3 @@ tm_shape(carto.ncont) +
 <br>
 
 ## References {-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-

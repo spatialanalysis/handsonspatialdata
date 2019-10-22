@@ -254,7 +254,7 @@ Note that we used the default color bar for the color argument. There is a wide 
 
 #### Basic 3D scatter plot {-}
 The three-dimensional scatter plot is a simple generalization of the two-dimensional
-case by creating a graph that projects a 3D cube onto the two-dimensional screen (or paper), as a perspective plot. This is not (currently) supported by **ggplot**, so we resort to the specialized package **scatterplot3d** [see @scatterplot3d03]. This is an older package that predates the layered logic of **ggplot**, and instead uses
+case by creating a graph that projects a 3D cube onto the two-dimensional screen (or paper), as a perspective plot. This is not (currently) supported by **ggplot**, so we resort to the specialized package **scatterplot3d** [see @ligges_scatterplot3d_2003]. This is an older package that predates the layered logic of **ggplot**, and instead uses
 the approach taken in the base R `plot` commands.
 
 A rudimentary plot follows from the `scatterplot3d` function to which the variables for the three dimensions are passed as arguments to `x`, `y`, and `z`. In contrast to 
@@ -525,9 +525,4 @@ ggplot(data=nyc.data,aes(pubast00)) +
   facet_grid(cut.yrhom ~ cut.hhsiz,as.table=FALSE)
 ```
 
-
 <br>
-
-## References {-}
-
-
