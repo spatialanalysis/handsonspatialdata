@@ -13,7 +13,7 @@
   
   
   
-  
+  <meta name="github-repo" content="spatialanalysis/introspatialdata" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 1 Spatial Data Handling | Introduction to Spatial Data Science with R" />
@@ -21,9 +21,10 @@
   
   
 
-<meta name="author" content="Angela Li" />
+<meta name="author" content="Luc Anselin, Grant Morrison, Angela Li" />
 
 
+<meta name="date" content="2019-10-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -46,7 +47,7 @@
 
 
 
-<script src="libs/htmlwidgets-1.5/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.0/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
@@ -140,9 +141,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#using-this-book"><i class="fa fa-check"></i>Using This Book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#who-this-book-is-for"><i class="fa fa-check"></i>Who This Book Is For</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html"><i class="fa fa-check"></i><b>1</b> Spatial Data Handling</a><ul>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction-1"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#objectives"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#preliminaries"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -175,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html"><i class="fa fa-check"></i><b>2</b> Exploratory Data Analysis 1</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-1"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-2"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#objectives-1"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#preliminaries-1"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -196,7 +200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html"><i class="fa fa-check"></i><b>3</b> Exploratory Data Analysis 2</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-2"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-3"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#objectives-2"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#preliminaries-2"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -215,10 +219,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#parallel-coordinate-plot-pcp"><i class="fa fa-check"></i>Parallel Coordinate Plot (PCP)</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#conditional-plots"><i class="fa fa-check"></i>Conditional Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#references"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="basic-mapping.html"><a href="basic-mapping.html"><i class="fa fa-check"></i><b>4</b> Basic Mapping</a><ul>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-3"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-4"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#objectives-3"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#preliminaries-3"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -252,8 +255,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#conditional-map"><i class="fa fa-check"></i>Conditional Map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#cartogram"><i class="fa fa-check"></i>Cartogram</a></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#references-1"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
       </nav>
@@ -273,7 +276,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="spatial-data-handling" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Spatial Data Handling</h1>
-<div id="introduction" class="section level2 unnumbered">
+<div id="introduction-1" class="section level2 unnumbered">
 <h2>Introduction</h2>
 <p>This R notebook covers the functionality of the <a href="http://geodacenter.github.io/workbook/1_datascience/lab1.html">Spatial Data Handling</a> section of the GeoDa workbook. We refer to that document for details on the methodology, references, etc. The goal of these notes is to approximate as closely as possible the operations carried out using GeoDa by means of a range of R packages.</p>
 <p>The notes are written with R beginners in mind, more seasoned R users can probably skip most of the comments
@@ -342,12 +345,12 @@ their dependencies.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup><
 <pre><code>## Registered S3 method overwritten by &#39;rvest&#39;:
 ##   method            from
 ##   read_xml.response xml2</code></pre>
-<pre><code>## ── Attaching packages ── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ───────────────</code></pre>
 <pre><code>## ✔ ggplot2 3.1.1     ✔ purrr   0.3.2
 ## ✔ tibble  2.1.1     ✔ dplyr   0.8.3
-## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
+## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
 ## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ───── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)</code></pre>
@@ -458,7 +461,7 @@ API Endpoint and paste the file path, as shown below.</p>
 we will have to deal with. We also check the dimension of this data frame using the
 <code>dim</code> command:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(vehicle.data)</code></pre>
-<pre><code>## [1] 237732     26</code></pre>
+<pre><code>## [1] 238327     26</code></pre>
 <p>The table has 203,657 observations on 26 variables (the number of observations shown
 may be slightly different as the table is constantly updated).</p>
 <p>In RStudio, the type of the variable in each column is listed under its name. For example, under <strong>creation_date</strong>, we see <strong>S3: POSIXct</strong>. You can also find out the same information by applying a <code>class</code> command to the variable
@@ -639,7 +642,7 @@ Later, we will see how we can refine these plots using the <strong>tmap</strong>
 ## partial argument match of &#39;length&#39; to &#39;length.out&#39;</code></pre>
 <pre><code>## Warning in plot.default(1, 1, t = &quot;n&quot;, ylim = ylim, xlim = xlim, axes =
 ## FALSE, : partial argument match of &#39;t&#39; to &#39;type&#39;</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>We can also do a quick check of the projection information using the
 <code>st_crs</code> command.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(vehicle.points)</code></pre>
@@ -676,7 +679,7 @@ chicago.comm &lt;-<span class="st"> </span><span class="kw">read_sf</span>(comm.
 <p>Again, the layer is unprojected in decimal degrees. Also, a quick <code>plot</code>. Note that,
 by default, <strong>sf</strong> draws a choropleth map for each variable included in the data frame. Since we won’t be using <strong>sf</strong> for mapping, we ignore that aspect for now.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(chicago.comm)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>We also use <code>head</code> to check on the types of the variables.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(chicago.comm)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 9 fields
@@ -685,7 +688,6 @@ by default, <strong>sf</strong> draws a choropleth map for each variable include
 ## bbox:           xmin: -87.7069 ymin: 41.79448 xmax: -87.58001 ymax: 41.99076
 ## epsg (SRID):    4326
 ## proj4string:    +proj=longlat +datum=WGS84 +no_defs
-## Error in get(genname, envir = envir) : object &#39;vec_proxy&#39; not found
 ## # A tibble: 6 x 10
 ##   community area  shape_area perimeter area_num_1 area_numbe comarea_id
 ##   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;     
@@ -818,7 +820,7 @@ range of geographic shapes. Here, we will just use <code>tm_polygons</code> and 
 abandoned vehicle counts by community area.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(chicago.comm) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;AGG.COUNT&quot;</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>However, this map can be highly misleading since it pertains to a so-called
 <em>spatially extensive</em> variable, such as a count. Even if every area had the
 same risk of having abandoned vehicles, larger community areas would have
@@ -1215,7 +1217,7 @@ of vehicle counts per 1000 population.</p>
 but take <strong>vehpcap</strong> as the variable instead.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(chicago.comm) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;vehpcap&quot;</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
 <p>When compared to the total counts, we see quite a different spatial distribution.
 In particular, the locations of the highest ratios are quite different from those of the highest counts. As a rule, one should <em>never</em> create a choropleth map of a spatially extensive variable, unless the size of the areal units is somehow controlled for
 (e.g., equal area grid cells, or equal population zones).</p>

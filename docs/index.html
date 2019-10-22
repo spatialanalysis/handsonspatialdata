@@ -13,7 +13,7 @@
   
   
   
-  
+  <meta name="github-repo" content="spatialanalysis/introspatialdata" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Introduction to Spatial Data Science with R" />
@@ -21,9 +21,10 @@
   
   
 
-<meta name="author" content="Angela Li" />
+<meta name="author" content="Luc Anselin, Grant Morrison, Angela Li" />
 
 
+<meta name="date" content="2019-10-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -46,7 +47,7 @@
 
 
 
-<script src="libs/htmlwidgets-1.5/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.0/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
@@ -140,9 +141,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#using-this-book"><i class="fa fa-check"></i>Using This Book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#who-this-book-is-for"><i class="fa fa-check"></i>Who This Book Is For</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html"><i class="fa fa-check"></i><b>1</b> Spatial Data Handling</a><ul>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction-1"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#objectives"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#preliminaries"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -175,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html"><i class="fa fa-check"></i><b>2</b> Exploratory Data Analysis 1</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-1"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-2"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#objectives-1"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#preliminaries-1"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -196,7 +200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html"><i class="fa fa-check"></i><b>3</b> Exploratory Data Analysis 2</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-2"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-3"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#objectives-2"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#preliminaries-2"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -215,10 +219,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#parallel-coordinate-plot-pcp"><i class="fa fa-check"></i>Parallel Coordinate Plot (PCP)</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#conditional-plots"><i class="fa fa-check"></i>Conditional Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#references"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="basic-mapping.html"><a href="basic-mapping.html"><i class="fa fa-check"></i><b>4</b> Basic Mapping</a><ul>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-3"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-4"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#objectives-3"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#preliminaries-3"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -252,8 +255,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#conditional-map"><i class="fa fa-check"></i>Conditional Map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#cartogram"><i class="fa fa-check"></i>Cartogram</a></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#references-1"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
       </nav>
@@ -273,13 +276,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">Introduction to Spatial Data Science with R</h1>
-<p class="author"><em>Angela Li</em></p>
+<p class="author"><em>Luc Anselin, Grant Morrison, Angela Li</em></p>
+<p class="date"><em>2019-10-22</em></p>
 </div>
-<div id="preface" class="section level1 unnumbered">
-<h1>Preface</h1>
-<p>Start writing your book here. If you are in RStudio,
-Click the Build button to build the book.</p>
+<div id="introduction" class="section level1 unnumbered">
+<h1>Introduction</h1>
+<p>This book contains the R version of the <a href="https://geodacenter.github.io/documentation.html">GeoDa Workbook</a> developed by Luc Anselin. It accompanies the Introduction to Spatial Data Science
+course taught at the University of Chicago. Each chapter was originally developed
+as a standalone lab tutorial for one week of the class. As a result, it is possible
+to work through a single chapter on its own, though we recommend going from the
+beginning to the end.</p>
+<div id="using-this-book" class="section level2 unnumbered">
+<h2>Using This Book</h2>
+<p>We have developed an R data package (<a href="https://github.com/spatialanalysis/geodaData"><code>geodaData</code></a>)
+to use along with this book, so you can work through through the exercises
+immediately. To install it, run the following in your R console:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages(&quot;remotes&quot;)</span>
+remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;spatialanalysis/geodaData&quot;</span>)</code></pre>
+</div>
+<div id="who-this-book-is-for" class="section level2 unnumbered">
+<h2>Who This Book Is For</h2>
+<p>We assume that workshop attendees have used RStudio and are familiar with the basics of R.
+If you need a refresher, this <a href="https://datacarpentry.org/r-socialsci/">R for Social Scientists</a> tutorial developed by Data Carpentry is a good place to start. Additionally, Luc Anselin’s introductory R lab notes can be found on the <a href="https://spatialanalysis.github.io/tutorials">CSDS Tutorials page</a>.</p>
+<p>During Fall Quarter 2019, Angela Li will be teaching from sections of this book
+during the R Spatial Workshop. If you have any questions about the following
+material, please reach out to her at <a href="mailto:ali6@uchicago.edu" class="email">ali6@uchicago.edu</a>.</p>
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
 
+</div>
 </div>
             </section>
 

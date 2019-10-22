@@ -13,7 +13,7 @@
   
   
   
-  
+  <meta name="github-repo" content="spatialanalysis/introspatialdata" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 2 Exploratory Data Analysis 1 | Introduction to Spatial Data Science with R" />
@@ -21,9 +21,10 @@
   
   
 
-<meta name="author" content="Angela Li" />
+<meta name="author" content="Luc Anselin, Grant Morrison, Angela Li" />
 
 
+<meta name="date" content="2019-10-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -46,7 +47,7 @@
 
 
 
-<script src="libs/htmlwidgets-1.5/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.0/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
@@ -140,9 +141,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#using-this-book"><i class="fa fa-check"></i>Using This Book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#who-this-book-is-for"><i class="fa fa-check"></i>Who This Book Is For</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html"><i class="fa fa-check"></i><b>1</b> Spatial Data Handling</a><ul>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction-1"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#objectives"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#preliminaries"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -175,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html"><i class="fa fa-check"></i><b>2</b> Exploratory Data Analysis 1</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-1"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-2"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#objectives-1"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#preliminaries-1"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -196,7 +200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html"><i class="fa fa-check"></i><b>3</b> Exploratory Data Analysis 2</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-2"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-3"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#objectives-2"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#preliminaries-2"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -215,10 +219,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#parallel-coordinate-plot-pcp"><i class="fa fa-check"></i>Parallel Coordinate Plot (PCP)</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#conditional-plots"><i class="fa fa-check"></i>Conditional Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#references"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="basic-mapping.html"><a href="basic-mapping.html"><i class="fa fa-check"></i><b>4</b> Basic Mapping</a><ul>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-3"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-4"><i class="fa fa-check"></i>Introduction</a><ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#objectives-3"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#preliminaries-3"><i class="fa fa-check"></i>Preliminaries</a><ul>
@@ -252,8 +255,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#conditional-map"><i class="fa fa-check"></i>Conditional Map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#cartogram"><i class="fa fa-check"></i>Cartogram</a></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#references-1"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
       </nav>
@@ -273,7 +276,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="exploratory-data-analysis-1" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Exploratory Data Analysis 1</h1>
-<div id="introduction-1" class="section level2 unnumbered">
+<div id="introduction-2" class="section level2 unnumbered">
 <h2>Introduction</h2>
 <p>This notebook covers the functionality of the <a href="https://geodacenter.github.io/workbook/2a_eda/lab2a.html">Exploratory Data Analysis 1</a> section of the GeoDa workbook. We refer to that document for details on the methodology, references, etc. The goal of these notes is to approximate as closely as possible the operations carried out using GeoDa by means of a range of R packages.</p>
 <p>The notes are written with R beginners in mind, more seasoned R users can probably skip most of the comments
@@ -443,7 +446,7 @@ with all the other settings left to their default:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(kids2009)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_histogram</span>()</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <p>The resulting histogram is not very informative, and the first thing we will do
 is heed the warning to pick a better bin width.</p>
 <div id="selecting-the-number-of-histogram-bins" class="section level4 unnumbered">
@@ -456,12 +459,12 @@ bins directly. The resulting histogram now matches the one in GeoDa (except for 
 lack of color, which is immaterial).</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(kids2009)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">7</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 <p>As in the GeoDa workbook, we can now change the number of bins to 5, which yields
 the following histogram.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(kids2009)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">5</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 </div>
 <div id="spiffing-up-the-graph" class="section level4 unnumbered">
 <h4>Spiffing up the graph</h4>
@@ -484,7 +487,7 @@ looks as follows, with a label on the x and y axis, and a title (and back to 7 b
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Example Histogram&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme_classic</span>()</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
 <p>There are seven built-in themes as well as several contributed
 ones. Another built-in example is <code>theme_minimal( )</code>, shown next.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(kids2009)) <span class="op">+</span>
@@ -493,7 +496,7 @@ ones. Another built-in example is <code>theme_minimal( )</code>, shown next.</p>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Example Histogram&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme_minimal</span>()</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 <p>In addition, the package <strong>ggthemes</strong> contains several additional themes that look
 extremely professional. For example, <code>theme_tufte( )</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(kids2009)) <span class="op">+</span>
@@ -502,7 +505,7 @@ extremely professional. For example, <code>theme_tufte( )</code>.</p>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Example Histogram&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme_tufte</span>()</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
 <p>Besides selecting a different default <code>theme</code>, we can also
 override the basic settings associated with the current
 theme. For example, we adjust the <code>plot.title</code> (of course, you need to know
@@ -515,7 +518,7 @@ of other refinements is near infinite. Again, using the default <code>theme_grey
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Example Histogram&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
 </div>
 <div id="histogram-summary-statistics" class="section level4 unnumbered">
 <h4>Histogram summary statistics</h4>
@@ -564,7 +567,7 @@ baseplt <span class="op">+</span>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Example Histogram&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
 </div>
 <div id="other-descriptive-statistics" class="section level4 unnumbered">
 <h4>Other descriptive statistics</h4>
@@ -627,7 +630,7 @@ we need to specify a file name with an <strong>.rds</strong> file extension.</p>
 For example, here we call the graph object <strong>newplot</strong>.</p>
 <pre class="sourceCode r"><code class="sourceCode r">newplot &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;hist.rds&quot;</span>)
 newplot</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 </div>
 </div>
 <div id="box-plot" class="section level3 unnumbered">
@@ -640,7 +643,7 @@ variables passed to <code>aes</code>. As mentioned above, the logic behind the g
 The y variable is the actual variable of interest, <strong>kids2009</strong>. The resulting graph is shown below.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span><span class="st">&quot;&quot;</span>,<span class="dt">y=</span>kids2009)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>()</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
 <p>The box encloses the first and third quartile and shows the median as a thick horizontal bar. The vertical lines show the range of data, not the extent of the fences, as is the case in GeoDa. The single dot at value 0 is the lower outlier.</p>
 </div>
 <div id="box-plot-statistics" class="section level4 unnumbered">
@@ -684,7 +687,7 @@ We again assign the plot to an object to both illustrate the graph and the assoc
 <pre class="sourceCode r"><code class="sourceCode r">box.plt3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span><span class="st">&quot;&quot;</span>,<span class="dt">y=</span>kids2009)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">coef=</span><span class="dv">3</span>)
 box.plt3</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
 <p>As in the GeoDa example, there are no longer any outliers. In the graph, the lowest point on the vertical line now corresponds with the value of 0.</p>
 <p>We extract the statistics as before.</p>
 <pre class="sourceCode r"><code class="sourceCode r">box.dta3 &lt;-<span class="st"> </span><span class="kw">layer_data</span>(box.plt3)
@@ -709,7 +712,7 @@ base.plt <span class="op">+</span><span class="st"> </span><span class="kw">geom
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Example Box Plot&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
 <p>Next, we want to give the box plot a color, as in GeoDa. This is accomplished with the
 <code>color</code> (for the outlines) and <code>fill</code> (for the inside of the box) options to <code>geom_boxplot</code>. In addition, we can give the outlier point a different color by means of <code>outlier.color</code>. For example, setting the <code>color</code> to <strong>black</strong>, with the <code>fill</code> to <strong>purple</strong> (if we set both to the same color, we can no longer distinguish the median), and the <code>outlier.color</code> to <strong>red</strong>, we obtain:</p>
 <pre class="sourceCode r"><code class="sourceCode r">base.plt <span class="op">+</span><span class="st"> </span>
@@ -717,7 +720,7 @@ base.plt <span class="op">+</span><span class="st"> </span><span class="kw">geom
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Example Box Plot&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
 <p>So far, the box plots do not show the fences, the way they do in GeoDa. This can
 be remedied, but not quite in the same way as in GeoDa. In <strong>ggplot</strong>, the fences are
 drawn at the location of the extreme values, the <strong>ymin</strong> and <strong>ymax</strong> we saw before,
@@ -730,7 +733,7 @@ The result is as shown below.</p>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Example Box Plot&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
 <p>One final refinement. In GeoDa, the box plot also shows the locations of the actual observations as points on the central axis. We obtain the same effect by adding
 <code>geom_point</code> with <code>color</code> <strong>blue</strong>. We draw the points first, and the box plot on
 top of it, using the layers logic. However, we want to make sure that the central box
@@ -745,7 +748,7 @@ overboard.</p>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Example Box Plot&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
 <p>As before, we can write this plot to a file using <code>ggsave</code>, or save the object for future use with <code>saveRDS</code>.</p>
 </div>
 </div>
@@ -760,7 +763,7 @@ of a <code>geom_point</code>. The aesthetics are mapped to the variables for the
 <strong>pubast00</strong> for <code>y</code>. The bare bones scatter plot is obtained as follows:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span>kids2000,<span class="dt">y=</span>pubast00)) <span class="op">+</span>
 <span class="st">   </span><span class="kw">geom_point</span>()</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
 <p>The graph looks slightly different from the one in GeoDa because of a different
 aspect ratio (the ratio between the scale used for the y-axis to that for the
 x-axis). In <strong>ggplot</strong>, the aspect ratio is set as an argument to the
@@ -771,7 +774,7 @@ in the GeoDa workbook (Figure 24).</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span>kids2000,<span class="dt">y=</span>pubast00)) <span class="op">+</span>
 <span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">   </span><span class="kw">coord_fixed</span>(<span class="dt">ratio=</span><span class="fl">55.0</span><span class="op">/</span><span class="fl">25.0</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
 <p>As we saw before, we can customize the graph further with a title and labels,
 but we will not pursue that here. The main interest is in bringing out the overall
 pattern of bivariate association by means of a scatter plot <em>smoother</em>, to which we turn next.</p>
@@ -794,7 +797,7 @@ and add a centered title to specify the smoothing algorithm using <code>ggtitle<
 <span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span>lm, <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Linear Smoother&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
 <p>By default, the linear smoother includes a 95% confidence interval band (the grey band
 around the blue line). To turn this off, we need to set the option <code>se</code> to
 <strong>FALSE</strong>, as below.</p>
@@ -803,7 +806,7 @@ around the blue line). To turn this off, we need to set the option <code>se</cod
 <span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span>lm, <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>,<span class="dt">se=</span><span class="ot">FALSE</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Linear Smoother&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
 </div>
 <div id="extracting-the-linear-regression-results" class="section level4 unnumbered">
 <h4>Extracting the linear regression results</h4>
@@ -902,7 +905,7 @@ weighted regression model. This is similar in spirit to the <strong>LOWESS</stro
 <span class="st">   </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span>loess, <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Loess Smoother&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
 <p>As in any local regression method, an important parameter is how much of the data is used in the local fit, the so-called <code>span</code>. This is typically set to 2/3 of the data by default. A narrower span will yield a smoother that emphasizes local changes.
 In order to set the <code>span</code> parameter, we use the <code>stat_smooth</code> command. It is
 in all respects equivalent to <code>geom_smooth</code>, but allows for somewhat more
@@ -914,14 +917,14 @@ interval by setting <code>se = FALSE</code>.</p>
 <span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Loess Smoother - Span=0.4&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
 <p>And even more with a <code>span = 0.2</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span>kids2000,<span class="dt">y=</span>pubast00)) <span class="op">+</span>
 <span class="st">   </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;loess&quot;</span>,<span class="dt">span=</span><span class="fl">0.2</span>,<span class="dt">color=</span><span class="st">&quot;blue&quot;</span>,<span class="dt">se=</span><span class="ot">FALSE</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Loess Smoother - Span=0.2&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
 </div>
 <div id="lowess-smoother" class="section level4 unnumbered">
 <h4>LOWESS smoother</h4>
@@ -937,7 +940,7 @@ confidence interval option, so that we do not need to set <code>se</code>).</p>
 <span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;LOWESS Smoother&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
 <p>When compared to the <code>loess</code> results, we can distinguish minor differences. These
 become more pronounced when setting the <code>span=0.4</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span>kids2000,<span class="dt">y=</span>pubast00)) <span class="op">+</span>
@@ -945,14 +948,14 @@ become more pronounced when setting the <code>span=0.4</code>.</p>
 <span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;LOWESS Smoother - Span=0.4&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
 <p>And even more when setting the <code>span=0.2</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span>kids2000,<span class="dt">y=</span>pubast00)) <span class="op">+</span>
 <span class="st">   </span><span class="kw">stat_plsmo</span>(<span class="dt">span=</span><span class="fl">0.2</span>,<span class="dt">color=</span><span class="st">&quot;blue&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;LOWESS Smoother - Span=0.2&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
 </div>
 <div id="putting-it-all-together" class="section level4 unnumbered">
 <h4>Putting it all together</h4>
@@ -975,7 +978,7 @@ argument used to reflect the categories. We override this by means of the <code>
 <span class="st">   </span><span class="kw">ggtitle</span>(<span class="st">&quot;Comparison of Smoothing Methods&quot;</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>)) <span class="op">+</span>
 <span class="st">   </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&quot;Method&quot;</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -1020,7 +1023,7 @@ and add a centered title.</p>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Spatial Heterogeneity&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust=</span><span class="fl">0.5</span>)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&quot;Selection&quot;</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
+<p><img src="introspatialdata_files/figure-html/unnamed-chunk-95-1.png" width="672" /></p>
 </div>
 <div id="chow-test" class="section level3 unnumbered">
 <h3>Chow test</h3>
