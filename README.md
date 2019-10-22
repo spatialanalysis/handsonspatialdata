@@ -1,2 +1,2 @@
-# introspatialdata
-Bookdown for Introduction to Spatial Data Science with R
+# handsonspatialdata
+Bookdown for Hands-On Spatial Data Science with R

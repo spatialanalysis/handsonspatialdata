@@ -1,8 +1,8 @@
 ---
-title: "Introduction to Spatial Data Science with R"
+title: "Hands-On Spatial Data Science with R"
 author: "Luc Anselin, Grant Morrison, Angela Li"
 date: '`r Sys.Date()`'
-github-repo: spatialanalysis/introspatialdata
+github-repo: spatialanalysis/handsonspatialdata
 bibliography:
   - refs.bib
 documentclass: "book"
