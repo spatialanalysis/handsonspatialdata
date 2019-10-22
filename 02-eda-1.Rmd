@@ -329,7 +329,7 @@ is turned off by means of `dev.off()`.
 Note that it is always a good idea to specify the dimension of the graph (in inches).
 If not, the results can be unexpected.
 
-```{r}
+```{r eval=FALSE}
 pdf("hist.pdf",height=3,width=3)
 ggplot(data=nyc.data,aes(kids2009)) +
   geom_histogram(bins=7) +
@@ -340,6 +340,11 @@ ggplot(data=nyc.data,aes(kids2009)) +
 dev.off()
 ```
 
+```
+## quartz_off_screen 
+##                 2
+```
+
 In addiiton to the standard R approach, **ggplot** also has the `ggsave` command,
 which does the same thing. It requires the name for the output file, but derives
 the proper format from the file extension. For example, an output file with a **png** file extension will create a png file, and similarly for pdf, etc.
@@ -347,7 +352,7 @@ the proper format from the file extension. For example, an output file with a **
 The second argument specifies the **plot**. It is optional, and when not specified, the last plot is saved. Again, it is a good idea to specify the `width` and `height` (in inches). In addition, for raster files, the dots per inch (`dpi`) can be set as well. The default is 300, which is fine for most use cases, but for high resolution graphs, one can set the dpi to 600, as in the example below.
 
 
-```{r}
+```{r eval=FALSE}
 hist.plot <- ggplot(data=nyc.data,aes(kids2009)) +
   geom_histogram(bins=7) +
   xlab("Percent kids in 2009") +
@@ -363,18 +368,27 @@ to a variable and then save this to disk, using the standard R command `saveRDS`
 can later be brought back into an R session using `readRDS`. To save the plot,
 we need to specify a file name with an **.rds** file extension.
 
-```{r}
+```{r eval=FALSE}
 saveRDS(hist.plot,"hist.rds")
 ```
 
 At some later point (or in a different R session), we can then read the object and plot it. Note that we do not need to assign it to the same variable name as before.
 For example, here we call the graph object **newplot**.
 
-```{r}
+```{r eval=FALSE}
 newplot <- readRDS("hist.rds")
 newplot
 ```
 
+```{r echo=FALSE}
+hist.plot <- ggplot(data=nyc.data,aes(kids2009)) +
+  geom_histogram(bins=7) +
+  xlab("Percent kids in 2009") +
+  ylab("Frequency") +
+  ggtitle("Example Histogram") +
+  theme(plot.title = element_text(hjust = 0.5))
+hist.plot
+```
 
 ### Box plot {-}
 The box plot, also referred to as Tukey's box and whisker plot, is an alternative way to visualize the distribution of a single variable, with a focus on descriptive statistics such as quartiles and the median.^[For a fuller technical description, see the GeoDa workbook.] We continue our example using the **kids2009** variable. We first consider the default option, then move on to various optional settings.

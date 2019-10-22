@@ -437,13 +437,22 @@ and **dpi**. Details can be found in the
 For example, we assign our rudimentary default map to the variable **mymap** and then save that
 to the file **mymap.png**.
 
-```{r}
+```{r eval=FALSE}
 mymap <- tm_shape(nyc.bound) +
   tm_fill("kids2000") +
   tm_borders()
 tmap_save(tm = mymap, filename = "mymap.png")
 ```
 
+```
+## Map saved to mymap.png
+```
+```
+## Resolution: 2100 by 1500 pixels
+```
+```
+## Size: 7 by 5 inches (300 dpi)
+```
 
 ### Shape centers {-}
 GeoDa has functionality invoked from a map window to map or save shape centers, i.e., mean centers
@@ -477,8 +486,13 @@ non-convex polygons.
 We can save the centroid point layer as a shape file by means of the `st_write` function we saw earlier
 (in the spatial data handling notes).
 
-```{r}
+```{r eval=FALSE}
 st_write(nycentroid, "nyc_centroids", driver = "ESRI Shapefile")
+```
+
+```
+## Writing layer `nyc_centroids' to data source `nyc_centroids' using driver `ESRI Shapefile'
+## Writing 55 features with 34 fields and geometry type Point.
 ```
 
 ## Common Map Classifications {-}

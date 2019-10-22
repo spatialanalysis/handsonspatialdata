@@ -625,7 +625,11 @@ be written to a set of files in the directory **chicago_vehicles** using the
 deleted or renamed first, since `st_write` only creates a new directory. Otherwise,
 there will be an error message.
 
-```{r}
+```{r eval=FALSE}
 st_write(chicago.comm,"chicago_vehicles",driver="ESRI Shapefile")
 ```
 
+```
+## Writing layer `chicago_vehicles' to data source `chicago_vehicles' using driver `ESRI Shapefile'
+## Writing 77 features with 12 fields and geometry type Multi Polygon.
+```
