@@ -92,6 +92,10 @@ The latter is contained in the **proj4string** information.
 nyc.bound <- nyc_sf
 ```
 
+```{r echo=FALSE}
+class(nyc.bound) <- c("sf", "data.frame")
+```
+
 The projection in question is the ESRI projection 102718, NAD 1983 stateplane New York Long Island 
 fips 3104 feet. It does not have an EPSG code (see the spatial data handling notes for further details
 on projections), but it has a valid **proj4string**. So, as long as we don't change anything, we should
