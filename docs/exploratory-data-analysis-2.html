@@ -4,19 +4,19 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Exploratory Data Analysis 2 | Introduction to Spatial Data Science with R</title>
-  <meta name="description" content="Chapter 3 Exploratory Data Analysis 2 | Introduction to Spatial Data Science with R" />
+  <title>Chapter 3 Exploratory Data Analysis 2 | Hands-On Spatial Data Science with R</title>
+  <meta name="description" content="Chapter 3 Exploratory Data Analysis 2 | Hands-On Spatial Data Science with R" />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Exploratory Data Analysis 2 | Introduction to Spatial Data Science with R" />
+  <meta property="og:title" content="Chapter 3 Exploratory Data Analysis 2 | Hands-On Spatial Data Science with R" />
   <meta property="og:type" content="book" />
   
   
   
-  <meta name="github-repo" content="spatialanalysis/introspatialdata" />
+  <meta name="github-repo" content="spatialanalysis/handsonspatialdata" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Exploratory Data Analysis 2 | Introduction to Spatial Data Science with R" />
+  <meta name="twitter:title" content="Chapter 3 Exploratory Data Analysis 2 | Hands-On Spatial Data Science with R" />
   
   
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Luc Anselin, Grant Morrison, Angela Li" />
 
 
-<meta name="date" content="2019-10-22" />
+<meta name="date" content="2019-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -266,7 +266,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Spatial Data Science with R</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hands-On Spatial Data Science with R</a>
           </h1>
         </div>
 
@@ -430,7 +430,7 @@ to accomplish this, we will need the more powerful <code>ggpairs</code> function
 <p>We follow the example in the GeoDa Workbook and use the four variables
 <strong>hhsiz00</strong>, <strong>kids2000</strong>, <strong>yrhom02</strong>, and <strong>pubast00</strong>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggscatmat</span>(nyc.data, <span class="dt">columns=</span> <span class="kw">c</span>(<span class="st">&quot;hhsiz00&quot;</span>,<span class="st">&quot;kids2000&quot;</span>, <span class="st">&quot;yrhom02&quot;</span>, <span class="st">&quot;pubast00&quot;</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-102-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-102-1.png" width="672" /></p>
 </div>
 <div id="scatter-plot-matrix-with-smoothing" class="section level3 unnumbered">
 <h3>Scatter plot matrix with smoothing</h3>
@@ -451,7 +451,7 @@ specifics, but they amount to:</p>
 <li><p><code>upper=list(coninuous='cor')</code>, for a correlation coefficient in the upper diagonal</p></li>
 </ul>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggpairs</span>(nyc.data, <span class="dt">columns=</span><span class="kw">c</span>(<span class="st">&quot;hhsiz00&quot;</span>,<span class="st">&quot;kids2000&quot;</span>, <span class="st">&quot;yrhom02&quot;</span>, <span class="st">&quot;pubast00&quot;</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
 </div>
 <div id="pairwise-scatter-plots" class="section level4 unnumbered">
 <h4>Pairwise scatter plots</h4>
@@ -464,7 +464,7 @@ to have histograms in the diagonal, set set <code>diag=list(continuous=&quot;bar
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
 </div>
 <div id="scatter-plot-matrix-with-linear-smoother" class="section level4 unnumbered">
 <h4>Scatter plot matrix with linear smoother</h4>
@@ -474,7 +474,7 @@ to have histograms in the diagonal, set set <code>diag=list(continuous=&quot;bar
 diagonal).</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggpairs</span>(nyc.data, <span class="dt">columns=</span><span class="kw">c</span>(<span class="st">&quot;hhsiz00&quot;</span>,<span class="st">&quot;kids2000&quot;</span>, <span class="st">&quot;yrhom02&quot;</span>, <span class="st">&quot;pubast00&quot;</span>),
         <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&quot;smooth&quot;</span>),<span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&quot;smooth&quot;</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
 </div>
 <div id="scatter-plot-matrix-with-loess-smoother" class="section level4 unnumbered">
 <h4>Scatter plot matrix with loess smoother</h4>
@@ -489,7 +489,7 @@ of a custom function.</p>
 argument to <code>continuous = &quot;smooth_loess&quot;</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggpairs</span>(nyc.data, <span class="dt">columns=</span><span class="kw">c</span>(<span class="st">&quot;hhsiz00&quot;</span>,<span class="st">&quot;kids2000&quot;</span>, <span class="st">&quot;yrhom02&quot;</span>, <span class="st">&quot;pubast00&quot;</span>),
         <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&quot;smooth_loess&quot;</span>),<span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&quot;smooth_loess&quot;</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-106-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-106-1.png" width="672" /></p>
 <p>The <code>ggpairs</code> function has many other customization features to deal with axis
 labels, titles, etc., which we do not further pursue here. As mentioned above, just
 about anything can be included as a custom function using the <strong>ggplot</strong> API
@@ -521,7 +521,7 @@ As before, we can add labels for the x and y axis, as well as a title.</p>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Percent HH with public assistance&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Bubble Chart&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
 <p>Now, we also introduce the <code>col</code> as <strong>rent2002</strong>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span>kids2000,<span class="dt">y=</span>pubast00,<span class="dt">size=</span>rent2002,<span class="dt">col=</span>rent2002)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
@@ -529,7 +529,7 @@ As before, we can add labels for the x and y axis, as well as a title.</p>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Percent HH with public assistance&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Bubble Chart&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>))</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
 <p>Note that we used the default color bar for the color argument. There is a wide scope for customization of legends and color schemes in <strong>ggplot</strong>, which is beyond the current scope. In a nutshell, in order to fully mimic the graphs in GeoDa, one would need to use one of the ColorBrewer color schemes, which are available as an option in <strong>ggplot</strong>.</p>
 </div>
 <div id="d-scatter-plot" class="section level3 unnumbered">
@@ -554,7 +554,7 @@ in the GeoDa Workbook example. The result is as given below.</p>
               <span class="dt">zlab =</span> <span class="st">&quot;Median rent&quot;</span>,
               <span class="dt">pch =</span> <span class="dv">20</span>,
               <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
 </div>
 <div id="plotly-in-a-nutshell" class="section level4 unnumbered">
 <h4><strong>Plotly</strong> in a nutshell</h4>
@@ -605,8 +605,8 @@ is all we really need to specify.</p>
 <pre><code>## No scatter3d mode specifed:
 ##   Setting the mode to markers
 ##   Read more about this attribute -&gt; https://plot.ly/r/reference/#scatter-mode</code></pre>
-<div id="htmlwidget-88d49c280fc122ba748b" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-88d49c280fc122ba748b">{"x":{"visdat":{"b06c2d78bcc0":["function () ","plotlyVisDat"]},"cur_data":"b06c2d78bcc0","attrs":{"b06c2d78bcc0":{"x":{},"y":{},"z":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"kids2000"},"yaxis":{"title":"pubast00"},"zaxis":{"title":"rent2002"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[39.2995,36.2234,39.7362,28.4592,29.8808,41.6335,41.8224,35.0385,21.9464,31.5298,34.3515,43.1082,41.6585,30.7215,44.9491,42.5305,40.128,11.3798,22.1389,8.3924,8.3815,14.6295,13.3162,30.93,34.0025,38.1172,40.7504,50.6003,50.6547,50.5058,55.3666,47.3797,32.148,45.5402,29.3876,35.7203,42.1675,35.0024,53.6096,45.0378,24.7407,25.0841,38.2278,51.6881,50.2566,43.0152,45.0122,42.1733,42.3996,26.3044,41.1304,41.7739,31.0049,31.9359,29.2787],"y":[6.005791,2.287034,1.350208,5.20451,2.974139,5.332569,6.02923,3.95129,3.111417,2.795721,2.995194,5.750022,3.435906,1.029474,6.878053,3.044977,9.614139,1.092345,6.955674,2.45756,0.942509,2.344866,0.898064,9.979948,16.025613,15.40489,13.266259,23.320949,23.226611,20.727422,23.431818,17.188436,6.869893,14.518186,3.33615,7.339144,8.117254,8.431087,19.968782,17.849689,7.910931,4.321379,13.093806,20.480894,13.888889,4.282995,7.388086,8.676957,8.982116,3.529319,7.453581,8.160499,5.224864,6.044883,9.121694],"z":[800,650,750,1000,1000,910,896,800,1000,1000,1000,800,850,1100,700,800,850,2300,2200,2475,2300,2500,2400,1200,870,900,0,0,500,756,0,0,990,750,750,800,800,825,725,650,1000,1044,775,700,750,850,728,750,800,975,754,850,869,750,750],"type":"scatter3d","mode":"markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8999ff53d9ad5052215e" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8999ff53d9ad5052215e">{"x":{"visdat":{"dfde71571a7a":["function () ","plotlyVisDat"]},"cur_data":"dfde71571a7a","attrs":{"dfde71571a7a":{"x":{},"y":{},"z":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"kids2000"},"yaxis":{"title":"pubast00"},"zaxis":{"title":"rent2002"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[39.2995,36.2234,39.7362,28.4592,29.8808,41.6335,41.8224,35.0385,21.9464,31.5298,34.3515,43.1082,41.6585,30.7215,44.9491,42.5305,40.128,11.3798,22.1389,8.3924,8.3815,14.6295,13.3162,30.93,34.0025,38.1172,40.7504,50.6003,50.6547,50.5058,55.3666,47.3797,32.148,45.5402,29.3876,35.7203,42.1675,35.0024,53.6096,45.0378,24.7407,25.0841,38.2278,51.6881,50.2566,43.0152,45.0122,42.1733,42.3996,26.3044,41.1304,41.7739,31.0049,31.9359,29.2787],"y":[6.005791,2.287034,1.350208,5.20451,2.974139,5.332569,6.02923,3.95129,3.111417,2.795721,2.995194,5.750022,3.435906,1.029474,6.878053,3.044977,9.614139,1.092345,6.955674,2.45756,0.942509,2.344866,0.898064,9.979948,16.025613,15.40489,13.266259,23.320949,23.226611,20.727422,23.431818,17.188436,6.869893,14.518186,3.33615,7.339144,8.117254,8.431087,19.968782,17.849689,7.910931,4.321379,13.093806,20.480894,13.888889,4.282995,7.388086,8.676957,8.982116,3.529319,7.453581,8.160499,5.224864,6.044883,9.121694],"z":[800,650,750,1000,1000,910,896,800,1000,1000,1000,800,850,1100,700,800,850,2300,2200,2475,2300,2500,2400,1200,870,900,0,0,500,756,0,0,990,750,750,800,800,825,725,650,1000,1044,775,700,750,850,728,750,800,975,754,850,869,750,750],"type":"scatter3d","mode":"markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>There are warnings, but it works. Basically, since we did not specify a trace type, the default <code>scatter3d</code> is applied, which is exactly what we wanted. Also, since no mode is specified, the default is set to <code>markers</code>.</p>
 <p>The moment we move the pointer over the graph, a number of small icons appear in the right-hand top. These correspond to different types of interactions that can be carried out. Before we proceed with those, however, we move the pointer to one of the points. The
 <em>hovering</em> functionality (here left to the default of listing all data dimensions) will list the values for x, y and z in a small box, and draw the projections to each of the axes.</p>
@@ -624,8 +624,8 @@ can interact with the graph in the same way as before.</p>
 <span class="st">  </span><span class="kw">layout</span>(<span class="dt">scene =</span> <span class="kw">list</span>(<span class="dt">xaxis =</span> <span class="kw">list</span>(<span class="dt">title =</span> <span class="st">&quot;Percent HH with kids&quot;</span>),
                      <span class="dt">yaxis =</span> <span class="kw">list</span>(<span class="dt">title =</span> <span class="st">&quot;Percent HH with public assistance&quot;</span>),
                      <span class="dt">zaxis =</span> <span class="kw">list</span>(<span class="dt">title =</span> <span class="st">&quot;Median rent&quot;</span>)))</code></pre>
-<div id="htmlwidget-0027f685f8fe51204c1f" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0027f685f8fe51204c1f">{"x":{"visdat":{"b06c77e86323":["function () ","plotlyVisDat"]},"cur_data":"b06c77e86323","attrs":{"b06c77e86323":{"x":{},"y":{},"z":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","marker":{"color":"red"},"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Percent HH with kids"},"yaxis":{"title":"Percent HH with public assistance"},"zaxis":{"title":"Median rent"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[39.2995,36.2234,39.7362,28.4592,29.8808,41.6335,41.8224,35.0385,21.9464,31.5298,34.3515,43.1082,41.6585,30.7215,44.9491,42.5305,40.128,11.3798,22.1389,8.3924,8.3815,14.6295,13.3162,30.93,34.0025,38.1172,40.7504,50.6003,50.6547,50.5058,55.3666,47.3797,32.148,45.5402,29.3876,35.7203,42.1675,35.0024,53.6096,45.0378,24.7407,25.0841,38.2278,51.6881,50.2566,43.0152,45.0122,42.1733,42.3996,26.3044,41.1304,41.7739,31.0049,31.9359,29.2787],"y":[6.005791,2.287034,1.350208,5.20451,2.974139,5.332569,6.02923,3.95129,3.111417,2.795721,2.995194,5.750022,3.435906,1.029474,6.878053,3.044977,9.614139,1.092345,6.955674,2.45756,0.942509,2.344866,0.898064,9.979948,16.025613,15.40489,13.266259,23.320949,23.226611,20.727422,23.431818,17.188436,6.869893,14.518186,3.33615,7.339144,8.117254,8.431087,19.968782,17.849689,7.910931,4.321379,13.093806,20.480894,13.888889,4.282995,7.388086,8.676957,8.982116,3.529319,7.453581,8.160499,5.224864,6.044883,9.121694],"z":[800,650,750,1000,1000,910,896,800,1000,1000,1000,800,850,1100,700,800,850,2300,2200,2475,2300,2500,2400,1200,870,900,0,0,500,756,0,0,990,750,750,800,800,825,725,650,1000,1044,775,700,750,850,728,750,800,975,754,850,869,750,750],"type":"scatter3d","mode":"markers","marker":{"color":"red","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-daab9b9d29d3e9dae833" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-daab9b9d29d3e9dae833">{"x":{"visdat":{"dfde3fe425fa":["function () ","plotlyVisDat"]},"cur_data":"dfde3fe425fa","attrs":{"dfde3fe425fa":{"x":{},"y":{},"z":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","marker":{"color":"red"},"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Percent HH with kids"},"yaxis":{"title":"Percent HH with public assistance"},"zaxis":{"title":"Median rent"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[39.2995,36.2234,39.7362,28.4592,29.8808,41.6335,41.8224,35.0385,21.9464,31.5298,34.3515,43.1082,41.6585,30.7215,44.9491,42.5305,40.128,11.3798,22.1389,8.3924,8.3815,14.6295,13.3162,30.93,34.0025,38.1172,40.7504,50.6003,50.6547,50.5058,55.3666,47.3797,32.148,45.5402,29.3876,35.7203,42.1675,35.0024,53.6096,45.0378,24.7407,25.0841,38.2278,51.6881,50.2566,43.0152,45.0122,42.1733,42.3996,26.3044,41.1304,41.7739,31.0049,31.9359,29.2787],"y":[6.005791,2.287034,1.350208,5.20451,2.974139,5.332569,6.02923,3.95129,3.111417,2.795721,2.995194,5.750022,3.435906,1.029474,6.878053,3.044977,9.614139,1.092345,6.955674,2.45756,0.942509,2.344866,0.898064,9.979948,16.025613,15.40489,13.266259,23.320949,23.226611,20.727422,23.431818,17.188436,6.869893,14.518186,3.33615,7.339144,8.117254,8.431087,19.968782,17.849689,7.910931,4.321379,13.093806,20.480894,13.888889,4.282995,7.388086,8.676957,8.982116,3.529319,7.453581,8.160499,5.224864,6.044883,9.121694],"z":[800,650,750,1000,1000,910,896,800,1000,1000,1000,800,850,1100,700,800,850,2300,2200,2475,2300,2500,2400,1200,870,900,0,0,500,756,0,0,990,750,750,800,800,825,725,650,1000,1044,775,700,750,850,728,750,800,975,754,850,869,750,750],"type":"scatter3d","mode":"markers","marker":{"color":"red","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -659,7 +659,7 @@ detailed options can be found in <a href="https://www.rdocumentation.org/package
 <pre class="sourceCode r"><code class="sourceCode r">vars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;kids2000&quot;</span>,<span class="st">&quot;rent2002&quot;</span>,<span class="st">&quot;pubast00&quot;</span>,<span class="st">&quot;yrhom02&quot;</span>)
 pcp.vars &lt;-<span class="st"> </span><span class="kw">select</span>(nyc.data,vars)
 <span class="kw">ggparcoord</span>(<span class="dt">data =</span> pcp.vars)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
 </div>
 <div id="pcp-in-plotly" class="section level4 unnumbered">
 <h4>PCP in <strong>plotly</strong></h4>
@@ -680,8 +680,8 @@ variables and precede their names with the <code>~</code> symbol.</p>
             <span class="kw">list</span>(<span class="dt">label =</span> <span class="st">&quot;Stable&quot;</span>, <span class="dt">values =</span> <span class="op">~</span>yrhom02)
             )
           )</code></pre>
-<div id="htmlwidget-989b7b427deaf64d2bfe" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-989b7b427deaf64d2bfe">{"x":{"visdat":{"b06c1f36e72f":["function () ","plotlyVisDat"]},"cur_data":"b06c1f36e72f","attrs":{"b06c1f36e72f":{"dimensions":[{"label":"Kids","values":{}},{"label":"Public Assistance","values":{}},{"label":"Rent","values":{}},{"label":"Stable","values":{}}],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"parcoords"}},"layout":{"margin":{"b":40,"l":60,"r":10},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"dimensions":[{"label":"Kids","values":[39.2995,36.2234,39.7362,28.4592,29.8808,41.6335,41.8224,35.0385,21.9464,31.5298,34.3515,43.1082,41.6585,30.7215,44.9491,42.5305,40.128,11.3798,22.1389,8.3924,8.3815,14.6295,13.3162,30.93,34.0025,38.1172,40.7504,50.6003,50.6547,50.5058,55.3666,47.3797,32.148,45.5402,29.3876,35.7203,42.1675,35.0024,53.6096,45.0378,24.7407,25.0841,38.2278,51.6881,50.2566,43.0152,45.0122,42.1733,42.3996,26.3044,41.1304,41.7739,31.0049,31.9359,29.2787]},{"label":"Public Assistance","values":[6.005791,2.287034,1.350208,5.20451,2.974139,5.332569,6.02923,3.95129,3.111417,2.795721,2.995194,5.750022,3.435906,1.029474,6.878053,3.044977,9.614139,1.092345,6.955674,2.45756,0.942509,2.344866,0.898064,9.979948,16.025613,15.40489,13.266259,23.320949,23.226611,20.727422,23.431818,17.188436,6.869893,14.518186,3.33615,7.339144,8.117254,8.431087,19.968782,17.849689,7.910931,4.321379,13.093806,20.480894,13.888889,4.282995,7.388086,8.676957,8.982116,3.529319,7.453581,8.160499,5.224864,6.044883,9.121694]},{"label":"Rent","values":[800,650,750,1000,1000,910,896,800,1000,1000,1000,800,850,1100,700,800,850,2300,2200,2475,2300,2500,2400,1200,870,900,0,0,500,756,0,0,990,750,750,800,800,825,725,650,1000,1044,775,700,750,850,728,750,800,975,754,850,869,750,750]},{"label":"Stable","values":[10.80506793,15.24124639,12.70425043,12.83916713,15.3876559,12.64922885,11.554984,13.49840766,13.40156226,14.01125986,13.94706039,9.726724617,12.81775297,13.43954091,14.39448279,14.88520634,12.56409219,10.74627497,12.78223754,11.33124176,11.26985963,12.34367249,10.58666958,13.84669464,13.21054289,14.97406004,13.53630543,10.99920577,10.14931717,9.704102674,9.723328488,8.21638886,13.01775643,12.39149802,16.12394165,10.3671338,12.59261453,12.44717388,9.145593284,12.25786632,11.66121667,11.76849798,11.78837462,11.67831193,10.32799817,12.07898587,11.25862449,11.6595575,11.44083364,13.1092734,12.87324909,11.01807276,12.77818963,12.84560741,11.86403167]}],"type":"parcoords","line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-99cac020b87f0bd7016a" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-99cac020b87f0bd7016a">{"x":{"visdat":{"dfde7e4f3db":["function () ","plotlyVisDat"]},"cur_data":"dfde7e4f3db","attrs":{"dfde7e4f3db":{"dimensions":[{"label":"Kids","values":{}},{"label":"Public Assistance","values":{}},{"label":"Rent","values":{}},{"label":"Stable","values":{}}],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"parcoords"}},"layout":{"margin":{"b":40,"l":60,"r":10},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"dimensions":[{"label":"Kids","values":[39.2995,36.2234,39.7362,28.4592,29.8808,41.6335,41.8224,35.0385,21.9464,31.5298,34.3515,43.1082,41.6585,30.7215,44.9491,42.5305,40.128,11.3798,22.1389,8.3924,8.3815,14.6295,13.3162,30.93,34.0025,38.1172,40.7504,50.6003,50.6547,50.5058,55.3666,47.3797,32.148,45.5402,29.3876,35.7203,42.1675,35.0024,53.6096,45.0378,24.7407,25.0841,38.2278,51.6881,50.2566,43.0152,45.0122,42.1733,42.3996,26.3044,41.1304,41.7739,31.0049,31.9359,29.2787]},{"label":"Public Assistance","values":[6.005791,2.287034,1.350208,5.20451,2.974139,5.332569,6.02923,3.95129,3.111417,2.795721,2.995194,5.750022,3.435906,1.029474,6.878053,3.044977,9.614139,1.092345,6.955674,2.45756,0.942509,2.344866,0.898064,9.979948,16.025613,15.40489,13.266259,23.320949,23.226611,20.727422,23.431818,17.188436,6.869893,14.518186,3.33615,7.339144,8.117254,8.431087,19.968782,17.849689,7.910931,4.321379,13.093806,20.480894,13.888889,4.282995,7.388086,8.676957,8.982116,3.529319,7.453581,8.160499,5.224864,6.044883,9.121694]},{"label":"Rent","values":[800,650,750,1000,1000,910,896,800,1000,1000,1000,800,850,1100,700,800,850,2300,2200,2475,2300,2500,2400,1200,870,900,0,0,500,756,0,0,990,750,750,800,800,825,725,650,1000,1044,775,700,750,850,728,750,800,975,754,850,869,750,750]},{"label":"Stable","values":[10.80506793,15.24124639,12.70425043,12.83916713,15.3876559,12.64922885,11.554984,13.49840766,13.40156226,14.01125986,13.94706039,9.726724617,12.81775297,13.43954091,14.39448279,14.88520634,12.56409219,10.74627497,12.78223754,11.33124176,11.26985963,12.34367249,10.58666958,13.84669464,13.21054289,14.97406004,13.53630543,10.99920577,10.14931717,9.704102674,9.723328488,8.21638886,13.01775643,12.39149802,16.12394165,10.3671338,12.59261453,12.44717388,9.145593284,12.25786632,11.66121667,11.76849798,11.78837462,11.67831193,10.32799817,12.07898587,11.25862449,11.6595575,11.44083364,13.1092734,12.87324909,11.01807276,12.77818963,12.84560741,11.86403167]}],"type":"parcoords","line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>Once we move the pointer over the graph, a few icons appear on the top right (but fewer than for the 3D scatter plot). The interaction with the graph is not that intuitive,
 but once you know what to look for, it is quite powerful. The easiest way to proceed is to click on one of the axes: with the cross hair <code>+</code> symbol placed at any location along an axis, clicking will change the color and <em>select</em> the observations (lines) covered by the small vertical bar (the pointer will turn into an arrow that points up or down, depending on the direction of the selection). Clicking the cross hair in another position on the same axis turns the selection off.</p>
 <p>A second interactive feature allows one to change the order of the axes. For example,
@@ -756,19 +756,19 @@ add the <code>facet_grid</code> command.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span>kids2000,<span class="dt">y=</span>pubast00)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(cut.yrhom <span class="op">~</span><span class="st"> </span>cut.hhsiz,<span class="dt">as.table=</span><span class="ot">FALSE</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
 <p>We can add a linear smoother by means of <code>geom_smooth(method=&quot;lm&quot;)</code>:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span>kids2000,<span class="dt">y=</span>pubast00)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(cut.yrhom <span class="op">~</span><span class="st"> </span>cut.hhsiz,<span class="dt">as.table=</span><span class="ot">FALSE</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
 <p>We can also add a loess smoother by means of <code>geom_smooth(method=&quot;loess&quot;)</code>:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(<span class="dt">x=</span>kids2000,<span class="dt">y=</span>pubast00)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;loess&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(cut.yrhom <span class="op">~</span><span class="st"> </span>cut.hhsiz,<span class="dt">as.table=</span><span class="ot">FALSE</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
 <p>As is the case for all graphs in <strong>ggplot</strong>, many further customizations can
 be added, but we do not consider that further.</p>
 </div>
@@ -785,7 +785,7 @@ pursue that here.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>nyc.data,<span class="kw">aes</span>(pubast00)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">7</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(cut.yrhom <span class="op">~</span><span class="st"> </span>cut.hhsiz,<span class="dt">as.table=</span><span class="ot">FALSE</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
 <p><br></p>
 
 </div>
@@ -836,7 +836,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/spatialanalysis/introspatialdata/edit/master/03-eda-2.Rmd",
+"link": "https://github.com/spatialanalysis/handsonspatialdata/edit/master/03-eda-2.Rmd",
 "text": "Edit"
 },
 "history": {

@@ -4,19 +4,19 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Spatial Data Handling | Introduction to Spatial Data Science with R</title>
-  <meta name="description" content="Chapter 1 Spatial Data Handling | Introduction to Spatial Data Science with R" />
+  <title>Chapter 1 Spatial Data Handling | Hands-On Spatial Data Science with R</title>
+  <meta name="description" content="Chapter 1 Spatial Data Handling | Hands-On Spatial Data Science with R" />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Spatial Data Handling | Introduction to Spatial Data Science with R" />
+  <meta property="og:title" content="Chapter 1 Spatial Data Handling | Hands-On Spatial Data Science with R" />
   <meta property="og:type" content="book" />
   
   
   
-  <meta name="github-repo" content="spatialanalysis/introspatialdata" />
+  <meta name="github-repo" content="spatialanalysis/handsonspatialdata" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Spatial Data Handling | Introduction to Spatial Data Science with R" />
+  <meta name="twitter:title" content="Chapter 1 Spatial Data Handling | Hands-On Spatial Data Science with R" />
   
   
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Luc Anselin, Grant Morrison, Angela Li" />
 
 
-<meta name="date" content="2019-10-22" />
+<meta name="date" content="2019-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -266,7 +266,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Spatial Data Science with R</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hands-On Spatial Data Science with R</a>
           </h1>
         </div>
 
@@ -345,12 +345,12 @@ their dependencies.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup><
 <pre><code>## Registered S3 method overwritten by &#39;rvest&#39;:
 ##   method            from
 ##   read_xml.response xml2</code></pre>
-<pre><code>## ── Attaching packages ───────────────</code></pre>
+<pre><code>## ── Attaching packages ────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.1.1     ✔ purrr   0.3.2
 ## ✔ tibble  2.1.1     ✔ dplyr   0.8.3
 ## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
 ## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ────────────────────────
+<pre><code>## ── Conflicts ───────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)</code></pre>
@@ -461,7 +461,7 @@ API Endpoint and paste the file path, as shown below.</p>
 we will have to deal with. We also check the dimension of this data frame using the
 <code>dim</code> command:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(vehicle.data)</code></pre>
-<pre><code>## [1] 238327     26</code></pre>
+<pre><code>## [1] 238426     26</code></pre>
 <p>The table has 203,657 observations on 26 variables (the number of observations shown
 may be slightly different as the table is constantly updated).</p>
 <p>In RStudio, the type of the variable in each column is listed under its name. For example, under <strong>creation_date</strong>, we see <strong>S3: POSIXct</strong>. You can also find out the same information by applying a <code>class</code> command to the variable
@@ -642,7 +642,7 @@ Later, we will see how we can refine these plots using the <strong>tmap</strong>
 ## partial argument match of &#39;length&#39; to &#39;length.out&#39;</code></pre>
 <pre><code>## Warning in plot.default(1, 1, t = &quot;n&quot;, ylim = ylim, xlim = xlim, axes =
 ## FALSE, : partial argument match of &#39;t&#39; to &#39;type&#39;</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>We can also do a quick check of the projection information using the
 <code>st_crs</code> command.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(vehicle.points)</code></pre>
@@ -679,7 +679,7 @@ chicago.comm &lt;-<span class="st"> </span><span class="kw">read_sf</span>(comm.
 <p>Again, the layer is unprojected in decimal degrees. Also, a quick <code>plot</code>. Note that,
 by default, <strong>sf</strong> draws a choropleth map for each variable included in the data frame. Since we won’t be using <strong>sf</strong> for mapping, we ignore that aspect for now.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(chicago.comm)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>We also use <code>head</code> to check on the types of the variables.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(chicago.comm)</code></pre>
 <pre><code>## Simple feature collection with 6 features and 9 fields
@@ -820,7 +820,7 @@ range of geographic shapes. Here, we will just use <code>tm_polygons</code> and 
 abandoned vehicle counts by community area.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(chicago.comm) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;AGG.COUNT&quot;</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>However, this map can be highly misleading since it pertains to a so-called
 <em>spatially extensive</em> variable, such as a count. Even if every area had the
 same risk of having abandoned vehicles, larger community areas would have
@@ -1217,7 +1217,7 @@ of vehicle counts per 1000 population.</p>
 but take <strong>vehpcap</strong> as the variable instead.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(chicago.comm) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;vehpcap&quot;</span>)</code></pre>
-<p><img src="introspatialdata_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
 <p>When compared to the total counts, we see quite a different spatial distribution.
 In particular, the locations of the highest ratios are quite different from those of the highest counts. As a rule, one should <em>never</em> create a choropleth map of a spatially extensive variable, unless the size of the areal units is somehow controlled for
 (e.g., equal area grid cells, or equal population zones).</p>
@@ -1284,7 +1284,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/spatialanalysis/introspatialdata/edit/master/01-spatial-data-handling.Rmd",
+"link": "https://github.com/spatialanalysis/handsonspatialdata/edit/master/01-spatial-data-handling.Rmd",
 "text": "Edit"
 },
 "history": {
