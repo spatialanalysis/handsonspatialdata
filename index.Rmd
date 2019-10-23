@@ -17,6 +17,10 @@ as a standalone lab tutorial for one week of the class. As a result, it is possi
 to work through a single chapter on its own, though we recommend going from the 
 beginning to the end.
 
+## Disclaimer {-}
+
+This book is still **actively under development** and may not work for you when you access it. For versions of the lab notebooks that have been tested and are not undergoing changes, please see the [Tutorials page](https://spatialanalysis.github.io/tutorials/) on our Spatial Analysis with R website.
+
 ## Using This Book {-}
 
 We have developed an R data package ([`geodaData`](https://github.com/spatialanalysis/geodaData)) 
