@@ -1,6 +1,6 @@
 ---
 title: "Hands-On Spatial Data Science with R"
-author: "Luc Anselin, Grant Morrison, Angela Li"
+author: "Luc Anselin, Grant Morrison, Angela Li, Karina Acosta"
 date: '`r Sys.Date()`'
 github-repo: spatialanalysis/handsonspatialdata
 bibliography:
