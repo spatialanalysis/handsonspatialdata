@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Hands-On Spatial Data Science with R</title>
   <meta name="description" content="Hands-On Spatial Data Science with R" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Hands-On Spatial Data Science with R" />
   <meta property="og:type" content="book" />
@@ -21,10 +21,10 @@
   
   
 
-<meta name="author" content="Luc Anselin, Grant Morrison, Angela Li" />
+<meta name="author" content="Luc Anselin, Grant Morrison, Angela Li, Karina Acosta" />
 
 
-<meta name="date" content="2019-10-23" />
+<meta name="date" content="2020-06-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 
-<link rel="next" href="spatial-data-handling.html">
+<link rel="next" href="spatial-data-handling.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -48,12 +51,12 @@
 
 
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -66,67 +69,41 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -258,6 +235,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#conditional-map"><i class="fa fa-check"></i>Conditional Map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#cartogram"><i class="fa fa-check"></i>Cartogram</a></li>
 </ul></li>
+<li class="chapter" data-level="5" data-path="rate-mapping.html"><a href="rate-mapping.html"><i class="fa fa-check"></i><b>5</b> Rate Mapping</a><ul>
+<li class="chapter" data-level="" data-path="rate-mapping.html"><a href="rate-mapping.html#introduction-5"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="rate-mapping.html"><a href="rate-mapping.html#objectives-4"><i class="fa fa-check"></i><b>5.0.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="5.1" data-path="rate-mapping.html"><a href="rate-mapping.html#preliminaries-4"><i class="fa fa-check"></i><b>5.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="rate-mapping.html"><a href="rate-mapping.html#load-packages-3"><i class="fa fa-check"></i><b>5.1.1</b> Load packages</a></li>
+<li class="chapter" data-level="5.1.2" data-path="rate-mapping.html"><a href="rate-mapping.html#geodadata"><i class="fa fa-check"></i><b>5.1.2</b> geodaData</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="rate-mapping.html"><a href="rate-mapping.html#choropleth-map-for-rates"><i class="fa fa-check"></i><b>5.2</b> Choropleth Map for Rates</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="rate-mapping.html"><a href="rate-mapping.html#spatially-extensive-and-intensive-variables"><i class="fa fa-check"></i><b>5.2.1</b> Spatially extensive and intensive variables</a></li>
+<li class="chapter" data-level="5.2.2" data-path="rate-mapping.html"><a href="rate-mapping.html#raw-rate-map"><i class="fa fa-check"></i><b>5.2.2</b> Raw rate map</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk"><i class="fa fa-check"></i><b>5.3</b> Excess risk</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="rate-mapping.html"><a href="rate-mapping.html#relative-risk"><i class="fa fa-check"></i><b>5.3.1</b> Relative risk</a></li>
+<li class="chapter" data-level="5.3.2" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk-map"><i class="fa fa-check"></i><b>5.3.2</b> Excess risk map</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="rate-mapping.html"><a href="rate-mapping.html#empirical-bayes-smoothed-rate-map"><i class="fa fa-check"></i><b>5.4</b> Empirical Bayes Smoothed Rate Map</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="rate-mapping.html"><a href="rate-mapping.html#borrowing-strength"><i class="fa fa-check"></i><b>5.4.1</b> Borrowing strength</a></li>
+<li class="chapter" data-level="5.4.2" data-path="rate-mapping.html"><a href="rate-mapping.html#bayes-law"><i class="fa fa-check"></i><b>5.4.2</b> Bayes law</a></li>
+<li class="chapter" data-level="5.4.3" data-path="rate-mapping.html"><a href="rate-mapping.html#the-poisson-gamma-model"><i class="fa fa-check"></i><b>5.4.3</b> The Poisson-Gamma model</a></li>
+<li class="chapter" data-level="5.4.4" data-path="rate-mapping.html"><a href="rate-mapping.html#the-empirical-bayes-approach"><i class="fa fa-check"></i><b>5.4.4</b> The Empirical Bayes approach</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="rate-mapping.html"><a href="rate-mapping.html#eb-rate-map"><i class="fa fa-check"></i><b>5.5</b> EB rate map</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
@@ -278,35 +279,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">Hands-On Spatial Data Science with R</h1>
-<p class="author"><em>Luc Anselin, Grant Morrison, Angela Li</em></p>
-<p class="date"><em>2019-10-23</em></p>
+<p class="author"><em>Luc Anselin, Grant Morrison, Angela Li, Karina Acosta</em></p>
+<p class="date"><em>2020-06-29</em></p>
 </div>
 <div id="introduction" class="section level1 unnumbered">
 <h1>Introduction</h1>
-<p>This book contains the R version of the <a href="https://geodacenter.github.io/documentation.html">GeoDa Workbook</a> developed by Luc Anselin. It accompanies the Introduction to Spatial Data Science
-course taught at the University of Chicago. Each chapter was originally developed
-as a standalone lab tutorial for one week of the class. As a result, it is possible
-to work through a single chapter on its own, though we recommend going from the
-beginning to the end.</p>
+<p>This book contains the R version of the <a href="https://geodacenter.github.io/documentation.html">GeoDa Workbook</a> developed by Luc Anselin. It accompanies the Introduction to Spatial Data Science course taught at the University of Chicago. Each chapter was originally developed as a standalone lab tutorial for one week of the class. As a result, it is possible to work through a single chapter on its own, though we recommend going from the beginning to the end.</p>
 <div id="disclaimer" class="section level2 unnumbered">
 <h2>Disclaimer</h2>
 <p>This book is still <strong>actively under development</strong> and may not work for you when you access it. For versions of the lab notebooks that have been tested and are not undergoing changes, please see the <a href="https://spatialanalysis.github.io/tutorials/">Tutorials page</a> on our Spatial Analysis with R website.</p>
 </div>
 <div id="using-this-book" class="section level2 unnumbered">
 <h2>Using This Book</h2>
-<p>We have developed an R data package (<a href="https://github.com/spatialanalysis/geodaData"><code>geodaData</code></a>)
-to use along with this book, so you can work through through the exercises
-immediately. To install it, run the following in your R console:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages(&quot;remotes&quot;)</span>
-remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;spatialanalysis/geodaData&quot;</span>)</code></pre>
+<p>We have developed an R data package (<a href="https://github.com/spatialanalysis/geodaData"><code>geodaData</code></a>) to use along with this book, so you can work through through the exercises immediately. To install it, run the following in your R console:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages(&quot;remotes&quot;)</span>
+remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;spatialanalysis/geodaData&quot;</span>)</code></pre></div>
 </div>
 <div id="who-this-book-is-for" class="section level2 unnumbered">
 <h2>Who This Book Is For</h2>
-<p>We assume that workshop attendees have used RStudio and are familiar with the basics of R.
-If you need a refresher, this <a href="https://datacarpentry.org/r-socialsci/">R for Social Scientists</a> tutorial developed by Data Carpentry is a good place to start. Additionally, Luc Anselin’s introductory R lab notes can be found on the <a href="https://spatialanalysis.github.io/tutorials">CSDS Tutorials page</a>.</p>
-<p>During Fall Quarter 2019, Angela Li will be teaching from sections of this book
-during the R Spatial Workshop. If you have any questions about the following
-material, please reach out to her at <a href="mailto:ali6@uchicago.edu" class="email">ali6@uchicago.edu</a>.</p>
+<p>We assume that workshop attendees have used RStudio and are familiar with the basics of R. If you need a refresher, this <a href="https://datacarpentry.org/r-socialsci/">R for Social Scientists</a> tutorial developed by Data Carpentry is a good place to start. Additionally, Luc Anselin's introductory R lab notes can be found on the <a href="https://spatialanalysis.github.io/tutorials">CSDS Tutorials page</a>.</p>
+<p>During Fall Quarter 2019, Angela Li will be teaching from sections of this book during the R Spatial Workshop. If you have any questions about the following material, please reach out to her at <a href="mailto:ali6@uchicago.edu">ali6@uchicago.edu</a>.</p>
 <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
 
 </div>
@@ -322,11 +314,13 @@ material, please reach out to her at <a href="mailto:ali6@uchicago.edu" class="e
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -334,12 +328,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -354,6 +347,10 @@ gitbook.start({
 "link": null,
 "text": null
 },
+"view": {
+"link": null,
+"text": null
+},
 "download": null,
 "toc": {
 "collapse": "section"
@@ -362,6 +359,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
