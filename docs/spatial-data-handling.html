@@ -53,8 +53,8 @@
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
@@ -63,9 +63,9 @@
 <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.2/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
@@ -259,7 +259,183 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="rate-mapping.html"><a href="rate-mapping.html#eb-rate-map"><i class="fa fa-check"></i><b>5.5</b> EB rate map</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="6" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html"><i class="fa fa-check"></i><b>6</b> Contiguity-Based Spatial Weights</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#introduction-6"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#objectives-5"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#preliminaries-5"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#load-packages-4"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#geodadata-1"><i class="fa fa-check"></i>geodaData</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#contiguity-weights"><i class="fa fa-check"></i>Contiguity Weights</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#rook-contiguity"><i class="fa fa-check"></i>Rook Contiguity</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#queen-contiguity"><i class="fa fa-check"></i>Queen Contiguity</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#higher-order-contiguity"><i class="fa fa-check"></i>Higher Order Contiguity</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#visualizing-contiguity-neighbors"><i class="fa fa-check"></i>Visualizing Contiguity Neighbors</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#connectivity-graph"><i class="fa fa-check"></i>Connectivity Graph</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#connectivity-histogram"><i class="fa fa-check"></i>Connectivity Histogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#saving-neighbors"><i class="fa fa-check"></i>Saving Neighbors</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#oldstyle"><i class="fa fa-check"></i>Oldstyle</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#geoda-header-format"><i class="fa fa-check"></i>GeoDA Header Format</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html"><i class="fa fa-check"></i><b>7</b> Distance-Based Spatial Weights</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#introduction-7"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#objectives-6"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#preliminaries-6"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#load-packages-5"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#geodadata-2"><i class="fa fa-check"></i>geodaData</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#visualizing-point-data"><i class="fa fa-check"></i>Visualizing point data</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-band-weights"><i class="fa fa-check"></i>Distance-Band Weights</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#concepts"><i class="fa fa-check"></i>Concepts</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#creating-distance-band-weights"><i class="fa fa-check"></i>Creating distance-band weights</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#weights-characteristics"><i class="fa fa-check"></i>Weights characteristics</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#isolates"><i class="fa fa-check"></i>Isolates</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#k-nearest-neighbor-weights"><i class="fa fa-check"></i>K-Nearest Neighbor Weights</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#concept"><i class="fa fa-check"></i>Concept</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#creating-knn-weights"><i class="fa fa-check"></i>Creating KNN Weights</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#properties-of-knn-weights"><i class="fa fa-check"></i>Properties of KNN weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#generalizing-the-concept-of-contiguity"><i class="fa fa-check"></i>Generalizing the Concept of Contiguity</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#contiguity-based-weights-for-points"><i class="fa fa-check"></i>Contiguity-based weights for points</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#contiguity-weights-for-thiessen-polygons"><i class="fa fa-check"></i>Contiguity weights for Thiessen polygons</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-based-weights-for-polygons"><i class="fa fa-check"></i>Distance-based weights for polygons</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#getting-the-data"><i class="fa fa-check"></i>Getting the data</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-the-centroids"><i class="fa fa-check"></i>Computing the centroids</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-the-critical-threshold"><i class="fa fa-check"></i>Computing the critical threshold</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-distance-band-neighbors"><i class="fa fa-check"></i>Computing distance-band neighbors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html"><i class="fa fa-check"></i><b>8</b> Spatial Weights as Distance Functions</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#introduction-8"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#objectives-7"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#preliminaries-7"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#load-packages-6"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#obtaining-the-data-from-the-geoda-website"><i class="fa fa-check"></i>Obtaining the Data from the GeoDa website</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#inverse-distance-weights"><i class="fa fa-check"></i>Inverse Distance Weights</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#concepts-1"><i class="fa fa-check"></i>Concepts</a></li>
+<li class="chapter" data-level="8.0.1" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-distance-bands"><i class="fa fa-check"></i><b>8.0.1</b> Creating inverse distance functions for distance bands</a></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-k-nearest-neighbors"><i class="fa fa-check"></i>Creating inverse distance functions for k-nearest neighbors</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#kernal-weights"><i class="fa fa-check"></i>Kernal Weights</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#concepts-2"><i class="fa fa-check"></i>Concepts</a></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-kernal-weights"><i class="fa fa-check"></i>Creating Kernal weights</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html"><i class="fa fa-check"></i><b>9</b> Applications of Spatial Weights</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#introduction-9"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#objectives-8"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-8"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#load-packages-7"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#geodadata-3"><i class="fa fa-check"></i>geodaData</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables"><i class="fa fa-check"></i>Spatially lagged variables</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#creating-a-spatially-lagged-variable"><i class="fa fa-check"></i>Creating a spatially lagged variable</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-inverse-distance-weights"><i class="fa fa-check"></i>Spatially lagged variables from inverse distance weights</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle"><i class="fa fa-check"></i>Principle</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#default-approach"><i class="fa fa-check"></i>Default approach</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-lags-with-row-standardized-inverse-distance-weights"><i class="fa fa-check"></i>Spatial lags with row-standardized inverse distance weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-kernel-weights"><i class="fa fa-check"></i>Spatially lagged variables from kernel weights</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-rate-smoothing"><i class="fa fa-check"></i>Spatial rate smoothing</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle-1"><i class="fa fa-check"></i>Principle</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-9"><i class="fa fa-check"></i>Preliminaries</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#simple-window-average-of-rates"><i class="fa fa-check"></i>Simple window average of rates</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-smoothed-rates"><i class="fa fa-check"></i>Spatially Smoothed Rates</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-empirical-bayes-smoothing"><i class="fa fa-check"></i>Spatial Empirical Bayes smoothing</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle-2"><i class="fa fa-check"></i>Principle</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-eb-rate-smoother"><i class="fa fa-check"></i>Spatial EB rate smoother</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>10</b> Global Spatial Autocorrelation 1</a><ul>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#introduction-10"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="10.0.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#objectives-9"><i class="fa fa-check"></i><b>10.0.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="10.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#preliminaries-10"><i class="fa fa-check"></i><b>10.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#load-packages-8"><i class="fa fa-check"></i><b>10.1.1</b> Load packages</a></li>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#geodadata-website"><i class="fa fa-check"></i>geodaData website</a></li>
+<li class="chapter" data-level="10.1.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#making-the-weights"><i class="fa fa-check"></i><b>10.1.2</b> Making the weights</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#the-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2</b> The Moran Scatter Plot</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#concept-1"><i class="fa fa-check"></i><b>10.2.1</b> Concept</a></li>
+<li class="chapter" data-level="10.2.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#creating-a-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2.2</b> Creating a Moran scatter plot</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#spatial-correlogram"><i class="fa fa-check"></i><b>10.3</b> Spatial Correlogram</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#concept-2"><i class="fa fa-check"></i><b>10.3.1</b> Concept</a></li>
+<li class="chapter" data-level="10.3.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#creating-a-spatial-correlogram"><i class="fa fa-check"></i><b>10.3.2</b> Creating a spatial correlogram</a></li>
+<li class="chapter" data-level="10.3.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#interpretation-1"><i class="fa fa-check"></i><b>10.3.3</b> Interpretation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html"><i class="fa fa-check"></i><b>11</b> Global Spatial Autocorrelation 2</a><ul>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#introduction-11"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="11.0.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#objectives-10"><i class="fa fa-check"></i><b>11.0.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="11.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#preliminaries-11"><i class="fa fa-check"></i><b>11.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="11.1.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#load-packages-9"><i class="fa fa-check"></i><b>11.1.1</b> Load packages</a></li>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#obtaining-the-data-from-the-geoda-website-1"><i class="fa fa-check"></i>Obtaining the Data from the GeoDa website</a></li>
+<li class="chapter" data-level="11.1.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#creating-the-weights-2"><i class="fa fa-check"></i><b>11.1.2</b> Creating the weights</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-spatial-correlation---a-word-of-caution"><i class="fa fa-check"></i><b>11.2</b> Bivariate spatial correlation - a Word of Caution</a></li>
+<li class="chapter" data-level="11.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3</b> Bivariate Moran Scatter Plot</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-3"><i class="fa fa-check"></i><b>11.3.1</b> Concept</a></li>
+<li class="chapter" data-level="11.3.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#creating-a-bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3.2</b> Creating a bivariate Moran scatter plot</a></li>
+<li class="chapter" data-level="11.3.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#a-closer-look-at-bivariate-spatial-correlation"><i class="fa fa-check"></i><b>11.3.3</b> A closer look at bivariate spatial correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#differential-moran-scatter-plot"><i class="fa fa-check"></i><b>11.4</b> Differential Moran Scatter Plot</a><ul>
+<li class="chapter" data-level="11.4.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-4"><i class="fa fa-check"></i><b>11.4.1</b> Concept</a></li>
+<li class="chapter" data-level="11.4.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#implementation"><i class="fa fa-check"></i><b>11.4.2</b> Implementation</a></li>
+<li class="chapter" data-level="11.4.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#options"><i class="fa fa-check"></i><b>11.4.3</b> Options</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#moran-scatter-plot-for-eb-rates"><i class="fa fa-check"></i><b>11.5</b> Moran Scatter Plot for EB Rates</a><ul>
+<li class="chapter" data-level="11.5.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-5"><i class="fa fa-check"></i><b>11.5.1</b> Concept</a></li>
+<li class="chapter" data-level="11.5.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#implementation-1"><i class="fa fa-check"></i><b>11.5.2</b> Implementation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>12</b> Local Spatial Autocorrelation 1</a><ul>
+<li class="chapter" data-level="" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#introduction-12"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="12.0.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#objectives-11"><i class="fa fa-check"></i><b>12.0.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="12.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#preliminaries-12"><i class="fa fa-check"></i><b>12.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#installing-spatmap-and-geodadata"><i class="fa fa-check"></i><b>12.1.1</b> Installing spatmap and geodaData</a></li>
+<li class="chapter" data-level="12.1.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#load-packages-10"><i class="fa fa-check"></i><b>12.1.2</b> Load packages</a></li>
+<li class="chapter" data-level="12.1.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#spatmap"><i class="fa fa-check"></i><b>12.1.3</b> spatmap</a></li>
+<li class="chapter" data-level="12.1.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#geodadata-5"><i class="fa fa-check"></i><b>12.1.4</b> geodaData</a></li>
+<li class="chapter" data-level="12.1.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#univariate-analysis"><i class="fa fa-check"></i><b>12.1.5</b> Univariate analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-moran"><i class="fa fa-check"></i><b>12.2</b> Local Moran</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-3"><i class="fa fa-check"></i><b>12.2.1</b> Principle</a></li>
+<li class="chapter" data-level="12.2.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-2"><i class="fa fa-check"></i><b>12.2.2</b> Implementation</a></li>
+<li class="chapter" data-level="12.2.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#randomization-options"><i class="fa fa-check"></i><b>12.2.3</b> Randomization Options</a></li>
+<li class="chapter" data-level="12.2.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#significance"><i class="fa fa-check"></i><b>12.2.4</b> Significance</a></li>
+<li class="chapter" data-level="12.2.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#interpretation-of-clusters"><i class="fa fa-check"></i><b>12.2.5</b> Interpretation of clusters</a></li>
+<li class="chapter" data-level="12.2.6" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#conditional-local-cluster-maps"><i class="fa fa-check"></i><b>12.2.6</b> Conditional local cluster maps</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-geary"><i class="fa fa-check"></i><b>12.3</b> Local Geary</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-4"><i class="fa fa-check"></i><b>12.3.1</b> Principle</a></li>
+<li class="chapter" data-level="12.3.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-3"><i class="fa fa-check"></i><b>12.3.2</b> Implementation</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#getis-ord-statistics"><i class="fa fa-check"></i><b>12.4</b> Getis-Ord Statistics</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-5"><i class="fa fa-check"></i><b>12.4.1</b> Principle</a></li>
+<li class="chapter" data-level="12.4.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-4"><i class="fa fa-check"></i><b>12.4.2</b> Implementation</a></li>
+<li class="chapter" data-level="12.4.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#interpretation-and-significance-1"><i class="fa fa-check"></i><b>12.4.3</b> Interpretation and significance</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-join-count-statistic"><i class="fa fa-check"></i><b>12.5</b> Local Join Count Statistic</a><ul>
+<li class="chapter" data-level="12.5.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-6"><i class="fa fa-check"></i><b>12.5.1</b> Principle</a></li>
+<li class="chapter" data-level="12.5.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-5"><i class="fa fa-check"></i><b>12.5.2</b> Implementation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>13</b> References</a></li>
 </ul>
 
       </nav>
@@ -334,31 +510,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3>Loading packages</h3>
 <p>First, we load all the required packages using the <code>library</code> command. If you don't have some of these in your system, make sure to install them first as well as their dependencies.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)</code></pre></div>
-<pre><code>## ── Attaching packages ───────────────────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.0     ✓ purrr   0.3.4
-## ✓ tibble  3.0.1     ✓ dplyr   0.8.5
-## ✓ tidyr   1.0.3     ✓ stringr 1.4.0
-## ✓ readr   1.3.1     ✓ forcats 0.4.0</code></pre>
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.1     ✓ dplyr   1.0.0
+## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.6.2</code></pre>
 <pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.6.2</code></pre>
 <pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.6.2</code></pre>
 <pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.6.2</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## ── Conflicts ──────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)</code></pre></div>
 <pre><code>## Warning: package &#39;lubridate&#39; was built under R version 3.6.2</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     intersect, setdiff, union</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     date, intersect, setdiff, union</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre></div>
+<pre><code>## Warning: package &#39;sf&#39; was built under R version 3.6.2</code></pre>
 <pre><code>## Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
-<span class="kw">library</span>(pdftools)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)</code></pre></div>
+<pre><code>## Warning: package &#39;tmap&#39; was built under R version 3.6.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pdftools)</code></pre></div>
 <pre><code>## Warning: package &#39;pdftools&#39; was built under R version 3.6.2</code></pre>
 <pre><code>## Using poppler version 0.73.0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RSocrata)</code></pre></div>
@@ -431,7 +608,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 6             &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;         &lt;NA&gt;</code></pre>
 <p>A quick glance at the table reveals quite a bit of missing information, something we will have to deal with. We also check the dimension of this data frame using the <code>dim</code> command:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(vehicle.data)</code></pre></div>
-<pre><code>## [1] 258700     26</code></pre>
+<pre><code>## [1] 258990     26</code></pre>
 <p>The table has 203,657 observations on 26 variables (the number of observations shown may be slightly different as the table is constantly updated).</p>
 <p>In RStudio, the type of the variable in each column is listed under its name. For example, under <strong>creation_date</strong>, we see <strong>S3: POSIXct</strong>. You can also find out the same information by applying a <code>class</code> command to the variable <strong>vehicle.data$creation_date</strong>, as in</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(vehicle.data<span class="op">$</span>creation_date)</code></pre></div>
@@ -585,8 +762,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>We can also do a quick check of the projection information using the <code>st_crs</code> command.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(vehicle.points)</code></pre></div>
 <pre><code>## Coordinate Reference System:
-##   EPSG: 4326 
-##   proj4string: &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
+##   User input: EPSG:4326 
+##   wkt:
+## GEOGCS[&quot;WGS 84&quot;,
+##     DATUM[&quot;WGS_1984&quot;,
+##         SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,
+##             AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],
+##         AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],
+##     PRIMEM[&quot;Greenwich&quot;,0,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],
+##     UNIT[&quot;degree&quot;,0.0174532925199433,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],
+##     AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]]</code></pre>
 <p>The <strong>proj4string</strong> is a slightly more informative description than the simple EPSG code and confirms the data are not projected (longlat) using the WGS84 datum for the decimal degree coordinates.</p>
 </div>
 </div>
@@ -605,8 +792,18 @@ chicago.comm &lt;-<span class="st"> </span><span class="kw">read_sf</span>(comm.
 <p>In addition, we check the projection information using <code>st_crs</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(chicago.comm)</code></pre></div>
 <pre><code>## Coordinate Reference System:
-##   EPSG: 4326 
-##   proj4string: &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
+##   User input: 4326 
+##   wkt:
+## GEOGCS[&quot;WGS 84&quot;,
+##     DATUM[&quot;WGS_1984&quot;,
+##         SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,
+##             AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],
+##         AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],
+##     PRIMEM[&quot;Greenwich&quot;,0,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],
+##     UNIT[&quot;degree&quot;,0.0174532925199433,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],
+##     AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]]</code></pre>
 <p>Again, the layer is unprojected in decimal degrees. Also, a quick <code>plot</code>. Note that, by default, <strong>sf</strong> draws a choropleth map for each variable included in the data frame. Since we won't be using <strong>sf</strong> for mapping, we ignore that aspect for now.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(chicago.comm)</code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
@@ -616,8 +813,7 @@ chicago.comm &lt;-<span class="st"> </span><span class="kw">read_sf</span>(comm.
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: -87.7069 ymin: 41.79448 xmax: -87.58001 ymax: 41.99076
-## epsg (SRID):    4326
-## proj4string:    +proj=longlat +datum=WGS84 +no_defs
+## CRS:            4326
 ## # A tibble: 6 x 10
 ##   community area  shape_area perimeter area_num_1 area_numbe comarea_id comarea
 ##   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;  
@@ -634,13 +830,57 @@ chicago.comm &lt;-<span class="st"> </span><span class="kw">read_sf</span>(comm.
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chicago.comm &lt;-<span class="st"> </span><span class="kw">st_transform</span>(chicago.comm,<span class="dv">32616</span>)
 <span class="kw">st_crs</span>(chicago.comm)</code></pre></div>
 <pre><code>## Coordinate Reference System:
-##   EPSG: 32616 
-##   proj4string: &quot;+proj=utm +zone=16 +datum=WGS84 +units=m +no_defs&quot;</code></pre>
+##   User input: EPSG:32616 
+##   wkt:
+## PROJCS[&quot;WGS 84 / UTM zone 16N&quot;,
+##     GEOGCS[&quot;WGS 84&quot;,
+##         DATUM[&quot;WGS_1984&quot;,
+##             SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,
+##                 AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],
+##             AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],
+##         PRIMEM[&quot;Greenwich&quot;,0,
+##             AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],
+##         UNIT[&quot;degree&quot;,0.0174532925199433,
+##             AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],
+##         AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]],
+##     PROJECTION[&quot;Transverse_Mercator&quot;],
+##     PARAMETER[&quot;latitude_of_origin&quot;,0],
+##     PARAMETER[&quot;central_meridian&quot;,-87],
+##     PARAMETER[&quot;scale_factor&quot;,0.9996],
+##     PARAMETER[&quot;false_easting&quot;,500000],
+##     PARAMETER[&quot;false_northing&quot;,0],
+##     UNIT[&quot;metre&quot;,1,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],
+##     AXIS[&quot;Easting&quot;,EAST],
+##     AXIS[&quot;Northing&quot;,NORTH],
+##     AUTHORITY[&quot;EPSG&quot;,&quot;32616&quot;]]</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vehicle.points &lt;-<span class="st"> </span><span class="kw">st_transform</span>(vehicle.points,<span class="dv">32616</span>)
 <span class="kw">st_crs</span>(vehicle.points)</code></pre></div>
 <pre><code>## Coordinate Reference System:
-##   EPSG: 32616 
-##   proj4string: &quot;+proj=utm +zone=16 +datum=WGS84 +units=m +no_defs&quot;</code></pre>
+##   User input: EPSG:32616 
+##   wkt:
+## PROJCS[&quot;WGS 84 / UTM zone 16N&quot;,
+##     GEOGCS[&quot;WGS 84&quot;,
+##         DATUM[&quot;WGS_1984&quot;,
+##             SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,
+##                 AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],
+##             AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],
+##         PRIMEM[&quot;Greenwich&quot;,0,
+##             AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],
+##         UNIT[&quot;degree&quot;,0.0174532925199433,
+##             AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],
+##         AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]],
+##     PROJECTION[&quot;Transverse_Mercator&quot;],
+##     PARAMETER[&quot;latitude_of_origin&quot;,0],
+##     PARAMETER[&quot;central_meridian&quot;,-87],
+##     PARAMETER[&quot;scale_factor&quot;,0.9996],
+##     PARAMETER[&quot;false_easting&quot;,500000],
+##     PARAMETER[&quot;false_northing&quot;,0],
+##     UNIT[&quot;metre&quot;,1,
+##         AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],
+##     AXIS[&quot;Easting&quot;,EAST],
+##     AXIS[&quot;Northing&quot;,NORTH],
+##     AUTHORITY[&quot;EPSG&quot;,&quot;32616&quot;]]</code></pre>
 </div>
 </div>
 <div id="spatial-join" class="section level3 unnumbered">
@@ -652,8 +892,7 @@ chicago.comm &lt;-<span class="st"> </span><span class="kw">read_sf</span>(comm.
 ## geometry type:  POINT
 ## dimension:      XY
 ## bbox:           xmin: 430118.3 ymin: 4622026 xmax: 441795.4 ymax: 4647560
-## epsg (SRID):    32616
-## proj4string:    +proj=utm +zone=16 +datum=WGS84 +units=m +no_defs
+## CRS:            EPSG:32616
 ##   comm area_num_1                 geometry
 ## 1   23         23 POINT (440330.7 4638631)
 ## 2   56         56 POINT (436036.4 4627511)
@@ -680,27 +919,23 @@ chicago.comm &lt;-<span class="st"> </span><span class="kw">read_sf</span>(comm.
 <p>We next take advantage of the <strong>tidyverse</strong> <code>count</code> function to create a new data frame with the identifier of the community area and the number of points contained in each community area.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">veh.cnts &lt;-<span class="st"> </span>comm.pts <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(area_num_<span class="dv">1</span>)
 <span class="kw">head</span>(veh.cnts)</code></pre></div>
-<pre><code>## # A tibble: 6 x 2
-##   area_num_1     n
-##        &lt;int&gt; &lt;int&gt;
-## 1          1    67
-## 2          2    89
-## 3          3    21
-## 4          4    32
-## 5          5    18
-## 6          6    19</code></pre>
+<pre><code>##   area_num_1  n
+## 1          1 67
+## 2          2 89
+## 3          3 21
+## 4          4 32
+## 5          5 18
+## 6          6 19</code></pre>
 <p>The new data frame has two fields: the original identifier <strong>area_num_1</strong> and the count as <strong>n</strong>. We can change the variable names for the count to something more meaningful by means of the <strong>tidyverse</strong> <code>rename</code> command and turn it from <strong>n</strong> to <strong>AGG.COUNT</strong> (to use the same variable as in the GeoDa workbook). Similarly, we also shorten <strong>area_num_1</strong> to <strong>comm</strong>. Again, the new name is on the LHS of the equal sign and the old name on the RHS.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">veh.cnts &lt;-<span class="st"> </span>veh.cnts <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">comm =</span> area_num_<span class="dv">1</span>, <span class="dt">AGG.COUNT =</span> n)
 <span class="kw">head</span>(veh.cnts)</code></pre></div>
-<pre><code>## # A tibble: 6 x 2
-##    comm AGG.COUNT
-##   &lt;int&gt;     &lt;int&gt;
-## 1     1        67
-## 2     2        89
-## 3     3        21
-## 4     4        32
-## 5     5        18
-## 6     6        19</code></pre>
+<pre><code>##   comm AGG.COUNT
+## 1    1        67
+## 2    2        89
+## 3    3        21
+## 4    4        32
+## 5    5        18
+## 6    6        19</code></pre>
 </div>
 <div id="mapping-the-vehicle-counts" class="section level3 unnumbered">
 <h3>Mapping the vehicle counts</h3>
@@ -712,8 +947,7 @@ chicago.comm &lt;-<span class="st"> </span><span class="kw">read_sf</span>(comm.
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: 441440.4 ymin: 4627153 xmax: 451817.1 ymax: 4648971
-## epsg (SRID):    32616
-## proj4string:    +proj=utm +zone=16 +datum=WGS84 +units=m +no_defs
+## CRS:            EPSG:32616
 ## # A tibble: 6 x 11
 ##   community area  shape_area perimeter area_num_1 area_numbe comarea_id comarea
 ##   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;  
@@ -1048,8 +1282,7 @@ nnid</code></pre></div>
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: 441440.4 ymin: 4627153 xmax: 451817.1 ymax: 4648971
-## epsg (SRID):    32616
-## proj4string:    +proj=utm +zone=16 +datum=WGS84 +units=m +no_defs
+## CRS:            EPSG:32616
 ## # A tibble: 6 x 12
 ##   community area  shape_area perimeter area_num_1 area_numbe comarea_id comarea
 ##   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;  
@@ -1068,8 +1301,7 @@ nnid</code></pre></div>
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: 441440.4 ymin: 4627153 xmax: 451817.1 ymax: 4648971
-## epsg (SRID):    32616
-## proj4string:    +proj=utm +zone=16 +datum=WGS84 +units=m +no_defs
+## CRS:            EPSG:32616
 ## # A tibble: 6 x 13
 ##   community area  shape_area perimeter area_num_1 area_numbe comarea_id comarea
 ##   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;  

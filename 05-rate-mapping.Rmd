@@ -517,6 +517,3 @@ data table), their EB smoothed rates are quite different (lower) from the origin
 contrast, Hamilton county is one of the most populous counties (it contains the city of
 Cincinnati), so that its raw rate is barely adjusted. Because of that, it percolates to the
 top of the distribution and becomes an outlier.
-
-
-# References {-}
