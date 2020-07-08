@@ -37,9 +37,7 @@ remotes::install_github("spatialanalysis/geodaData")
 We assume that workshop attendees have used RStudio and are familiar with the basics of R.
 If you need a refresher, this [R for Social Scientists](https://datacarpentry.org/r-socialsci/) tutorial developed by Data Carpentry is a good place to start. Additionally, Luc Anselin's introductory R lab notes can be found on the [CSDS Tutorials page](https://spatialanalysis.github.io/tutorials).
 
-During Fall Quarter 2019, Angela Li will be teaching from sections of this book
-during the R Spatial Workshop. If you have any questions about the following 
-material, please reach out to her at ali6@uchicago.edu. 
+
 
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
