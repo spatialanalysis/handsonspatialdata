@@ -360,7 +360,7 @@ plot_ly(nyc.data, x = ~kids2000, y = ~pubast00, z = ~rent2002) %>%
 ## True Multivariate EDA: Parallel Coordinate Plot and Conditional Plots {-}
 True multivariate EDA deals with situations where more than three variables
 are considered. We follow the GeoDa Workbook and illustrate the Parallel Coordinate
-Plot, or PCP, and conditional plots. For the former, we again need to resort to
+Plot, or PCP^[The parallel coordinate plot or PCP is designed to visually identify clusters and patterns in a multi-dimensional variable space. Originally suggested by @i85 (see also @i90) it has become a main feature in many visual data mining frameworks, e.g. @w90 and @wd03.], and conditional plots^[Conditional plots, also known as facet graphs or Trellis graphs (@bcs96)]. For the former, we again need to resort to
 **GGally**, but for the latter, we can exploit the `facet_wrap` and `facet_grid` functions of **ggplot**. In addition, we can turn these plots into interactive graphs by means of the **plotly** functionality.
 
 

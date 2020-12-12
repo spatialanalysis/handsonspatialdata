@@ -118,8 +118,8 @@ We follow the discussion in the GeoDa workbook and start with the common univari
 descriptive graphs, the histogram and box plot. Before covering the specifics, we
 provide a brief overview of the principles behind the **ggplot** operations.
 
-Note that linking and brushing between a plot and a map is not (yet) readily
-implemented in R, so that our discussion will focus primarily on static graphs.
+Note that linking^[Linking refers to how a selection in any of the views results in the same observation to immediately be selected in all other views.] and brushing^[Brushing is a dynamic extension of the linking process. For some early exposition and discussion of these ideas pertaining to so-called dynamic graphics, see, e.g. the classic references of @s87, @bc87, @bcw87, @m89; as well as in the outline of legacy `GeoDa` fictionality in @ask06] between a plot and a map is not (yet) readily
+implemented in R, so that our discussion will focus primarily on static graphs. 
 
 ### A quick introduction to **ggplot** {-}
 We will be using the commands in the **ggplot2** package for the descriptive statistics plots. There are many options to create nice looking graphs in R, including the functionality in base R, but we chose **ggplot2** for its clean logic and its 
@@ -654,7 +654,7 @@ results on the graph. We don't pursue this any further.
 
 #### Loess smoother {-}
 The default nonlinear smoother in **ggplot** uses the **loess** algorithm as a locally
-weighted regression model. This is similar in spirit to the **LOWESS** method used in GeoDa, but not the same.^[See the GeoDa workbook for further discussion] The implementation is along the same lines as the linear smoother, using
+weighted regression model. This is similar in spirit to the **LOWESS** method used in GeoDa, but not the same.^[See the GeoDa workbook, and @c79, @l99, for further discussion] The implementation is along the same lines as the linear smoother, using
 `geom_smooth`, with the only difference that the `method` is now `loess`, as shown below.
 
 ```{r}
@@ -810,7 +810,7 @@ ggplot(nyc.data,aes(x=kids2000,y=pubast00)) +
 
 
 ### Chow test {-}
-In GeoDa, a Chow test on the equality of the regression coefficients between the selected and unselected observations is calculated on the fly and shown at the
+In GeoDa, a Chow test (@c60)on the equality of the regression coefficients between the selected and unselected observations is calculated on the fly and shown at the
 bottom of the scatter plot. This is not supported by **ggplot**, but we can
 run separate regressions for each subset using `lm`. We can also run the Chow test itself, using the `chow.test` command from the **gap** package.
 

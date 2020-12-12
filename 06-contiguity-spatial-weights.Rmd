@@ -7,7 +7,7 @@ This notebook covers the functionality of the [Contiguity-Based Spatial Weights]
 The notes are written with R beginners in mind, more seasoned R users can probably skip most of the comments
 on data structures and other R particulars. Also, as always in R, there are typically several ways to achieve a specific objective, so what is shown here is just one way that works, but there often are others (that may even be more elegant, work faster, or scale better).
 
-For this notebook, we use U.S. Homicide data. Our goal in this lab is show how to implement contiguity based spatial weights 
+For this notebook, we use U.S. Homicide data. Our goal in this lab is show how to implement contiguity based spatial weights. 
 
 
 ```{r}
@@ -105,7 +105,7 @@ In practice, the construction of the spatial weights from the geometry of the da
 cannot be done by visual inspection or manual calculation, except in the most
 trivial of situations. To assess whether two polygons are contiguous requires the
 use of explicit spatial data structures to deal with the location and arrangement of
-the polygons. This is implemented through the spatial weights functionality in
+the polygons^[Further technical details on spatial weights are contained Chapters 3 and 4 of @ass02.]. This is implemented through the spatial weights functionality in
 GeoDa. We will do this with **sf** and **spdep** libraries.
 
 We will create our neighbors using **sf** first, as the **spdep** library doesn't 
@@ -235,7 +235,7 @@ sf.nb.queen <- as.nb.sgbp(sf.sgbp.queen)
 
 ## Higher Order Contiguity {-}
 
-Now we move on to higher order contiguity weights. To make these we will need the
+Now we move on to higher order contiguity weights^[Importantly, there is quite a difference between the higher order contiguity and lower order neighbors, namely that the pure higher order contiguity does not include any lower order neighbors. This is the notion appropriate for use in a statistical analysis of spatial autocorrelation for different spatial lag orders. In order to achieve this, all redundant and circular paths need to be removed (see @as96, for a technical discussion)]. To make these we will need the
 **spdep** package. We will use the `nblag` and `nblag_cumul` functions to compute
 the higher order weights.
 
@@ -431,7 +431,7 @@ summary(rook.card)
 
 ## Saving Neighbors {-}
 To save our neighbors list, we use the `write.nb.gal` function from
-the **spdep** package. The file format is a GAL Lattice file. We
+the **spdep** package. The file format is a GAL Lattice file^[The GAL weights file is a simple text file that contains, for each observation, the number of neighbors and their identifiers. The format was suggested in the 1980s by the Geometric Algorithms Lab at Nottingham University and achieved widespread use after its inclusion in `SpaceStat` (@a92), and subsequent adoption by the R `spdep` package and others.]. We
 input our neighbors list, and the the filename second. We have two 
 options from this point. We can save the file with the old style
 or the new GeoDa header style.
