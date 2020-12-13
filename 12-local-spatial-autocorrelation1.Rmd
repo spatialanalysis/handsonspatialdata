@@ -133,7 +133,7 @@ tm_shape(guerry) +
 
 ### Principle
 
-The local Moran statistic was suggested in Anselin(1995) as a way to identify
+The local Moran statistic was suggested in @a95 as a way to identify
 local clusters and local spaital outliers. Most global spatial autocorrelation
 can be expressed as a double sum over i and j indices, such as $\Sigma_i\Sigma_jg_{ij}$.
 The local form of such a statistic would then be, for each observation(location)i, the
@@ -236,7 +236,7 @@ significance_map(guerry,"Donatns", type = "moran", permutations = 99999) +
 An important methodological issue associated with the local spatial autocorrelation statistics
 is the selection of the p-value cut-off to properly reflect the desired Type I error. Not only
 are the pseudo p-values not analytical, since they are the result of a computational permutation
-process, but they also suffer from the problem of multiple comparisons. The bottom line is that a 
+process, but they also suffer from the problem of multiple comparisons (for a detailed discussion, see @ds06; @19). The bottom line is that a 
 traditional choice of 0.05 is likely to lead to many false positives, i.e., rejections of the null 
 when in fact it holds.
 
@@ -262,7 +262,7 @@ significance_map(guerry,"Donatns", type = "moran",permutations = 99999, alpha = 
 The Bonferroni bound constructs a bound on the overall p-value by taking $\alpha$ and 
 dividing it by the number of comparisons. In our context, the latter corresponds to the
 number of observation, n. As a result, the Bonferroni bound would be $\alpha/n = .00012$,
-the cutoff p-value to be used to determine significance. We assign **bonferroni** to be
+the cutoff p-value to be used to determine significance^[Note that in their recent overview of computer age statistical inference, @eh16 suggest the use of the term interesting observations, rather than signficant, which we will adopt as well.]. We assign **bonferroni** to be
 .01 / 85. Then we use `moran_map` with `permutations = 99999` and `alpha = bonferroni`. This 
 will give us a local moran cluster map with a bonferroni significance cut-off.
 ```{r}
@@ -294,7 +294,7 @@ permutations, to ensure that the minimum p-value can be less than $\alpha/n$. Th
 permutations supported is 99999 for **spatmap**, which is also the same for GeoDa. **spatmap** gives
 an error message if the number of permutations cannot yield a significanct location with the desired
 alpha level. This means that the bonferroni approach will be limited for datasets with many locations.
-With $\alpha = .01$, datasets with n > 1000, cannot yield significant locations. 
+With $\alpha = .01$, datasets with n > 1000, cannot yield significant locations^[A slightly less conservative option is to use the False Discovery Rate (FDR), first proposed by @bh95]. 
 
 
 
