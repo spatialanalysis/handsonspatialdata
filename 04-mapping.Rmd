@@ -555,7 +555,7 @@ tm_shape(nyc.bound) +
 
 ### Natural breaks map {-}
 
-A natural breaks map is obtained by specifying the **style = "jenks"** in `tm_fill`. All
+A natural breaks map^[A natural breaks map uses a nonlinear algorithm to group observations such that the within-group homogeneity is maximized, following the pathbreaking work of @f58 and @j77.] is obtained by specifying the **style = "jenks"** in `tm_fill`. All
 the other options are as before. Again, we illustrate this for four categories,
 with **n=4**.
 
@@ -616,7 +616,7 @@ tm_shape(nyc.bound) +
 ## Extreme Value Maps {-}
 
 In addition to the common map classifications, GeoDa also supports three types of extreme
-value maps: a percentile map, box map, and standard deviation map. For details on the
+value maps^[Extreme value maps are variations of common choropleth maps where the classification is designed to highlight extreme values at the lower and upper end of the scale, with the goal of identifying outliers. These maps were developed in the spirit of spatializing EDA, i.e., adding spatial features to commonly used approaches in non-spatial EDA (@a94)]: a percentile map, box map, and standard deviation map. For details on the
 rationale and methodology behind these maps, we refer to the GeoDa Workbook.
 
 Of the three extreme value maps, only 
@@ -978,7 +978,7 @@ tm_shape(nyc.bound) +
 
 
 ### Co-location map {-}
-A special case of a map for categorical variables is a so-called co-location map,
+A special case of a map for categorical variables is a so-called co-location map^[The idea behind a co-location map is the extension of the unique value map concept to a multivariate context. In essence, it is the implementation of ideas related to the principles of map overlay or map algebra applied to categorical maps.Map algebra tends to be geared to applications for raster data, i.e., regular grids. However, since the polygons for the different variables are identical, the same principles can be applied in the context of the categorical maps. The classic reference on the principles of map algebra is @t90],
 implemented in GeoDa. This map shows the values for those locations where two
 categorical variables take on the same value (it is up to the user to make sure
 the values make sense). Further details are given in the GeoDa Workbook.
@@ -1103,7 +1103,7 @@ tm_shape(nyc.bound) +
 
 ## Conditional Map {-}
 
-A conditional map, or facet map, or small multiples, is created by the `tm_facets` command.
+A conditional map^[Discussed at length in @cp10], or facet map, or small multiples, is created by the `tm_facets` command.
 This largely follows the logic of the `facet_grid` command in **ggplot** that we covered in the
 EDA notes. An extensive set of options is available to customize the facet maps. An in-depth
 coverage of all the subtleties is beyond our scope 
@@ -1154,7 +1154,7 @@ tm_shape(nyc.bound) +
 
 ## Cartogram {-}
 
-A final map functionality that we replicate from the GeoDa Workbook is the cartogram. GeoDa
+A final map functionality that we replicate from the GeoDa Workbook is the cartogram^[A cartogram is a map type where the original layout of the areal unit is replaced by a geometric form (usually a circle, rectangle, or hexagon) that is proportional to the value of the variable for the location. This is in contrast to a standard choropleth map, where the size of the polygon corresponds to the area of the location in question. The cartogram has a long history and many variants have been suggested, some quite creative. In essence, the construction of a cartogram is an example of a nonlinear optimization problem, where the geometric forms have to be located such that they reflect the topology (spatial arrangement) of the locations as closely as possible (see @t04, for an extensive discussion of various aspects of the cartogram)]. GeoDa
 implements a so-called circular cartogram, where circles represent spatial units and their
 size is proportional to a specified variable.
 

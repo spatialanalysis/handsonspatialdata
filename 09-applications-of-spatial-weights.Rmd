@@ -503,7 +503,7 @@ kable(head(df))
 
 $$[W_y]_i = \Sigma_jK_{ij}y_j$$
 
-
+Kernel-based spatially lagged variables correspond to a form of local smoothing. They can be used in specialized regression specifications, such as geographically weighted regression (GWR)^[GWR is not implemented in GeoDa. For further details on the use of kernel-based spatially lagged variables in GWR, see, e.g., @fbc02].
 
 
 
@@ -513,7 +513,7 @@ $$[W_y]_i = \Sigma_jK_{ij}y_j$$
 ### Principle {-}
 
 A spatial rate smoother is a special case of a nonparameteric rate estimator, based on
-the principle of locally weighted estimation. Rather than applying a local average to
+the principle of locally weighted estimation (see, e.g., @wg04). Rather than applying a local average to
 the rate itself, as in an application of a spatial window average, the weighted
 average is applied separately to the numerator and denominator.
 
@@ -530,7 +530,7 @@ diagonal)
 
 Different smoothers are obtained for different spatial definitions of neighbors and/or
 different weights applied to those neighbors (e.g., contiguity weights, inverse
-distance weights, or kernel weights).
+distance weights, or kernel weights)^[An early example was the spatial rate smoother outlined in @k96, based on the notion of a spatial moving average or window average (see also @97).].
 
 
 The window average is not applied to the rate itself, but it is computed separately for the
@@ -942,8 +942,7 @@ set to zero.
 
 
 The spatial EB smoothed rate is computed as a weighted average of the crude rate and
-the prior, in the same manner as for the standard EB rate
-
+the prior, in the same manner as for the standard EB rate (see the discussion in the Chapter on mapping rates, as well as @alk06, for technical details).
 For reference the EB rate in this case is as denoted below:
 
 $$w_i = \frac{\sigma_i^2}{\sigma_i^2 + \mu_i / P_i}$$

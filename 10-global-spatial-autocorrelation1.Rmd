@@ -227,8 +227,8 @@ queen.weights <- nb2listw(queen.nb)
 #### Moran's I
 
 Moran’s I statistic is arguably the most commonly used indicator of global spatial
-autocorrelation. It was initially suggested by Moran (1948), and popularized through
-the classic work on spatial autocorrelation by Cliff and Ord (1973). In essence, it is
+autocorrelation. It was initially suggested by @m48, and popularized through
+the classic work on spatial autocorrelation by @co73. In essence, it is
 a cross-product statistic between a variable and its spatial lag, with the variable
 expressed in deviations from its mean. For an observation at location i, this is
 expressed as $z_i = x_i - \bar{x}$, where $\bar{x}$is the mean of variable x.
@@ -244,7 +244,7 @@ as the sum of all of the weights and n as the number of observations.
 Inference for Moran’s I is based on a null hypothesis of spatial randomness. The
 distribution of the statistic under the null can be derived using either an
 assumption of normality (independent normal random variates), or so-called
-randomization (i.e., each value is equally likely to occur at any location).
+randomization (i.e., each value is equally likely to occur at any location)^[While the analytical derivations provide easy to interpret expressions for the mean and the variance of the statistic under the null hypothesis, inference based on them employs an approximation to a standard normal distribution, which may be inappropriate when the underlying assumptions are not satisfied. See @co73 or @81 for extensive technical discussion.].
 
 An alternative to an analytical derivation is a computational approach based on
 permutation. This calculates a reference distribution for the statistic under the
@@ -269,7 +269,7 @@ significant than a result with a p-value of 0.001 with 999 permutations.
 
 #### Moran scatter plot
 
-The Moran scatter plot, first outlined in Anselin (1996), consists of a plot with the spatially
+The Moran scatter plot, first outlined in @a96, consists of a plot with the spatially
 lagged variable on the y-axis and the original variable on the x-axis. The slope of the linear fit to
 the scatter plot equals Moran’s I.
 
@@ -550,7 +550,7 @@ clev.points<- clev.points %>% mutate(bottom_left = if_else((x < mid_x & y < mid_
 
 
 Before we run the chow test, we will visualize the difference in slopes of the selected data, non-selected
-data and the aggregate data. With **ggplot2**, we can accomplish this by setting categorical colors based
+data and the aggregate data^[This is a visual implementation of a regionalized Moran’s I, where the indicator of spatial autocorrelation is calculated for a subset of the observations (@mm96)]. With **ggplot2**, we can accomplish this by setting categorical colors based
 whether or not an observation is "Selected" or "Rest". To do this, we specify `aes(color = bottom_left)` in
 both `geom_point` and `geom_smooth`. This will give us colored points and regression lines for "Selected"
 and "Rest". Then to get blue and red colors, we use `scale_color_manual`. For this plot, we do not set 
@@ -620,7 +620,7 @@ A non-parametric spatial correlogram is an alternative measure of global spatial
 autocorrelation that does not rely on the specification of a spatial weights
 matrix. Instead, a local regression is fit to the covariances or correlations
 computed for all pairs of observations as a function of the distance between them
-(for example, as outlined in Bjornstad and Falck 2001).
+(for example, as outlined in @bf01)^[See also @hp94 for technical discussion of the general principle.].
 
 
 With standardized variables z, this boils down to a local regression:

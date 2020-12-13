@@ -356,7 +356,7 @@ other observations. This idea goes back to the fundamental contributions of Jame
 and Stein (the so-called James-Stein paradox), who showed that in some instances
 biased estimators may have better precision in a mean squared error sense.
 
-GeoDa includes three methods to smooth the rates: an Empirical Bayes approach, a
+GeoDa includes three methods to smooth the rates: an Empirical Bayes approach^[There are several excellent books and articles on Bayesian statistics, with @gcsdvr14 as a classic reference.], a
 spatial averaging approach, and a combination between the two. We will consider
 the spatial approaches after we discuss distance-based spatial weights. Here, we
 focus on the Empirical Bayes (EB) method. First, we provide some formal
@@ -396,7 +396,7 @@ prior and the likelihood in such a way that a proper posterior distribution
 results. In the context of rate estimation, the standard approach is to specify a
 Poisson distribution for the observed count of events (conditional upon the risk
 parameter), and a Gamma distribution for the prior of the risk parameter $\pi$.
-This is referred to as the Poisson-Gamma model.
+This is referred to as the Poisson-Gamma model^[For an extensive discussion, see, for example, the classic papers by @ck87 and @m91.].
 
 In this model, the prior distribution for the (unknown) risk parameter $\pi$ is
 $Gamma(\alpha,\beta)$, where $\alpha$ and $\beta$ are the shape and scale
@@ -439,7 +439,7 @@ In essense, the EB technique consists of computing a weighted average between th
 raw rate for each county and the state average, with weights proportional to the
 underlying population at risk. Simply put, small counties (i.e., with a small
 population at risk) will tend to have their rates adjusted considerably, whereas
-for larger counties the rates will barely change.
+for larger counties the rates will barely change^[For an extensive technical discussion, see also @alk06].
 
 More formally, the EB estimate for the risk in location i is:
 $$\pi_i^{EB}=w_ir_i + (1-w_i)\theta$$

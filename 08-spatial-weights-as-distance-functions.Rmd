@@ -96,7 +96,7 @@ $$w_{ij}=f(d_{ij},\theta)$$
 with f as a functional form and $\theta$ a vector of parameters.
 
 In order to conform to Tobler’s first law of geography, a distance decay effect must be
-respected. In other words, the value of the function of distance needs to decrease with a 
+respected^[Tober’s so-called first law of geography postulates that everything is related to everything else, but closer things more so @t70]. In other words, the value of the function of distance needs to decrease with a 
 growing distance. More formally, the partial derivative of the distance function with respect 
 to distance should be negative, $\partial{}w_{ij}/\partial{}d_{ij}<0$
 .
@@ -294,7 +294,7 @@ invd.weights.knn$weights[1]
 
 Kernel weights are used in non-parametric approaches to model spatial covariance, such
 as in the HAC method for heteroskedastic and spatial autocorrelation consistent
-variance estimates.
+variance estimates^[This method is currently not implemented in GeoDa, but is available in GeoDaSpace and PySal (see @hp94, @kp07, among others, for technical aspects, and @ass02 for implementation details.].
 
 The kernel weights are defined as a function K(z) of the ratio between the distance dij
 from i to j, and the bandwidth $h_i$, with $z=d_{ij}/h_i$. This ensures that z is 
@@ -334,7 +334,7 @@ farthest apart.
 
 In creating kernal weights, we will cover two important options: the fixed bandwidth
 and the variable bandwidth. For the fixed bandwidth, we will be using distance-band
-neighbors. For the variable bandwidth we will need kth-nearest neighbors.
+neighbors. For the variable bandwidth we will need kth-nearest neighbors^[In GeoDa the default value for k equals the cube root of the number of observations (following the recommendation in @kp07. In general, a wider bandwidth gives smoother and more robust results, so the bandwidth should always be set at least as large as the recommended default.].
 
 To start, we will compute a new distance-band neighbors list with the critcial threshold,
 calculated earlier in the notebook.
