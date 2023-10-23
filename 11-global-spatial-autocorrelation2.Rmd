@@ -560,10 +560,10 @@ moments (e.g., Marshall 1991), yielding the following expressions:
 
 $$\beta=O/P$$
 
-With O as the total event count $(\Sigma_iO_i)$, and P as he total population count
+With O as the total event count $(\Sigma_iO_i)$, and P as the total population count
 $(\Sigma_iP_i)$, and
 
-$$\alpha = [\Sigma_iP_i(r_i - \beta)^2]/P - \beta(P/n)$$
+$$\alpha = [\Sigma_iP_i(r_i - \beta)^2]/P - \beta/(P/n)$$
 
 with n as the total number of observations (in other words, P/n is the average population)
 
@@ -587,7 +587,7 @@ by calculating the initial variables.
 beta <- sum(counties$HC60) / sum(counties$PO60)
 r_i <- counties$HC60 / counties$PO60
 P_i <- counties$PO60
-n <- ncol(counties)
+n <- length(r_i)
 P <- sum(counties$PO60)
 ```
 
