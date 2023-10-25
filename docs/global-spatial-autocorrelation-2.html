@@ -635,10 +635,10 @@ actually be saving any files.<a href="#fn29" class="footnote-ref" id="fnref29"><
 <h3><span class="header-section-number">11.1.1</span> Load packages<a href="global-spatial-autocorrelation-2.html#load-packages-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, we load all the required packages using the <code>library</code> command. If you don’t have some of these in your system, make sure to install them first as well as
 their dependencies.<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
-<div class="sourceCode" id="cb783"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb783-1"><a href="global-spatial-autocorrelation-2.html#cb783-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb783-2"><a href="global-spatial-autocorrelation-2.html#cb783-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
-<span id="cb783-3"><a href="global-spatial-autocorrelation-2.html#cb783-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb783-4"><a href="global-spatial-autocorrelation-2.html#cb783-4" tabindex="-1"></a><span class="fu">library</span>(robustHD)</span></code></pre></div>
+<div class="sourceCode" id="cb601"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb601-1"><a href="global-spatial-autocorrelation-2.html#cb601-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb601-2"><a href="global-spatial-autocorrelation-2.html#cb601-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb601-3"><a href="global-spatial-autocorrelation-2.html#cb601-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb601-4"><a href="global-spatial-autocorrelation-2.html#cb601-4" tabindex="-1"></a><span class="fu">library</span>(robustHD)</span></code></pre></div>
 </div>
 <div id="obtaining-the-data-from-the-geoda-website-1" class="section level3 unnumbered hasAnchor">
 <h3>Obtaining the Data from the GeoDa website<a href="global-spatial-autocorrelation-2.html#obtaining-the-data-from-the-geoda-website-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -647,7 +647,7 @@ zipfile, so you will need to unzip it by double clicking on the file in your fil
 finder. From there move the resulting folder titled: nyc into your working directory
 to continue. Once that is done, you can use the <strong>sf</strong> function: <code>st_read()</code> to read
 the shapefile into your R environment.</p>
-<div class="sourceCode" id="cb784"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb784-1"><a href="global-spatial-autocorrelation-2.html#cb784-1" tabindex="-1"></a>counties <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;natregimes/natregimes.shp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb602"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb602-1"><a href="global-spatial-autocorrelation-2.html#cb602-1" tabindex="-1"></a>counties <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;natregimes/natregimes.shp&quot;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `natregimes&#39; from data source 
 ##   `/Users/xun/github/handsonspatialdata/natregimes/natregimes.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -665,7 +665,7 @@ the coordinates to a planar projection for accuracy. To check the current projec
 we use <code>st_crs</code>. To transform the projection, we use <code>st_transform</code> and the epsg
 number of our desired projection. For more indepth information on this, please check
 out the Spatial Data Handling notebook.</p>
-<div class="sourceCode" id="cb786"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb786-1"><a href="global-spatial-autocorrelation-2.html#cb786-1" tabindex="-1"></a><span class="fu">st_crs</span>(counties)</span></code></pre></div>
+<div class="sourceCode" id="cb604"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb604-1"><a href="global-spatial-autocorrelation-2.html#cb604-1" tabindex="-1"></a><span class="fu">st_crs</span>(counties)</span></code></pre></div>
 <pre><code>## Coordinate Reference System:
 ##   User input: WGS 84 
 ##   wkt:
@@ -683,30 +683,30 @@ out the Spatial Data Handling notebook.</p>
 ##             ORDER[2],
 ##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
 ##     ID[&quot;EPSG&quot;,4326]]</code></pre>
-<div class="sourceCode" id="cb788"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb788-1"><a href="global-spatial-autocorrelation-2.html#cb788-1" tabindex="-1"></a>counties <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(counties, <span class="at">crs =</span> <span class="st">&quot;ESRI:102003&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb606"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb606-1"><a href="global-spatial-autocorrelation-2.html#cb606-1" tabindex="-1"></a>counties <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(counties, <span class="at">crs =</span> <span class="st">&quot;ESRI:102003&quot;</span>)</span></code></pre></div>
 <p>To start we create a function for queen contiguity, which is just <code>st_relate</code> with
 the specified pattern for queen contiguity which is <code>F***T****</code></p>
-<div class="sourceCode" id="cb789"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb789-1"><a href="global-spatial-autocorrelation-2.html#cb789-1" tabindex="-1"></a>st_queen <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb607"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb607-1"><a href="global-spatial-autocorrelation-2.html#cb607-1" tabindex="-1"></a>st_queen <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</span></code></pre></div>
 <p>We apply the queen contiguity function to the voronoi polygons and see that the class
 of the output is <strong>sgbp</strong>. This structure is close to the <strong>nb</strong> structure, but has
 a few difference that we will need to correct to use the rest of <strong>spdep</strong> functionality.</p>
-<div class="sourceCode" id="cb790"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb790-1"><a href="global-spatial-autocorrelation-2.html#cb790-1" tabindex="-1"></a>queen.sgbp <span class="ot">&lt;-</span> <span class="fu">st_queen</span>(counties)</span>
-<span id="cb790-2"><a href="global-spatial-autocorrelation-2.html#cb790-2" tabindex="-1"></a><span class="fu">class</span>(queen.sgbp)</span></code></pre></div>
+<div class="sourceCode" id="cb608"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb608-1"><a href="global-spatial-autocorrelation-2.html#cb608-1" tabindex="-1"></a>queen.sgbp <span class="ot">&lt;-</span> <span class="fu">st_queen</span>(counties)</span>
+<span id="cb608-2"><a href="global-spatial-autocorrelation-2.html#cb608-2" tabindex="-1"></a><span class="fu">class</span>(queen.sgbp)</span></code></pre></div>
 <pre><code>## [1] &quot;sgbp&quot; &quot;list&quot;</code></pre>
 <p>This function converts type <strong>sgbp</strong> to <strong>nb</strong>. It is covered in more depth in the
 Contiguity Based Weight notebook. In short, it explicitly changes the name of the
 class and deals with the observations that have no neighbors.</p>
-<div class="sourceCode" id="cb792"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb792-1"><a href="global-spatial-autocorrelation-2.html#cb792-1" tabindex="-1"></a>as.nb.sgbp <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
-<span id="cb792-2"><a href="global-spatial-autocorrelation-2.html#cb792-2" tabindex="-1"></a>  attrs <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)</span>
-<span id="cb792-3"><a href="global-spatial-autocorrelation-2.html#cb792-3" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="fu">length</span>(i) <span class="sc">==</span> 0L) 0L <span class="cf">else</span> i } )</span>
-<span id="cb792-4"><a href="global-spatial-autocorrelation-2.html#cb792-4" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="ot">&lt;-</span> attrs</span>
-<span id="cb792-5"><a href="global-spatial-autocorrelation-2.html#cb792-5" tabindex="-1"></a>  <span class="fu">class</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;nb&quot;</span></span>
-<span id="cb792-6"><a href="global-spatial-autocorrelation-2.html#cb792-6" tabindex="-1"></a>  x</span>
-<span id="cb792-7"><a href="global-spatial-autocorrelation-2.html#cb792-7" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb793"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb793-1"><a href="global-spatial-autocorrelation-2.html#cb793-1" tabindex="-1"></a>queen.nb <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(queen.sgbp)</span></code></pre></div>
+<div class="sourceCode" id="cb610"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb610-1"><a href="global-spatial-autocorrelation-2.html#cb610-1" tabindex="-1"></a>as.nb.sgbp <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb610-2"><a href="global-spatial-autocorrelation-2.html#cb610-2" tabindex="-1"></a>  attrs <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)</span>
+<span id="cb610-3"><a href="global-spatial-autocorrelation-2.html#cb610-3" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="fu">length</span>(i) <span class="sc">==</span> 0L) 0L <span class="cf">else</span> i } )</span>
+<span id="cb610-4"><a href="global-spatial-autocorrelation-2.html#cb610-4" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="ot">&lt;-</span> attrs</span>
+<span id="cb610-5"><a href="global-spatial-autocorrelation-2.html#cb610-5" tabindex="-1"></a>  <span class="fu">class</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;nb&quot;</span></span>
+<span id="cb610-6"><a href="global-spatial-autocorrelation-2.html#cb610-6" tabindex="-1"></a>  x</span>
+<span id="cb610-7"><a href="global-spatial-autocorrelation-2.html#cb610-7" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb611"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb611-1"><a href="global-spatial-autocorrelation-2.html#cb611-1" tabindex="-1"></a>queen.nb <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(queen.sgbp)</span></code></pre></div>
 <p>To go from neighbors object to weights object, we use <code>nb2listw</code>, with default parameters, we will
 get row standardized weights.</p>
-<div class="sourceCode" id="cb794"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb794-1"><a href="global-spatial-autocorrelation-2.html#cb794-1" tabindex="-1"></a>queen.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(queen.nb)</span></code></pre></div>
+<div class="sourceCode" id="cb612"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb612-1"><a href="global-spatial-autocorrelation-2.html#cb612-1" tabindex="-1"></a>queen.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(queen.nb)</span></code></pre></div>
 </div>
 </div>
 <div id="bivariate-spatial-correlation---a-word-of-caution" class="section level2 hasAnchor" number="11.2">
@@ -789,12 +789,12 @@ between x and y at location i is ignored.</p>
 <p>To create the bivariate Moran scatterplot, we will need to standardize the variables beofre proceeding. This
 is simply, putting the variables in terms of z scores. To do this, we use <code>standardize</code> from the
 <strong>robustHD</strong> package.</p>
-<div class="sourceCode" id="cb795"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb795-1"><a href="global-spatial-autocorrelation-2.html#cb795-1" tabindex="-1"></a>counties<span class="sc">$</span>hr80st <span class="ot">&lt;-</span> <span class="fu">standardize</span>(counties<span class="sc">$</span>HR80)</span>
-<span id="cb795-2"><a href="global-spatial-autocorrelation-2.html#cb795-2" tabindex="-1"></a>counties<span class="sc">$</span>hr90st <span class="ot">&lt;-</span> <span class="fu">standardize</span>(counties<span class="sc">$</span>HR90)</span></code></pre></div>
+<div class="sourceCode" id="cb613"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb613-1"><a href="global-spatial-autocorrelation-2.html#cb613-1" tabindex="-1"></a>counties<span class="sc">$</span>hr80st <span class="ot">&lt;-</span> <span class="fu">standardize</span>(counties<span class="sc">$</span>HR80)</span>
+<span id="cb613-2"><a href="global-spatial-autocorrelation-2.html#cb613-2" tabindex="-1"></a>counties<span class="sc">$</span>hr90st <span class="ot">&lt;-</span> <span class="fu">standardize</span>(counties<span class="sc">$</span>HR90)</span></code></pre></div>
 <p>Now that we have standardized the variables, we can create the lag variable for homocide rates in 1980.
 This is done with <code>lag.listw</code> from <strong>spdep</strong>. For more a more indepth coverage of this function , please see
 the Application of Spatial Weights notebook.</p>
-<div class="sourceCode" id="cb796"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb796-1"><a href="global-spatial-autocorrelation-2.html#cb796-1" tabindex="-1"></a>counties<span class="sc">$</span>whr80st <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,counties<span class="sc">$</span>hr80st)</span></code></pre></div>
+<div class="sourceCode" id="cb614"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb614-1"><a href="global-spatial-autocorrelation-2.html#cb614-1" tabindex="-1"></a>counties<span class="sc">$</span>whr80st <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,counties<span class="sc">$</span>hr80st)</span></code></pre></div>
 <p>In constructing the majority of our plots, we use <strong>ggplot2</strong> because it makes aesthically pleasing and functional
 plots. The purpose of this tutorial is not to teach <strong>ggplot2</strong>, but to use it in creqating specializzed plots
 such as the bivariate Moran plot. For indepth coverage of basic <strong>ggplot2</strong> functionality please see the
@@ -803,22 +803,21 @@ Exploratory Data Analysis notebooks or <a href="https://ggplot2.tidyverse.org/re
 rate for 1990. In GeoDa the lag variable and standardization are done automatically and all you have to do is
 select the desired variables. The custom specifications use for this plot are the dashed lines at the x and y
 axis and the simple regression line. <code>geom_vline</code> and <code>geom_hline</code>.</p>
-<div class="sourceCode" id="cb797"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb797-1"><a href="global-spatial-autocorrelation-2.html#cb797-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x=</span>hr90st,<span class="at">y=</span>whr80st)) <span class="sc">+</span></span>
-<span id="cb797-2"><a href="global-spatial-autocorrelation-2.html#cb797-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb797-3"><a href="global-spatial-autocorrelation-2.html#cb797-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb797-4"><a href="global-spatial-autocorrelation-2.html#cb797-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb797-5"><a href="global-spatial-autocorrelation-2.html#cb797-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb797-6"><a href="global-spatial-autocorrelation-2.html#cb797-6" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">12</span>,<span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb797-7"><a href="global-spatial-autocorrelation-2.html#cb797-7" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">12</span>,<span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb797-8"><a href="global-spatial-autocorrelation-2.html#cb797-8" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Bivariate Moran&#39;s I, hr(90) and lagged hr(80) &quot;</span>)</span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb615"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb615-1"><a href="global-spatial-autocorrelation-2.html#cb615-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x=</span>hr90st,<span class="at">y=</span>whr80st)) <span class="sc">+</span></span>
+<span id="cb615-2"><a href="global-spatial-autocorrelation-2.html#cb615-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb615-3"><a href="global-spatial-autocorrelation-2.html#cb615-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb615-4"><a href="global-spatial-autocorrelation-2.html#cb615-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb615-5"><a href="global-spatial-autocorrelation-2.html#cb615-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb615-6"><a href="global-spatial-autocorrelation-2.html#cb615-6" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">12</span>,<span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb615-7"><a href="global-spatial-autocorrelation-2.html#cb615-7" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">12</span>,<span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb615-8"><a href="global-spatial-autocorrelation-2.html#cb615-8" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Bivariate Moran&#39;s I, hr(90) and lagged hr(80) &quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-451-1.png" width="672" /></p>
 <p>To get the summary statistics and bivariate Moran’s I statistic, we will run a rgeression separate from the plot.
 For this regression, we use the same variables has the bivariate Moran plot in the base R <code>lm</code> function.
 To view the results, we use the <code>summary</code> command. The Moran’s I statistic is the slope of the regression
 line, which is the coefficient of <strong>hr90st</strong> in the <code>summary</code> results</p>
-<div class="sourceCode" id="cb799"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb799-1"><a href="global-spatial-autocorrelation-2.html#cb799-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(whr80st <span class="sc">~</span> hr90st, <span class="at">data =</span> counties)</span>
-<span id="cb799-2"><a href="global-spatial-autocorrelation-2.html#cb799-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
+<div class="sourceCode" id="cb616"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb616-1"><a href="global-spatial-autocorrelation-2.html#cb616-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(whr80st <span class="sc">~</span> hr90st, <span class="at">data =</span> counties)</span>
+<span id="cb616-2"><a href="global-spatial-autocorrelation-2.html#cb616-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = whr80st ~ hr90st, data = counties)
@@ -848,18 +847,17 @@ least four additional perspectives that are relevant. We consider each in turn.<
 <h4><span class="header-section-number">11.3.3.1</span> Serial (temporal) correlation<a href="global-spatial-autocorrelation-2.html#serial-temporal-correlation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To examine the temporal correlation of homocide rates, we plot the standardized variable for each time period.
 This gives us a sense of the temporal autocorrelation of homocide rates for a lag order of 1.</p>
-<div class="sourceCode" id="cb801"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb801-1"><a href="global-spatial-autocorrelation-2.html#cb801-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x =</span> hr80st, <span class="at">y =</span> hr90st)) <span class="sc">+</span></span>
-<span id="cb801-2"><a href="global-spatial-autocorrelation-2.html#cb801-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb801-3"><a href="global-spatial-autocorrelation-2.html#cb801-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb801-4"><a href="global-spatial-autocorrelation-2.html#cb801-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb801-5"><a href="global-spatial-autocorrelation-2.html#cb801-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb618"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb618-1"><a href="global-spatial-autocorrelation-2.html#cb618-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x =</span> hr80st, <span class="at">y =</span> hr90st)) <span class="sc">+</span></span>
+<span id="cb618-2"><a href="global-spatial-autocorrelation-2.html#cb618-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb618-3"><a href="global-spatial-autocorrelation-2.html#cb618-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb618-4"><a href="global-spatial-autocorrelation-2.html#cb618-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb618-5"><a href="global-spatial-autocorrelation-2.html#cb618-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-453-1.png" width="672" /></p>
 <p>Again we us the <code>lm</code> function and <code>summary</code> function to get a sense of the relationship
 between the variables. With a highly significant slope of .552, strong temporal correlation
 is suggested.</p>
-<div class="sourceCode" id="cb803"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb803-1"><a href="global-spatial-autocorrelation-2.html#cb803-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(hr90st <span class="sc">~</span> hr80st, <span class="at">data =</span> counties)</span>
-<span id="cb803-2"><a href="global-spatial-autocorrelation-2.html#cb803-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
+<div class="sourceCode" id="cb619"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb619-1"><a href="global-spatial-autocorrelation-2.html#cb619-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(hr90st <span class="sc">~</span> hr80st, <span class="at">data =</span> counties)</span>
+<span id="cb619-2"><a href="global-spatial-autocorrelation-2.html#cb619-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = hr90st ~ hr80st, data = counties)
@@ -884,19 +882,18 @@ is suggested.</p>
 <p>Next we run a regression of the spatial lags of homocide rates for both time periods.
 This will be a regression of <span class="math inline">\(\Sigma_jw_{ij}y_{j,t}\)</span> on <span class="math inline">\(\Sigma_jw_{ij}y_{j,t-1}\)</span>.
 To begin, wewill need to create the lag variable for 1990.</p>
-<div class="sourceCode" id="cb805"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb805-1"><a href="global-spatial-autocorrelation-2.html#cb805-1" tabindex="-1"></a>counties<span class="sc">$</span>whr90st <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights, counties<span class="sc">$</span>hr90st)</span></code></pre></div>
+<div class="sourceCode" id="cb621"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb621-1"><a href="global-spatial-autocorrelation-2.html#cb621-1" tabindex="-1"></a>counties<span class="sc">$</span>whr90st <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights, counties<span class="sc">$</span>hr90st)</span></code></pre></div>
 <p>To make this plot, we just plot the lag variable for 1990 against the one for 1980.</p>
-<div class="sourceCode" id="cb806"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb806-1"><a href="global-spatial-autocorrelation-2.html#cb806-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x=</span> whr80st, <span class="at">y =</span> whr90st)) <span class="sc">+</span> </span>
-<span id="cb806-2"><a href="global-spatial-autocorrelation-2.html#cb806-2" tabindex="-1"></a>  <span class="fu">geom_point</span>()  <span class="sc">+</span></span>
-<span id="cb806-3"><a href="global-spatial-autocorrelation-2.html#cb806-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb806-4"><a href="global-spatial-autocorrelation-2.html#cb806-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb806-5"><a href="global-spatial-autocorrelation-2.html#cb806-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb622"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb622-1"><a href="global-spatial-autocorrelation-2.html#cb622-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x=</span> whr80st, <span class="at">y =</span> whr90st)) <span class="sc">+</span> </span>
+<span id="cb622-2"><a href="global-spatial-autocorrelation-2.html#cb622-2" tabindex="-1"></a>  <span class="fu">geom_point</span>()  <span class="sc">+</span></span>
+<span id="cb622-3"><a href="global-spatial-autocorrelation-2.html#cb622-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb622-4"><a href="global-spatial-autocorrelation-2.html#cb622-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb622-5"><a href="global-spatial-autocorrelation-2.html#cb622-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-456-1.png" width="672" /></p>
 <p>Again the slope is highly signiificcant with a positive slope of .801, even strong than the actual
 variable’s temporal correlation.</p>
-<div class="sourceCode" id="cb808"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb808-1"><a href="global-spatial-autocorrelation-2.html#cb808-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(whr90st <span class="sc">~</span> whr80st, <span class="at">data =</span> counties)</span>
-<span id="cb808-2"><a href="global-spatial-autocorrelation-2.html#cb808-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
+<div class="sourceCode" id="cb623"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb623-1"><a href="global-spatial-autocorrelation-2.html#cb623-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(whr90st <span class="sc">~</span> whr80st, <span class="at">data =</span> counties)</span>
+<span id="cb623-2"><a href="global-spatial-autocorrelation-2.html#cb623-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = whr90st ~ whr80st, data = counties)
@@ -920,16 +917,15 @@ variable’s temporal correlation.</p>
 <h4><span class="header-section-number">11.3.3.3</span> Space-time regression<a href="global-spatial-autocorrelation-2.html#space-time-regression" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In this case we have already computed the variables need to construct the plot, so we
 can start with <strong>ggplot2</strong>. The regression here is <span class="math inline">\(y_{i,t}\)</span> on <span class="math inline">\(\Sigma_jw_{ij}y_{j,t-1}\)</span></p>
-<div class="sourceCode" id="cb810"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb810-1"><a href="global-spatial-autocorrelation-2.html#cb810-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x=</span> whr80st, <span class="at">y =</span> hr90st)) <span class="sc">+</span> </span>
-<span id="cb810-2"><a href="global-spatial-autocorrelation-2.html#cb810-2" tabindex="-1"></a>  <span class="fu">geom_point</span>()  <span class="sc">+</span></span>
-<span id="cb810-3"><a href="global-spatial-autocorrelation-2.html#cb810-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb810-4"><a href="global-spatial-autocorrelation-2.html#cb810-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb810-5"><a href="global-spatial-autocorrelation-2.html#cb810-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb625"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb625-1"><a href="global-spatial-autocorrelation-2.html#cb625-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x=</span> whr80st, <span class="at">y =</span> hr90st)) <span class="sc">+</span> </span>
+<span id="cb625-2"><a href="global-spatial-autocorrelation-2.html#cb625-2" tabindex="-1"></a>  <span class="fu">geom_point</span>()  <span class="sc">+</span></span>
+<span id="cb625-3"><a href="global-spatial-autocorrelation-2.html#cb625-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb625-4"><a href="global-spatial-autocorrelation-2.html#cb625-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb625-5"><a href="global-spatial-autocorrelation-2.html#cb625-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-458-1.png" width="672" /></p>
 <p>Now we run the <code>lm</code> function to get the regression statistics.</p>
-<div class="sourceCode" id="cb812"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb812-1"><a href="global-spatial-autocorrelation-2.html#cb812-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(hr90st <span class="sc">~</span> whr80st, <span class="at">data =</span> counties)</span>
-<span id="cb812-2"><a href="global-spatial-autocorrelation-2.html#cb812-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
+<div class="sourceCode" id="cb626"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb626-1"><a href="global-spatial-autocorrelation-2.html#cb626-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(hr90st <span class="sc">~</span> whr80st, <span class="at">data =</span> counties)</span>
+<span id="cb626-2"><a href="global-spatial-autocorrelation-2.html#cb626-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = hr90st ~ whr80st, data = counties)
@@ -955,8 +951,8 @@ can start with <strong>ggplot2</strong>. The regression here is <span class="mat
 <p>Finally, we can include both in-situ correlation and space-time correlation in a
 regression specification of <span class="math inline">\(y_{i,t}\)</span> i.s <strong>hr90st</strong> on both <span class="math inline">\(x_{i,t-1}\)</span> (ie, <strong>hr80st</strong>)
 and <span class="math inline">\(\Sigma_jw_{ij}x_{j,t-1}\)</span>(ie <strong>whr80st</strong>)</p>
-<div class="sourceCode" id="cb814"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb814-1"><a href="global-spatial-autocorrelation-2.html#cb814-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(hr90st <span class="sc">~</span> whr80st <span class="sc">+</span> hr80st, <span class="at">data =</span> counties)</span>
-<span id="cb814-2"><a href="global-spatial-autocorrelation-2.html#cb814-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
+<div class="sourceCode" id="cb628"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb628-1"><a href="global-spatial-autocorrelation-2.html#cb628-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(hr90st <span class="sc">~</span> whr80st <span class="sc">+</span> hr80st, <span class="at">data =</span> counties)</span>
+<span id="cb628-2"><a href="global-spatial-autocorrelation-2.html#cb628-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = hr90st ~ whr80st + hr80st, data = counties)
@@ -1015,20 +1011,19 @@ the difference between the variable, NOT the difference between the standardized
 score of each variable. To do this, we just use <code>standardize</code> on the difference
 between <strong>HR80</strong> and <strong>HR90</strong>. Then we calcualte the lag variable with <code>lag.listw</code>
 on the standardized difference variable.</p>
-<div class="sourceCode" id="cb816"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb816-1"><a href="global-spatial-autocorrelation-2.html#cb816-1" tabindex="-1"></a>counties<span class="sc">$</span>hr_diff_st <span class="ot">&lt;-</span> <span class="fu">standardize</span>(counties<span class="sc">$</span>HR90 <span class="sc">-</span> counties<span class="sc">$</span>HR80)</span>
-<span id="cb816-2"><a href="global-spatial-autocorrelation-2.html#cb816-2" tabindex="-1"></a>counties<span class="sc">$</span>hr_diff_lag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights, counties<span class="sc">$</span>hr_diff_st)</span></code></pre></div>
+<div class="sourceCode" id="cb630"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb630-1"><a href="global-spatial-autocorrelation-2.html#cb630-1" tabindex="-1"></a>counties<span class="sc">$</span>hr_diff_st <span class="ot">&lt;-</span> <span class="fu">standardize</span>(counties<span class="sc">$</span>HR90 <span class="sc">-</span> counties<span class="sc">$</span>HR80)</span>
+<span id="cb630-2"><a href="global-spatial-autocorrelation-2.html#cb630-2" tabindex="-1"></a>counties<span class="sc">$</span>hr_diff_lag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights, counties<span class="sc">$</span>hr_diff_st)</span></code></pre></div>
 <p>To construct the plot, we use the same functions as earlier, but just replace the
 variables. In this case, we use the ones calcualted above for the standardized
 difference then the lag of the standardized difference.</p>
-<div class="sourceCode" id="cb817"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb817-1"><a href="global-spatial-autocorrelation-2.html#cb817-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x =</span> hr_diff_st, <span class="at">y =</span> hr_diff_lag)) <span class="sc">+</span></span>
-<span id="cb817-2"><a href="global-spatial-autocorrelation-2.html#cb817-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb817-3"><a href="global-spatial-autocorrelation-2.html#cb817-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb817-4"><a href="global-spatial-autocorrelation-2.html#cb817-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb817-5"><a href="global-spatial-autocorrelation-2.html#cb817-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb631"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb631-1"><a href="global-spatial-autocorrelation-2.html#cb631-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x =</span> hr_diff_st, <span class="at">y =</span> hr_diff_lag)) <span class="sc">+</span></span>
+<span id="cb631-2"><a href="global-spatial-autocorrelation-2.html#cb631-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb631-3"><a href="global-spatial-autocorrelation-2.html#cb631-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb631-4"><a href="global-spatial-autocorrelation-2.html#cb631-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb631-5"><a href="global-spatial-autocorrelation-2.html#cb631-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-462-1.png" width="672" /></p>
-<div class="sourceCode" id="cb819"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb819-1"><a href="global-spatial-autocorrelation-2.html#cb819-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(hr_diff_lag<span class="sc">~</span>hr_diff_st, <span class="at">data =</span> counties)</span>
-<span id="cb819-2"><a href="global-spatial-autocorrelation-2.html#cb819-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
+<div class="sourceCode" id="cb632"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb632-1"><a href="global-spatial-autocorrelation-2.html#cb632-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(hr_diff_lag<span class="sc">~</span>hr_diff_st, <span class="at">data =</span> counties)</span>
+<span id="cb632-2"><a href="global-spatial-autocorrelation-2.html#cb632-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = hr_diff_lag ~ hr_diff_st, data = counties)
@@ -1097,38 +1092,37 @@ used. In GeoDa, when the variance estimate is negative, the original raw rate is
 <h3><span class="header-section-number">11.5.2</span> Implementation<a href="global-spatial-autocorrelation-2.html#implementation-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To calculate the empirical bayes rates, we will use basic R operations. We start
 by calculating the initial variables.</p>
-<div class="sourceCode" id="cb821"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb821-1"><a href="global-spatial-autocorrelation-2.html#cb821-1" tabindex="-1"></a>beta <span class="ot">&lt;-</span> <span class="fu">sum</span>(counties<span class="sc">$</span>HC60) <span class="sc">/</span> <span class="fu">sum</span>(counties<span class="sc">$</span>PO60)</span>
-<span id="cb821-2"><a href="global-spatial-autocorrelation-2.html#cb821-2" tabindex="-1"></a>r_i <span class="ot">&lt;-</span> counties<span class="sc">$</span>HC60 <span class="sc">/</span> counties<span class="sc">$</span>PO60</span>
-<span id="cb821-3"><a href="global-spatial-autocorrelation-2.html#cb821-3" tabindex="-1"></a>P_i <span class="ot">&lt;-</span> counties<span class="sc">$</span>PO60</span>
-<span id="cb821-4"><a href="global-spatial-autocorrelation-2.html#cb821-4" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(r_i)</span>
-<span id="cb821-5"><a href="global-spatial-autocorrelation-2.html#cb821-5" tabindex="-1"></a>P <span class="ot">&lt;-</span> <span class="fu">sum</span>(counties<span class="sc">$</span>PO60)</span></code></pre></div>
+<div class="sourceCode" id="cb634"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb634-1"><a href="global-spatial-autocorrelation-2.html#cb634-1" tabindex="-1"></a>beta <span class="ot">&lt;-</span> <span class="fu">sum</span>(counties<span class="sc">$</span>HC60) <span class="sc">/</span> <span class="fu">sum</span>(counties<span class="sc">$</span>PO60)</span>
+<span id="cb634-2"><a href="global-spatial-autocorrelation-2.html#cb634-2" tabindex="-1"></a>r_i <span class="ot">&lt;-</span> counties<span class="sc">$</span>HC60 <span class="sc">/</span> counties<span class="sc">$</span>PO60</span>
+<span id="cb634-3"><a href="global-spatial-autocorrelation-2.html#cb634-3" tabindex="-1"></a>P_i <span class="ot">&lt;-</span> counties<span class="sc">$</span>PO60</span>
+<span id="cb634-4"><a href="global-spatial-autocorrelation-2.html#cb634-4" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(r_i)</span>
+<span id="cb634-5"><a href="global-spatial-autocorrelation-2.html#cb634-5" tabindex="-1"></a>P <span class="ot">&lt;-</span> <span class="fu">sum</span>(counties<span class="sc">$</span>PO60)</span></code></pre></div>
 <p>With the parameters from above, we can calculate <span class="math inline">\(\alpha\)</span>, by the formula specified
 in the concept section.</p>
-<div class="sourceCode" id="cb822"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb822-1"><a href="global-spatial-autocorrelation-2.html#cb822-1" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fu">sum</span>(P_i <span class="sc">*</span> (r_i <span class="sc">-</span> beta)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> P <span class="sc">-</span> beta<span class="sc">/</span>(P<span class="sc">/</span>n)</span></code></pre></div>
+<div class="sourceCode" id="cb635"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb635-1"><a href="global-spatial-autocorrelation-2.html#cb635-1" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fu">sum</span>(P_i <span class="sc">*</span> (r_i <span class="sc">-</span> beta)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> P <span class="sc">-</span> beta<span class="sc">/</span>(P<span class="sc">/</span>n)</span></code></pre></div>
 <p>With <span class="math inline">\(\alpha\)</span>, we can get the standard error used to later calculate the standardized
 values.</p>
-<div class="sourceCode" id="cb823"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb823-1"><a href="global-spatial-autocorrelation-2.html#cb823-1" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(alpha <span class="sc">+</span> beta<span class="sc">/</span>P_i)</span></code></pre></div>
+<div class="sourceCode" id="cb636"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb636-1"><a href="global-spatial-autocorrelation-2.html#cb636-1" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(alpha <span class="sc">+</span> beta<span class="sc">/</span>P_i)</span></code></pre></div>
 <p>Now the standardized values are just the crude rate minus <span class="math inline">\(\beta\)</span> and divided by
 the standard error.</p>
-<div class="sourceCode" id="cb824"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb824-1"><a href="global-spatial-autocorrelation-2.html#cb824-1" tabindex="-1"></a>z_i <span class="ot">&lt;-</span> (r_i <span class="sc">-</span> beta) <span class="sc">/</span> se</span></code></pre></div>
+<div class="sourceCode" id="cb637"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb637-1"><a href="global-spatial-autocorrelation-2.html#cb637-1" tabindex="-1"></a>z_i <span class="ot">&lt;-</span> (r_i <span class="sc">-</span> beta) <span class="sc">/</span> se</span></code></pre></div>
 <p>With our standardized values, we can make the lag variable to constuct our
 empirical bayes Moran plot. We use <code>lag.listw</code> as before to make the spatial lag
 varible.</p>
-<div class="sourceCode" id="cb825"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb825-1"><a href="global-spatial-autocorrelation-2.html#cb825-1" tabindex="-1"></a>counties<span class="sc">$</span>hc60_po60 <span class="ot">&lt;-</span> z_i</span>
-<span id="cb825-2"><a href="global-spatial-autocorrelation-2.html#cb825-2" tabindex="-1"></a>counties<span class="sc">$</span>lag_hc60_po60 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights, z_i)</span></code></pre></div>
+<div class="sourceCode" id="cb638"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb638-1"><a href="global-spatial-autocorrelation-2.html#cb638-1" tabindex="-1"></a>counties<span class="sc">$</span>hc60_po60 <span class="ot">&lt;-</span> z_i</span>
+<span id="cb638-2"><a href="global-spatial-autocorrelation-2.html#cb638-2" tabindex="-1"></a>counties<span class="sc">$</span>lag_hc60_po60 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights, z_i)</span></code></pre></div>
 <p>Now with the same <strong>ggplot2</strong> functions as earlier we plot the smoothed rate
 variable against the lag smoothed rate variable.</p>
-<div class="sourceCode" id="cb826"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb826-1"><a href="global-spatial-autocorrelation-2.html#cb826-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x =</span> hc60_po60, <span class="at">y =</span> lag_hc60_po60)) <span class="sc">+</span></span>
-<span id="cb826-2"><a href="global-spatial-autocorrelation-2.html#cb826-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb826-3"><a href="global-spatial-autocorrelation-2.html#cb826-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb826-4"><a href="global-spatial-autocorrelation-2.html#cb826-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb826-5"><a href="global-spatial-autocorrelation-2.html#cb826-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb639"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb639-1"><a href="global-spatial-autocorrelation-2.html#cb639-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> counties, <span class="fu">aes</span>(<span class="at">x =</span> hc60_po60, <span class="at">y =</span> lag_hc60_po60)) <span class="sc">+</span></span>
+<span id="cb639-2"><a href="global-spatial-autocorrelation-2.html#cb639-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb639-3"><a href="global-spatial-autocorrelation-2.html#cb639-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb639-4"><a href="global-spatial-autocorrelation-2.html#cb639-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb639-5"><a href="global-spatial-autocorrelation-2.html#cb639-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span><span class="dv">2</span>) </span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-469-1.png" width="672" /></p>
 <p>To get the regression statistics, we run <code>lm</code> and then examine the summary with
 <code>summary</code>.</p>
-<div class="sourceCode" id="cb828"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb828-1"><a href="global-spatial-autocorrelation-2.html#cb828-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(lag_hc60_po60 <span class="sc">~</span> hc60_po60, <span class="at">data =</span> counties)</span>
-<span id="cb828-2"><a href="global-spatial-autocorrelation-2.html#cb828-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
+<div class="sourceCode" id="cb640"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb640-1"><a href="global-spatial-autocorrelation-2.html#cb640-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(lag_hc60_po60 <span class="sc">~</span> hc60_po60, <span class="at">data =</span> counties)</span>
+<span id="cb640-2"><a href="global-spatial-autocorrelation-2.html#cb640-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = lag_hc60_po60 ~ hc60_po60, data = counties)

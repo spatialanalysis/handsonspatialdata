@@ -637,11 +637,11 @@ actually be saving any files.<a href="#fn19" class="footnote-ref" id="fnref19"><
 <h3>Load packages<a href="contiguity-based-spatial-weights.html#load-packages-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, we load all the required packages using the <code>library</code> command. If you don’t have some of these in your system, make sure to install them first as well as
 their dependencies.<a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="contiguity-based-spatial-weights.html#cb433-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb433-2"><a href="contiguity-based-spatial-weights.html#cb433-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
-<span id="cb433-3"><a href="contiguity-based-spatial-weights.html#cb433-3" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb433-4"><a href="contiguity-based-spatial-weights.html#cb433-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb433-5"><a href="contiguity-based-spatial-weights.html#cb433-5" tabindex="-1"></a><span class="fu">library</span>(geodaData)</span></code></pre></div>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="contiguity-based-spatial-weights.html#cb298-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb298-2"><a href="contiguity-based-spatial-weights.html#cb298-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb298-3"><a href="contiguity-based-spatial-weights.html#cb298-3" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb298-4"><a href="contiguity-based-spatial-weights.html#cb298-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb298-5"><a href="contiguity-based-spatial-weights.html#cb298-5" tabindex="-1"></a><span class="fu">library</span>(geodaData)</span></code></pre></div>
 </div>
 <div id="geodadata-1" class="section level3 unnumbered hasAnchor">
 <h3>geodaData<a href="contiguity-based-spatial-weights.html#geodadata-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -651,7 +651,7 @@ data sets, we use the double colon notation. This works similar to
 to accessing a variable with <code>$</code>, in that a drop down menu will
 appear with a list of the datasets included in the package. For this
 notebook, we use <code>ncovr</code>.</p>
-<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="contiguity-based-spatial-weights.html#cb434-1" tabindex="-1"></a>us.bound  <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>ncovr</span></code></pre></div>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="contiguity-based-spatial-weights.html#cb299-1" tabindex="-1"></a>us.bound  <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>ncovr</span></code></pre></div>
 </div>
 </div>
 <div id="contiguity-weights" class="section level2 unnumbered hasAnchor">
@@ -700,18 +700,12 @@ out the basics of DE9-IM at <a href="https://en.wikipedia.org/wiki/DE-9IM">DE9-I
 need for rook contiguity is the pattern input <code>"F***1****"</code>. This gives us the
 correct DE9-IM relationship for rook contiguity. For more documentation on
 <code>st_relate</code> check out <a href="https://www.rdocumentation.org/packages/sf/versions/0.6-3/topics/st_relate">st_relate documentation</a></p>
-<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="contiguity-based-spatial-weights.html#cb435-1" tabindex="-1"></a>st_rook <span class="ot">=</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***1****&quot;</span>)</span>
-<span id="cb435-2"><a href="contiguity-based-spatial-weights.html#cb435-2" tabindex="-1"></a>sf.sgbp.rook <span class="ot">&lt;-</span> <span class="fu">st_rook</span>(us.bound)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
-<pre><code>## although coordinates are longitude/latitude, st_relate_pattern assumes that
-## they are planar</code></pre>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="contiguity-based-spatial-weights.html#cb300-1" tabindex="-1"></a>st_rook <span class="ot">=</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***1****&quot;</span>)</span>
+<span id="cb300-2"><a href="contiguity-based-spatial-weights.html#cb300-2" tabindex="-1"></a>sf.sgbp.rook <span class="ot">&lt;-</span> <span class="fu">st_rook</span>(us.bound)</span></code></pre></div>
 <p>We now check the class of our resulting object from the the <code>st_rook</code> function
 with the base R function <code>class</code>. It is <strong>sgbp</strong>, which we will have to convert in order to
 work with <strong>spdep</strong> and the <code>plot</code> function later on.</p>
-<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="contiguity-based-spatial-weights.html#cb438-1" tabindex="-1"></a><span class="fu">class</span>(sf.sgbp.rook)</span></code></pre></div>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="contiguity-based-spatial-weights.html#cb301-1" tabindex="-1"></a><span class="fu">class</span>(sf.sgbp.rook)</span></code></pre></div>
 <pre><code>## [1] &quot;sgbp&quot; &quot;list&quot;</code></pre>
 <p>Now we will start our conversion from class <strong>sgbp</strong> to <strong>nb</strong>. To do this,
 we need to change the class explicitly, and take the precaution to represent
@@ -731,18 +725,18 @@ reapply our attributes to the resulting structure from the <code>lapply</code> f
 is done by calling the <code>attributes</code> function and assigning our stored attributes.
 The final step is to explicitly change the class to <strong>nb</strong> by using the <code>class</code> function
 and assigning <code>"nb"</code>. We then return our object <strong>x</strong>.</p>
-<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="contiguity-based-spatial-weights.html#cb440-1" tabindex="-1"></a>as.nb.sgbp <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
-<span id="cb440-2"><a href="contiguity-based-spatial-weights.html#cb440-2" tabindex="-1"></a>  attrs <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)</span>
-<span id="cb440-3"><a href="contiguity-based-spatial-weights.html#cb440-3" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="fu">length</span>(i) <span class="sc">==</span> 0L) 0L <span class="cf">else</span> i } )</span>
-<span id="cb440-4"><a href="contiguity-based-spatial-weights.html#cb440-4" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="ot">&lt;-</span> attrs</span>
-<span id="cb440-5"><a href="contiguity-based-spatial-weights.html#cb440-5" tabindex="-1"></a>  <span class="fu">class</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;nb&quot;</span></span>
-<span id="cb440-6"><a href="contiguity-based-spatial-weights.html#cb440-6" tabindex="-1"></a>  x</span>
-<span id="cb440-7"><a href="contiguity-based-spatial-weights.html#cb440-7" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="contiguity-based-spatial-weights.html#cb303-1" tabindex="-1"></a>as.nb.sgbp <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb303-2"><a href="contiguity-based-spatial-weights.html#cb303-2" tabindex="-1"></a>  attrs <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)</span>
+<span id="cb303-3"><a href="contiguity-based-spatial-weights.html#cb303-3" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="fu">length</span>(i) <span class="sc">==</span> 0L) 0L <span class="cf">else</span> i } )</span>
+<span id="cb303-4"><a href="contiguity-based-spatial-weights.html#cb303-4" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="ot">&lt;-</span> attrs</span>
+<span id="cb303-5"><a href="contiguity-based-spatial-weights.html#cb303-5" tabindex="-1"></a>  <span class="fu">class</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;nb&quot;</span></span>
+<span id="cb303-6"><a href="contiguity-based-spatial-weights.html#cb303-6" tabindex="-1"></a>  x</span>
+<span id="cb303-7"><a href="contiguity-based-spatial-weights.html#cb303-7" tabindex="-1"></a>}</span></code></pre></div>
 <p>Now we use the function we created to convert our <strong>sgbp</strong> object to <strong>nb</strong>.</p>
-<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="contiguity-based-spatial-weights.html#cb441-1" tabindex="-1"></a>sf.nb.rook <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(sf.sgbp.rook)</span></code></pre></div>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="contiguity-based-spatial-weights.html#cb304-1" tabindex="-1"></a>sf.nb.rook <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(sf.sgbp.rook)</span></code></pre></div>
 <p>Now that we are converted to <strong>nb</strong>, we can use the <code>summary</code> command to give us more
 useful information about the neighbors list.</p>
-<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="contiguity-based-spatial-weights.html#cb442-1" tabindex="-1"></a><span class="fu">summary</span>(sf.nb.rook)</span></code></pre></div>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="contiguity-based-spatial-weights.html#cb305-1" tabindex="-1"></a><span class="fu">summary</span>(sf.nb.rook)</span></code></pre></div>
 <pre><code>## Neighbour list object:
 ## Number of regions: 3085 
 ## Number of nonzero links: 17188 
@@ -757,10 +751,10 @@ useful information about the neighbors list.</p>
 ## 1 most connected region:
 ## 606 with 13 links</code></pre>
 <p>We use the <code>class</code> command to check and make sure we have <strong>nb</strong>.</p>
-<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="contiguity-based-spatial-weights.html#cb444-1" tabindex="-1"></a><span class="fu">class</span>(sf.nb.rook)</span></code></pre></div>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="contiguity-based-spatial-weights.html#cb307-1" tabindex="-1"></a><span class="fu">class</span>(sf.nb.rook)</span></code></pre></div>
 <pre><code>## [1] &quot;nb&quot;</code></pre>
 <p>We check the length to make sure it corresponds with the GeoDa tutorial example.</p>
-<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="contiguity-based-spatial-weights.html#cb446-1" tabindex="-1"></a><span class="fu">length</span>(sf.nb.rook)</span></code></pre></div>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="contiguity-based-spatial-weights.html#cb309-1" tabindex="-1"></a><span class="fu">length</span>(sf.nb.rook)</span></code></pre></div>
 <pre><code>## [1] 3085</code></pre>
 </div>
 <div id="queen-contiguity" class="section level3 unnumbered hasAnchor">
@@ -778,17 +772,11 @@ contiguity weights.</p>
 specifying a DE9-IM pattern. For queen contiguity, our pattern is <code>"F***T****"</code>. We
 we don’t really need to go into why the pattern is what it is for our purposes, but
 <a href="https://en.wikipedia.org/wiki/DE-9IM">DE9-IM</a> and <a href="https://www.rdocumentation.org/packages/sf/versions/0.6-3/topics/st_relate">st_relate documentation</a> can help explain this to a degree.</p>
-<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="contiguity-based-spatial-weights.html#cb448-1" tabindex="-1"></a>st_queen <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="contiguity-based-spatial-weights.html#cb311-1" tabindex="-1"></a>st_queen <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</span></code></pre></div>
 <p>Now we use our <code>st_queen</code> function to get another <strong>sgbp</strong> neighbor list</p>
-<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="contiguity-based-spatial-weights.html#cb449-1" tabindex="-1"></a>sf.sgbp.queen <span class="ot">&lt;-</span> <span class="fu">st_queen</span>(us.bound)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
-<pre><code>## although coordinates are longitude/latitude, st_relate_pattern assumes that
-## they are planar</code></pre>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="contiguity-based-spatial-weights.html#cb312-1" tabindex="-1"></a>sf.sgbp.queen <span class="ot">&lt;-</span> <span class="fu">st_queen</span>(us.bound)</span></code></pre></div>
 <p>To convert to type <strong>nb</strong> we use <code>as.nb.sgbp</code>, which we created earlier.</p>
-<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="contiguity-based-spatial-weights.html#cb452-1" tabindex="-1"></a>sf.nb.queen <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(sf.sgbp.queen)</span></code></pre></div>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="contiguity-based-spatial-weights.html#cb313-1" tabindex="-1"></a>sf.nb.queen <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(sf.sgbp.queen)</span></code></pre></div>
 </div>
 </div>
 <div id="higher-order-contiguity" class="section level2 unnumbered hasAnchor">
@@ -801,13 +789,13 @@ It will give us a list of neighbors lists. One for 1st order neighbors and one f
 second order neighbors. We can select from this data structure by double bracket
 notation, for instance <code>[[1]]</code> will give the <strong>nb</strong> object for first order neighbors.
 Using a <code>2</code> instead of a <code>1</code> will give us the second order neighbors.</p>
-<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="contiguity-based-spatial-weights.html#cb453-1" tabindex="-1"></a>second.order.queen <span class="ot">&lt;-</span> <span class="fu">nblag</span>(sf.nb.queen, <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="contiguity-based-spatial-weights.html#cb314-1" tabindex="-1"></a>second.order.queen <span class="ot">&lt;-</span> <span class="fu">nblag</span>(sf.nb.queen, <span class="dv">2</span>)</span></code></pre></div>
 <p>We first take a comprehensive look at <strong>second.order.queen</strong> to see the resulting
 data structure from <code>nblag</code>. As said earlier, it is a list of 2 <strong>nb</strong> objects. One
 for 1st order neighbors and one for 2nd order. It is important to examine this, so
 we can make use of specific elements of the data structure in our visualizations
 of the neighbors.</p>
-<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="contiguity-based-spatial-weights.html#cb454-1" tabindex="-1"></a><span class="fu">str</span>(second.order.queen)</span></code></pre></div>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="contiguity-based-spatial-weights.html#cb315-1" tabindex="-1"></a><span class="fu">str</span>(second.order.queen)</span></code></pre></div>
 <pre><code>## List of 2
 ##  $ :List of 3085
 ##   ..$ : int [1:3] 23 31 41
@@ -1024,7 +1012,7 @@ of the neighbors.</p>
 ##  - attr(*, &quot;call&quot;)= language nblag(neighbours = sf.nb.queen, maxlag = 2)</code></pre>
 <p>Now we can look at, specifically, the 2nd order neighbors by using the double bracket
 selection.</p>
-<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="contiguity-based-spatial-weights.html#cb456-1" tabindex="-1"></a><span class="fu">str</span>(second.order.queen[[<span class="dv">2</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="contiguity-based-spatial-weights.html#cb317-1" tabindex="-1"></a><span class="fu">str</span>(second.order.queen[[<span class="dv">2</span>]])</span></code></pre></div>
 <pre><code>## List of 3085
 ##  $ : int [1:8] 22 35 38 55 65 73 97 100
 ##  $ : int [1:9] 5 28 32 43 56 63 69 110 111
@@ -1131,14 +1119,14 @@ selection.</p>
 ##  - attr(*, &quot;sym&quot;)= logi TRUE</code></pre>
 <p>We store the second order neighbors in <strong>sf.nb.queen2</strong> to make things simpler
 for our visuals.</p>
-<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="contiguity-based-spatial-weights.html#cb458-1" tabindex="-1"></a>sf.nb.queen2 <span class="ot">&lt;-</span> second.order.queen[[<span class="dv">2</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="contiguity-based-spatial-weights.html#cb319-1" tabindex="-1"></a>sf.nb.queen2 <span class="ot">&lt;-</span> second.order.queen[[<span class="dv">2</span>]]</span></code></pre></div>
 <p>Now if we want to include both 1st and 2nd order neighbors in our visualizations, we
 need the <code>nblag_cumul</code> function. This will give us an <strong>nb</strong> object with both 1st and 2nd order neighbors, instead of separating them as in the result of <code>nblag</code>. To use this
 function, we need the resulting object from the <code>nblag</code> function. <code>nblag_cumul</code> combines the two separate <strong>nb</strong> objects from the <code>nblag</code> function into one.</p>
-<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="contiguity-based-spatial-weights.html#cb459-1" tabindex="-1"></a>second.order.queen.cumul <span class="ot">&lt;-</span> <span class="fu">nblag_cumul</span>(second.order.queen)</span></code></pre></div>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="contiguity-based-spatial-weights.html#cb320-1" tabindex="-1"></a>second.order.queen.cumul <span class="ot">&lt;-</span> <span class="fu">nblag_cumul</span>(second.order.queen)</span></code></pre></div>
 <p>Here we take another in depth look at result. We can see that, we now have one <strong>nb</strong>
 object with both 1st and 2nd order neighbors.</p>
-<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="contiguity-based-spatial-weights.html#cb460-1" tabindex="-1"></a><span class="fu">str</span>(second.order.queen.cumul)</span></code></pre></div>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="contiguity-based-spatial-weights.html#cb321-1" tabindex="-1"></a><span class="fu">str</span>(second.order.queen.cumul)</span></code></pre></div>
 <pre><code>## List of 3085
 ##  $ : int [1:11] 22 23 31 35 38 41 55 65 73 97 ...
 ##  $ : int [1:12] 3 4 5 28 32 43 56 63 69 70 ...
@@ -1266,15 +1254,15 @@ the <strong>purrr</strong> package. For more documentation, check out <a href="h
 column of <strong>us.bound</strong> and access the longitude value through double bracket notation
 [[]] and 1. This allows us to get only the longitude, which is the first value in each
 centroid.</p>
-<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="contiguity-based-spatial-weights.html#cb462-1" tabindex="-1"></a>longitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(us.bound<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">1</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="contiguity-based-spatial-weights.html#cb323-1" tabindex="-1"></a>longitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(us.bound<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">1</span>]])</span></code></pre></div>
 <p>We do the same for latitude with one key difference. We access the second value per
 each centroid with <code>[[2]]</code>.</p>
-<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="contiguity-based-spatial-weights.html#cb463-1" tabindex="-1"></a>latitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(us.bound<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">2</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="contiguity-based-spatial-weights.html#cb324-1" tabindex="-1"></a>latitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(us.bound<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">2</span>]])</span></code></pre></div>
 <p>Now that we have latitude and longitude, we use <code>cbind</code> to put longitude and latitude
 into the same object.</p>
-<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="contiguity-based-spatial-weights.html#cb464-1" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(longitude, latitude)</span></code></pre></div>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="contiguity-based-spatial-weights.html#cb325-1" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(longitude, latitude)</span></code></pre></div>
 <p>We check the first few observations to see if things are formatted correctly.</p>
-<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="contiguity-based-spatial-weights.html#cb465-1" tabindex="-1"></a><span class="fu">head</span>(coords)</span></code></pre></div>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="contiguity-based-spatial-weights.html#cb326-1" tabindex="-1"></a><span class="fu">head</span>(coords)</span></code></pre></div>
 <pre><code>##       longitude latitude
 ## [1,]  -94.90337 48.77173
 ## [2,] -118.51718 48.46959
@@ -1292,7 +1280,7 @@ add extra customizations, so we can actually see what is going on in the graph.
 We use <code>lwd = .2</code> to make the line length less thick, we set the <code>col ="blue"</code>, and
 finally <code>cex = .5</code> to make the point symbols smaller. The default options make the
 graph near indecipherable, so it is important to add these extra parameters.</p>
-<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="contiguity-based-spatial-weights.html#cb467-1" tabindex="-1"></a><span class="fu">plot</span>(sf.nb.rook, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="contiguity-based-spatial-weights.html#cb328-1" tabindex="-1"></a><span class="fu">plot</span>(sf.nb.rook, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-232-1.png" width="672" /></p>
 </div>
 <div id="queen-connectivity-graphs" class="section level4 unnumbered hasAnchor">
@@ -1305,7 +1293,7 @@ both visually busy</p>
 <h5>First Order<a href="contiguity-based-spatial-weights.html#first-order" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>The same form is followed for queen contiguity as we are working with the same class:
 a <strong>nb</strong> object and a corresponding list of coordinates.</p>
-<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="contiguity-based-spatial-weights.html#cb468-1" tabindex="-1"></a><span class="fu">plot</span>(sf.nb.queen, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="contiguity-based-spatial-weights.html#cb329-1" tabindex="-1"></a><span class="fu">plot</span>(sf.nb.queen, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
 </div>
 <div id="second-order" class="section level5 unnumbered hasAnchor">
@@ -1314,14 +1302,14 @@ a <strong>nb</strong> object and a corresponding list of coordinates.</p>
 is the second order <strong>nb</strong> object that we created earlier and our coordinates. This
 graph will look significantly different from the ones we’ve made so far, as second
 order tends to have more neighbors than first order.</p>
-<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="contiguity-based-spatial-weights.html#cb469-1" tabindex="-1"></a><span class="fu">plot</span>(sf.nb.queen2, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="contiguity-based-spatial-weights.html#cb330-1" tabindex="-1"></a><span class="fu">plot</span>(sf.nb.queen2, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-234-1.png" width="672" /></p>
 </div>
 <div id="cumulative" class="section level5 unnumbered hasAnchor">
 <h5>Cumulative<a href="contiguity-based-spatial-weights.html#cumulative" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>We will take a look a plot with both second and first order neighbors here. It will
 be a very busy graph.</p>
-<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="contiguity-based-spatial-weights.html#cb470-1" tabindex="-1"></a><span class="fu">plot</span>(second.order.queen.cumul, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="contiguity-based-spatial-weights.html#cb331-1" tabindex="-1"></a><span class="fu">plot</span>(second.order.queen.cumul, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-235-1.png" width="672" /></p>
 </div>
 </div>
@@ -1334,21 +1322,20 @@ We first have to get the cardinality before we can make the histograms. We can
 do this by using the <code>card</code> function from the <strong>spdep</strong> package. This will give
 us a vector of 3085 observations with each one containing the corresponding
 number of neighbors from the input neighbors list.</p>
-<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="contiguity-based-spatial-weights.html#cb471-1" tabindex="-1"></a>rook.card <span class="ot">&lt;-</span> <span class="fu">card</span>(sf.nb.rook)</span></code></pre></div>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="contiguity-based-spatial-weights.html#cb332-1" tabindex="-1"></a>rook.card <span class="ot">&lt;-</span> <span class="fu">card</span>(sf.nb.rook)</span></code></pre></div>
 <p>We take a look at the first few observation with the <code>head</code> function and as we can see,
 it is a vector with number of neighbors for each observation of the <strong>nb</strong> object.</p>
-<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="contiguity-based-spatial-weights.html#cb472-1" tabindex="-1"></a><span class="fu">head</span>(rook.card)</span></code></pre></div>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="contiguity-based-spatial-weights.html#cb333-1" tabindex="-1"></a><span class="fu">head</span>(rook.card)</span></code></pre></div>
 <pre><code>## [1] 3 3 4 7 4 3</code></pre>
 <p>Now we check the length and it is what we expected.</p>
-<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="contiguity-based-spatial-weights.html#cb474-1" tabindex="-1"></a><span class="fu">length</span>(rook.card)</span></code></pre></div>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="contiguity-based-spatial-weights.html#cb335-1" tabindex="-1"></a><span class="fu">length</span>(rook.card)</span></code></pre></div>
 <pre><code>## [1] 3085</code></pre>
 <p>We can visualize the cardinality through a <strong>ggplot2</strong> histogram. For this we just
 need to call the <code>ggplot</code> function and add <code>geom_histogram</code> as a layer. We specify the
 <code>aes()</code> in <code>geom_histogram</code> to be our rook cardinality. This will give us a basic plot, which
 we will customize further a little later.</p>
-<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="contiguity-based-spatial-weights.html#cb476-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb476-2"><a href="contiguity-based-spatial-weights.html#cb476-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>rook.card))</span></code></pre></div>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="contiguity-based-spatial-weights.html#cb337-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb337-2"><a href="contiguity-based-spatial-weights.html#cb337-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>rook.card))</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-239-1.png" width="672" /></p>
 <p>Here we will add a few customizations to make the plot nicer. The most important is with
 the <code>breaks =</code> parameter, as the bars are spaced out kind of weirdly in our opening plot.
@@ -1356,13 +1343,13 @@ We can avoid manually typing in the breaks by using the <code>seq</code> functio
 a list of numbers 0 to 13, incrementing by 1 each time. We specify the range in the first
 two arguments and then use <code>by =</code> to pick the number to increment by. In our case, 1 makes
 the most sense as you cannot have half of a neighbor.</p>
-<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="contiguity-based-spatial-weights.html#cb478-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb478-2"><a href="contiguity-based-spatial-weights.html#cb478-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>rook.card), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">13</span>, <span class="at">by =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb478-3"><a href="contiguity-based-spatial-weights.html#cb478-3" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;number of neighbors&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="contiguity-based-spatial-weights.html#cb338-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb338-2"><a href="contiguity-based-spatial-weights.html#cb338-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>rook.card), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">13</span>, <span class="at">by =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb338-3"><a href="contiguity-based-spatial-weights.html#cb338-3" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;number of neighbors&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-240-1.png" width="672" /></p>
 <p>With the <code>summary</code> command we can get a look at the summary
 statistics for the cardinality of the neighbors list.</p>
-<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="contiguity-based-spatial-weights.html#cb479-1" tabindex="-1"></a><span class="fu">summary</span>(rook.card)</span></code></pre></div>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="contiguity-based-spatial-weights.html#cb339-1" tabindex="-1"></a><span class="fu">summary</span>(rook.card)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.000   5.000   6.000   5.571   6.000  13.000</code></pre>
 </div>
@@ -1379,7 +1366,7 @@ or the new GeoDa header style.</p>
 <p>The oldstyle just saves the neighbor list with then number of observations
 at the top of the file. We can save in this format by setting <code>oldstyle =</code>
 to <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="contiguity-based-spatial-weights.html#cb481-1" tabindex="-1"></a><span class="fu">write.nb.gal</span>(sf.nb.rook, <span class="st">&quot;rook_contiguity_old.gal&quot;</span>, <span class="at">oldstyle =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="contiguity-based-spatial-weights.html#cb341-1" tabindex="-1"></a><span class="fu">write.nb.gal</span>(sf.nb.rook, <span class="st">&quot;rook_contiguity_old.gal&quot;</span>, <span class="at">oldstyle =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="geoda-header-format" class="section level3 unnumbered hasAnchor">
 <h3>GeoDA Header Format<a href="contiguity-based-spatial-weights.html#geoda-header-format" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1387,7 +1374,7 @@ to <code>TRUE</code>.</p>
 the dataset and the region id indicator variable name. It puts this information
 in a header for the file. All we have to do is set <code>oldstyle =</code> to FALSE and
 enter names for <code>shpfile</code> and <code>ind</code> parameters.</p>
-<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="contiguity-based-spatial-weights.html#cb482-1" tabindex="-1"></a><span class="fu">write.nb.gal</span>(sf.nb.rook, <span class="st">&quot;rook_contiguity_new.gal&quot;</span>, <span class="at">oldstyle =</span> <span class="cn">FALSE</span>, <span class="at">shpfile =</span><span class="st">&quot;NAT.shp&quot;</span>, <span class="at">ind =</span><span class="st">&quot;region id&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="contiguity-based-spatial-weights.html#cb342-1" tabindex="-1"></a><span class="fu">write.nb.gal</span>(sf.nb.rook, <span class="st">&quot;rook_contiguity_new.gal&quot;</span>, <span class="at">oldstyle =</span> <span class="cn">FALSE</span>, <span class="at">shpfile =</span><span class="st">&quot;NAT.shp&quot;</span>, <span class="at">ind =</span><span class="st">&quot;region id&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>

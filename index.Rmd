@@ -28,8 +28,7 @@ to use along with this book, so you can work through through the exercises
 immediately. To install it, run the following in your R console:
 
 ```{r eval=FALSE}
-# install.packages("remotes")
-remotes::install_github("spatialanalysis/geodaData")
+install.packages("geodaData")
 ```
 
 ## Who This Book Is For {-}
@@ -37,7 +36,9 @@ remotes::install_github("spatialanalysis/geodaData")
 We assume that workshop attendees have used RStudio and are familiar with the basics of R.
 If you need a refresher, this [R for Social Scientists](https://datacarpentry.org/r-socialsci/) tutorial developed by Data Carpentry is a good place to start. Additionally, Luc Anselin's introductory R lab notes can be found on the [CSDS Tutorials page](https://spatialanalysis.github.io/tutorials).
 
-
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
 
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.

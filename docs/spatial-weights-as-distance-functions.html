@@ -630,10 +630,10 @@ actually be saving any files.<a href="#fn23" class="footnote-ref" id="fnref23"><
 <h3>Load packages<a href="spatial-weights-as-distance-functions.html#load-packages-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, we load all the required packages using the <code>library</code> command. If you don’t have some of these in your system, make sure to install them first as well as
 their dependencies.<a href="#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
-<div class="sourceCode" id="cb541"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb541-1"><a href="spatial-weights-as-distance-functions.html#cb541-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb541-2"><a href="spatial-weights-as-distance-functions.html#cb541-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
-<span id="cb541-3"><a href="spatial-weights-as-distance-functions.html#cb541-3" tabindex="-1"></a><span class="fu">library</span>(geodaData)</span>
-<span id="cb541-4"><a href="spatial-weights-as-distance-functions.html#cb541-4" tabindex="-1"></a><span class="fu">library</span>(spatialreg)</span></code></pre></div>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="spatial-weights-as-distance-functions.html#cb389-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb389-2"><a href="spatial-weights-as-distance-functions.html#cb389-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb389-3"><a href="spatial-weights-as-distance-functions.html#cb389-3" tabindex="-1"></a><span class="fu">library</span>(geodaData)</span>
+<span id="cb389-4"><a href="spatial-weights-as-distance-functions.html#cb389-4" tabindex="-1"></a><span class="fu">library</span>(spatialreg)</span></code></pre></div>
 </div>
 <div id="obtaining-the-data-from-the-geoda-website" class="section level3 unnumbered hasAnchor">
 <h3>Obtaining the Data from the GeoDa website<a href="spatial-weights-as-distance-functions.html#obtaining-the-data-from-the-geoda-website" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -648,7 +648,7 @@ zipfile, so you will need to unzip it by double clicking on the file in your fil
 finder. From there move the resulting folder titled: nyc into your working directory
 to continue. Once that is done, you can use the <strong>sf</strong> function: <code>st_read()</code> to read
 the shapefile into your R environment.</p>
-<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="spatial-weights-as-distance-functions.html#cb542-1" tabindex="-1"></a>clev.points <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>clev_pts</span></code></pre></div>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="spatial-weights-as-distance-functions.html#cb390-1" tabindex="-1"></a>clev.points <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>clev_pts</span></code></pre></div>
 </div>
 </div>
 <div id="inverse-distance-weights" class="section level2 unnumbered hasAnchor">
@@ -695,7 +695,7 @@ we apply a function to each element in this structure, giving us the inverse dis
 Finally we assign these as the weight values when converting from class <strong>nb</strong> to
 class <strong>listw</strong>.</p>
 <p>We begin by putting our coordinates in a separate matrix from <strong>clev.points</strong></p>
-<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb543-1"><a href="spatial-weights-as-distance-functions.html#cb543-1" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(clev.points<span class="sc">$</span>x,clev.points<span class="sc">$</span>y)</span></code></pre></div>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="spatial-weights-as-distance-functions.html#cb391-1" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(clev.points<span class="sc">$</span>x,clev.points<span class="sc">$</span>y)</span></code></pre></div>
 <p>In order to calulate our distance-band neighbors, we need an upper and lower distance
 bound. The lower is always 0 for the most part. We can put anything for the upper,
 but we will pick a value, that keeps isolates out of our distance-band-neighbors.
@@ -706,25 +706,25 @@ but we will go through the steps here.</p>
 library: <code>knn2nb</code> and <code>knearneigh</code>. <code>knearneigh</code> calculates the neighbors and
 stores the information in class <strong>knn</strong>, and <code>knn2nb</code> converts the class to <strong>nb</strong>,
 so we can work with it further.</p>
-<div class="sourceCode" id="cb544"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb544-1"><a href="spatial-weights-as-distance-functions.html#cb544-1" tabindex="-1"></a>k1 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords))</span></code></pre></div>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="spatial-weights-as-distance-functions.html#cb392-1" tabindex="-1"></a>k1 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords))</span></code></pre></div>
 <p>Computing the critcal threshold will require a few functions now that we have a neighbors
 list. First step is to get the distances between each point and it’s closest neighbor.
 This can be done with the <code>nbdists</code>. With these distances, we just need to find the
 maximum. For this we use the <code>max</code> command. However, we cannot do this with lists, so we must
 first get a data type that works for the <code>max</code> command, in our case, we use <code>unlist</code></p>
-<div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb545-1"><a href="spatial-weights-as-distance-functions.html#cb545-1" tabindex="-1"></a>critical.threshold <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">unlist</span>(<span class="fu">nbdists</span>(k1,coords)))</span>
-<span id="cb545-2"><a href="spatial-weights-as-distance-functions.html#cb545-2" tabindex="-1"></a>critical.threshold</span></code></pre></div>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="spatial-weights-as-distance-functions.html#cb393-1" tabindex="-1"></a>critical.threshold <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">unlist</span>(<span class="fu">nbdists</span>(k1,coords)))</span>
+<span id="cb393-2"><a href="spatial-weights-as-distance-functions.html#cb393-2" tabindex="-1"></a>critical.threshold</span></code></pre></div>
 <pre><code>## [1] 3598.055</code></pre>
 <p>We have all the necessary components to calculate the distance-band neighbors. To get
 these we use <code>dnearneigh</code>. The parameters needed are the coordinates, a lower distance
 bound and an upper distance bound.</p>
-<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb547-1"><a href="spatial-weights-as-distance-functions.html#cb547-1" tabindex="-1"></a>nb.dist.band <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, <span class="dv">0</span>, critical.threshold)</span></code></pre></div>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="spatial-weights-as-distance-functions.html#cb395-1" tabindex="-1"></a>nb.dist.band <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, <span class="dv">0</span>, critical.threshold)</span></code></pre></div>
 <p>To get inverse distance, we need to calculate the distances between all of the neighbors.
 for this we will use <code>nbdists</code>, which gives us the distances in a similar structure to
 our input neighbors list. To use this function we need to input the neighbors list and
 the coordinates.</p>
-<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb548-1"><a href="spatial-weights-as-distance-functions.html#cb548-1" tabindex="-1"></a>distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(nb.dist.band,coords)</span>
-<span id="cb548-2"><a href="spatial-weights-as-distance-functions.html#cb548-2" tabindex="-1"></a>distances[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="spatial-weights-as-distance-functions.html#cb396-1" tabindex="-1"></a>distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(nb.dist.band,coords)</span>
+<span id="cb396-2"><a href="spatial-weights-as-distance-functions.html#cb396-2" tabindex="-1"></a>distances[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1]  385.161 3013.071 1160.312 1858.904 3367.150 2525.503 3253.025 3390.735
 ## [9] 3369.644</code></pre>
@@ -732,16 +732,16 @@ the coordinates.</p>
 entire <strong>distances</strong> data structure. We will use <code>lapply</code> to accomplish this. The parameters
 needed are the distances, and a function which we specify in <code>lapply</code>. We use the <code>function</code>
 operator with <strong>(1/x)</strong> to get the appropriate function.</p>
-<div class="sourceCode" id="cb550"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb550-1"><a href="spatial-weights-as-distance-functions.html#cb550-1" tabindex="-1"></a>invd1 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>x))</span></code></pre></div>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="spatial-weights-as-distance-functions.html#cb398-1" tabindex="-1"></a>invd1 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>x))</span></code></pre></div>
 <p>Here we check the length of the inverse distances to make sure it lines up with our neighbors
 list.</p>
-<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb551-1"><a href="spatial-weights-as-distance-functions.html#cb551-1" tabindex="-1"></a><span class="fu">length</span>(invd1)</span></code></pre></div>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="spatial-weights-as-distance-functions.html#cb399-1" tabindex="-1"></a><span class="fu">length</span>(invd1)</span></code></pre></div>
 <pre><code>## [1] 205</code></pre>
 <p>We check the first element of the resulting data structure to make sure it is in line with
 the neighbors list structure. This is important because we will need the structures to
 correspond in order to assign the inverse distances as the weight values when converting from
 a neighbors list or class <strong>nb</strong> to a weight structure: class <strong>listw</strong>.</p>
-<div class="sourceCode" id="cb553"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb553-1"><a href="spatial-weights-as-distance-functions.html#cb553-1" tabindex="-1"></a>invd1[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="spatial-weights-as-distance-functions.html#cb401-1" tabindex="-1"></a>invd1[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.0025963168 0.0003318873 0.0008618371 0.0005379514 0.0002969871
 ## [6] 0.0003959608 0.0003074062 0.0002949213 0.0002967673</code></pre>
@@ -751,8 +751,8 @@ means distance values between points can be quite large and result in small inve
 correct for this scale dependence, we can rescale the distances by repeating the inverse
 calculations, while adjusting the scale. We can make this adjustment by dividing <strong>x</strong> in
 our function by 100, before calculating the inverses.</p>
-<div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb555-1"><a href="spatial-weights-as-distance-functions.html#cb555-1" tabindex="-1"></a>invd1a <span class="ot">&lt;-</span> <span class="fu">lapply</span>(distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>(x<span class="sc">/</span><span class="dv">100</span>)))</span>
-<span id="cb555-2"><a href="spatial-weights-as-distance-functions.html#cb555-2" tabindex="-1"></a>invd1a[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="spatial-weights-as-distance-functions.html#cb403-1" tabindex="-1"></a>invd1a <span class="ot">&lt;-</span> <span class="fu">lapply</span>(distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>(x<span class="sc">/</span><span class="dv">100</span>)))</span>
+<span id="cb403-2"><a href="spatial-weights-as-distance-functions.html#cb403-2" tabindex="-1"></a>invd1a[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.25963168 0.03318873 0.08618371 0.05379514 0.02969871 0.03959608 0.03074062
 ## [8] 0.02949213 0.02967673</code></pre>
@@ -760,9 +760,9 @@ our function by 100, before calculating the inverses.</p>
 This is done in the conversion function <code>nb2listw</code>. To assign the weights, we use the
 <code>glist =</code> argument. For this to work we also have to specify <code>style = "B"</code>, otherwise the
 <code>listw</code> function will use the default row standardization.</p>
-<div class="sourceCode" id="cb557"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb557-1"><a href="spatial-weights-as-distance-functions.html#cb557-1" tabindex="-1"></a>invd.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(nb.dist.band,<span class="at">glist =</span> invd1a,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="spatial-weights-as-distance-functions.html#cb405-1" tabindex="-1"></a>invd.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(nb.dist.band,<span class="at">glist =</span> invd1a,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
 <p>Here we take a cursory look at our weights with <code>summary</code> to get basic imformation and statistics.</p>
-<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="spatial-weights-as-distance-functions.html#cb558-1" tabindex="-1"></a><span class="fu">summary</span>(invd.weights)</span></code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="spatial-weights-as-distance-functions.html#cb406-1" tabindex="-1"></a><span class="fu">summary</span>(invd.weights)</span></code></pre></div>
 <pre><code>## Characteristics of weights list object:
 ## Neighbour list object:
 ## Number of regions: 205 
@@ -785,7 +785,7 @@ This is done in the conversion function <code>nb2listw</code>. To assign the wei
 ##     n    nn       S0       S1       S2
 ## B 205 42025 180.2882 145.9202 1018.442</code></pre>
 <p>We can check the values of the weights by using <code>$weights</code> to access the values.</p>
-<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="spatial-weights-as-distance-functions.html#cb560-1" tabindex="-1"></a>invd.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="spatial-weights-as-distance-functions.html#cb408-1" tabindex="-1"></a>invd.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.25963168 0.03318873 0.08618371 0.05379514 0.02969871 0.03959608 0.03074062
 ## [8] 0.02949213 0.02967673</code></pre>
@@ -795,7 +795,7 @@ This is done in the conversion function <code>nb2listw</code>. To assign the wei
 they are identical to the ones obtained for the standard distance-band weights. It is
 important to keep in mind that the actual values for the weights are ignored in this
 operation.</p>
-<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="spatial-weights-as-distance-functions.html#cb562-1" tabindex="-1"></a><span class="fu">plot</span>(invd.weights, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="spatial-weights-as-distance-functions.html#cb410-1" tabindex="-1"></a><span class="fu">plot</span>(invd.weights, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-300-1.png" width="672" /></p>
 <p>The connectivity map and the connectivity graph associated with the weights are the
 same as before as well.</p>
@@ -817,20 +817,20 @@ as for distance-band neighbors. The only difference being that we don’t have t
 a critical threshold for k-nearest neighbors.</p>
 <p>We start by getting the k-nearest neighbors for k = 6. We do this with <code>knearneigh</code> and
 <code>knn2nb</code>.</p>
-<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb563-1"><a href="spatial-weights-as-distance-functions.html#cb563-1" tabindex="-1"></a>k6 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">6</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="spatial-weights-as-distance-functions.html#cb411-1" tabindex="-1"></a>k6 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">6</span>))</span></code></pre></div>
 <p>Now that we have the neighbors list we need all of the distances between neighbors in a
 similar data structure, which we use <code>nbdist</code> for again.</p>
-<div class="sourceCode" id="cb564"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb564-1"><a href="spatial-weights-as-distance-functions.html#cb564-1" tabindex="-1"></a>k.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k6, coords)</span></code></pre></div>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="spatial-weights-as-distance-functions.html#cb412-1" tabindex="-1"></a>k.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k6, coords)</span></code></pre></div>
 <p>Here we calculate the inverse distances, keeping in mind the scale from the distance-band
 weights from earlier.</p>
-<div class="sourceCode" id="cb565"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb565-1"><a href="spatial-weights-as-distance-functions.html#cb565-1" tabindex="-1"></a>invd2a <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k.distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>(x<span class="sc">/</span><span class="dv">100</span>)))</span>
-<span id="cb565-2"><a href="spatial-weights-as-distance-functions.html#cb565-2" tabindex="-1"></a>invd2a[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="spatial-weights-as-distance-functions.html#cb413-1" tabindex="-1"></a>invd2a <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k.distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>(x<span class="sc">/</span><span class="dv">100</span>)))</span>
+<span id="cb413-2"><a href="spatial-weights-as-distance-functions.html#cb413-2" tabindex="-1"></a>invd2a[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.25963168 0.03318873 0.08618371 0.05379514 0.03959608 0.03074062</code></pre>
 <p>Lastly, we assign the weight values with the <code>glist =</code> parameter and speficy the <code>style</code> as
 “B” to avoid default computations.</p>
-<div class="sourceCode" id="cb567"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb567-1"><a href="spatial-weights-as-distance-functions.html#cb567-1" tabindex="-1"></a>invd.weights.knn <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> invd2a,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
-<span id="cb567-2"><a href="spatial-weights-as-distance-functions.html#cb567-2" tabindex="-1"></a>invd.weights.knn<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="spatial-weights-as-distance-functions.html#cb415-1" tabindex="-1"></a>invd.weights.knn <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> invd2a,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb415-2"><a href="spatial-weights-as-distance-functions.html#cb415-2" tabindex="-1"></a>invd.weights.knn<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.25963168 0.03318873 0.08618371 0.05379514 0.03959608 0.03074062</code></pre>
 </div>
@@ -875,7 +875,7 @@ and the variable bandwidth. For the fixed bandwidth, we will be using distance-b
 neighbors. For the variable bandwidth we will need kth-nearest neighbors.</p>
 <p>To start, we will compute a new distance-band neighbors list with the critcial threshold,
 calculated earlier in the notebook.</p>
-<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb569-1"><a href="spatial-weights-as-distance-functions.html#cb569-1" tabindex="-1"></a>kernal.nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, <span class="dv">0</span>, critical.threshold)</span></code></pre></div>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="spatial-weights-as-distance-functions.html#cb417-1" tabindex="-1"></a>kernal.nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, <span class="dv">0</span>, critical.threshold)</span></code></pre></div>
 <p>Before we start computing kernal weights, we need to add the diagonal elements to our
 neighbors list. We do this because in the kernal weights methods, the diagonal element
 is either assigned a value of 1 or is computed in the kernal function with a distance of
@@ -883,19 +883,19 @@ is either assigned a value of 1 or is computed in the kernal function with a dis
 own self when include in the neighbors list.</p>
 <p><strong>spdep</strong> has a built in function for this. <code>include.self</code> can be used to add the diagonal
 elements to a neighbors list of class <strong>nb</strong>.</p>
-<div class="sourceCode" id="cb570"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb570-1"><a href="spatial-weights-as-distance-functions.html#cb570-1" tabindex="-1"></a><span class="fu">include.self</span>(kernal.nb)</span></code></pre></div>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="spatial-weights-as-distance-functions.html#cb418-1" tabindex="-1"></a><span class="fu">include.self</span>(kernal.nb)</span></code></pre></div>
 <pre><code>## Neighbour list object:
 ## Number of regions: 205 
 ## Number of nonzero links: 2797 
 ## Percentage nonzero weights: 6.655562 
 ## Average number of links: 13.6439</code></pre>
-<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="spatial-weights-as-distance-functions.html#cb572-1" tabindex="-1"></a>kernal.nb[[<span class="dv">2</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="spatial-weights-as-distance-functions.html#cb420-1" tabindex="-1"></a>kernal.nb[[<span class="dv">2</span>]]</span></code></pre></div>
 <pre><code>## [1]  1  6  7  8  9 10 31 32 34</code></pre>
 <p>With the diagonal elements, we can proceed further. To compute the kernal weight values,
 we need the corresponding distances for each neighbor. We do this with <code>nbdists</code>, same
 as earlier.</p>
-<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb574-1"><a href="spatial-weights-as-distance-functions.html#cb574-1" tabindex="-1"></a>kernalw.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(kernal.nb, coords)</span>
-<span id="cb574-2"><a href="spatial-weights-as-distance-functions.html#cb574-2" tabindex="-1"></a>kernalw.distances[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="spatial-weights-as-distance-functions.html#cb422-1" tabindex="-1"></a>kernalw.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(kernal.nb, coords)</span>
+<span id="cb422-2"><a href="spatial-weights-as-distance-functions.html#cb422-2" tabindex="-1"></a>kernalw.distances[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1]  385.161 3013.071 1160.312 1858.904 3367.150 2525.503 3253.025 3390.735
 ## [9] 3369.644</code></pre>
@@ -908,28 +908,26 @@ for the diagonal element.</p>
 use <code>lapply</code> to apply a function to all elements of our distance structure. The function,
 in this case, is <code>0 * x + .5</code>. We do this to assign uniform weights of .5, the <code>0*x</code> is a necessary
 addition to get <code>lapply</code> to work properly.</p>
-<div class="sourceCode" id="cb576"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb576-1"><a href="spatial-weights-as-distance-functions.html#cb576-1" tabindex="-1"></a>uniform <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) x<span class="sc">*</span><span class="dv">0</span> <span class="sc">+</span> .<span class="dv">5</span>)</span>
-<span id="cb576-2"><a href="spatial-weights-as-distance-functions.html#cb576-2" tabindex="-1"></a>uniform[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="spatial-weights-as-distance-functions.html#cb424-1" tabindex="-1"></a>uniform <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) x<span class="sc">*</span><span class="dv">0</span> <span class="sc">+</span> .<span class="dv">5</span>)</span>
+<span id="cb424-2"><a href="spatial-weights-as-distance-functions.html#cb424-2" tabindex="-1"></a>uniform[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5</code></pre>
 <p>Then to assign the weights, we use the same procedure as the inverse distance weights. We use the
 <code>glist</code> argument to explicity assign the weight we calculated above.</p>
-<div class="sourceCode" id="cb578"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb578-1"><a href="spatial-weights-as-distance-functions.html#cb578-1" tabindex="-1"></a>uniform.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> uniform,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="spatial-weights-as-distance-functions.html#cb426-1" tabindex="-1"></a>uniform.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> uniform,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
 </div>
 <div id="triangular" class="section level4 unnumbered hasAnchor">
 <h4>Triangular<a href="spatial-weights-as-distance-functions.html#triangular" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><span class="math inline">\(K(z) = (1 - \mid z \mid )\)</span> for <span class="math inline">\(\mid z \mid &lt; 1\)</span></p>
 <p>Same process, for triangular, we just apply a different function to the distances. We
 use <code>abs</code> to get the absolute value in our caluculations.</p>
-<div class="sourceCode" id="cb579"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb579-1"><a href="spatial-weights-as-distance-functions.html#cb579-1" tabindex="-1"></a>triangular <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) <span class="dv">1</span><span class="sc">-</span> <span class="fu">abs</span>((x<span class="sc">/</span>critical.threshold)))</span>
-<span id="cb579-2"><a href="spatial-weights-as-distance-functions.html#cb579-2" tabindex="-1"></a>triangular[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="spatial-weights-as-distance-functions.html#cb427-1" tabindex="-1"></a>triangular <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) <span class="dv">1</span><span class="sc">-</span> <span class="fu">abs</span>((x<span class="sc">/</span>critical.threshold)))</span>
+<span id="cb427-2"><a href="spatial-weights-as-distance-functions.html#cb427-2" tabindex="-1"></a>triangular[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.89295300 0.16258344 0.67751688 0.48335866 0.06417492 0.29809225 0.09589360
 ## [8] 0.05762014 0.06348183</code></pre>
-<div class="sourceCode" id="cb581"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb581-1"><a href="spatial-weights-as-distance-functions.html#cb581-1" tabindex="-1"></a>triang.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> triangular,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning in nb2listw(kernal.nb, glist = triangular, style = &quot;B&quot;): zero sum
-## general weights</code></pre>
-<div class="sourceCode" id="cb583"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb583-1"><a href="spatial-weights-as-distance-functions.html#cb583-1" tabindex="-1"></a>triang.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="spatial-weights-as-distance-functions.html#cb429-1" tabindex="-1"></a>triang.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> triangular,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb429-2"><a href="spatial-weights-as-distance-functions.html#cb429-2" tabindex="-1"></a>triang.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.89295300 0.16258344 0.67751688 0.48335866 0.06417492 0.29809225 0.09589360
 ## [8] 0.05762014 0.06348183</code></pre>
@@ -937,15 +935,13 @@ use <code>abs</code> to get the absolute value in our caluculations.</p>
 <div id="epanechnikov" class="section level4 unnumbered hasAnchor">
 <h4>Epanechnikov<a href="spatial-weights-as-distance-functions.html#epanechnikov" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Quadratic or Epanechnikov, <span class="math inline">\(K(z) = (3/4)(1 - z^2)\)</span> for <span class="math inline">\(\mid z \mid &lt; 1\)</span></p>
-<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="spatial-weights-as-distance-functions.html#cb585-1" tabindex="-1"></a>epanechnikov <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) .<span class="dv">75</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(x<span class="sc">/</span>critical.threshold)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb585-2"><a href="spatial-weights-as-distance-functions.html#cb585-2" tabindex="-1"></a>epanechnikov[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="spatial-weights-as-distance-functions.html#cb431-1" tabindex="-1"></a>epanechnikov <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) .<span class="dv">75</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(x<span class="sc">/</span>critical.threshold)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb431-2"><a href="spatial-weights-as-distance-functions.html#cb431-2" tabindex="-1"></a>epanechnikov[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.74140570 0.22405013 0.67200348 0.54981129 0.09317357 0.38049413 0.13694371
 ## [8] 0.08394016 0.09220029</code></pre>
-<div class="sourceCode" id="cb587"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb587-1"><a href="spatial-weights-as-distance-functions.html#cb587-1" tabindex="-1"></a>epan.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> epanechnikov,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning in nb2listw(kernal.nb, glist = epanechnikov, style = &quot;B&quot;): zero sum
-## general weights</code></pre>
-<div class="sourceCode" id="cb589"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb589-1"><a href="spatial-weights-as-distance-functions.html#cb589-1" tabindex="-1"></a>epan.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="spatial-weights-as-distance-functions.html#cb433-1" tabindex="-1"></a>epan.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> epanechnikov,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb433-2"><a href="spatial-weights-as-distance-functions.html#cb433-2" tabindex="-1"></a>epan.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.74140570 0.22405013 0.67200348 0.54981129 0.09317357 0.38049413 0.13694371
 ## [8] 0.08394016 0.09220029</code></pre>
@@ -953,15 +949,13 @@ use <code>abs</code> to get the absolute value in our caluculations.</p>
 <div id="quartic" class="section level4 unnumbered hasAnchor">
 <h4>Quartic<a href="spatial-weights-as-distance-functions.html#quartic" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><span class="math inline">\(K(z) = (15/16)(1 - z^2)^2\)</span> for <span class="math inline">\(\mid z \mid &lt; 1\)</span></p>
-<div class="sourceCode" id="cb591"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb591-1"><a href="spatial-weights-as-distance-functions.html#cb591-1" tabindex="-1"></a>quartic <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) (<span class="dv">15</span><span class="sc">/</span><span class="dv">16</span>)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(x<span class="sc">/</span>critical.threshold)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb591-2"><a href="spatial-weights-as-distance-functions.html#cb591-2" tabindex="-1"></a>quartic[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="spatial-weights-as-distance-functions.html#cb435-1" tabindex="-1"></a>quartic <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) (<span class="dv">15</span><span class="sc">/</span><span class="dv">16</span>)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(x<span class="sc">/</span>critical.threshold)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb435-2"><a href="spatial-weights-as-distance-functions.html#cb435-2" tabindex="-1"></a>quartic[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.91613736 0.08366410 0.75264779 0.50382076 0.01446886 0.24129297 0.03125597
 ## [8] 0.01174325 0.01416816</code></pre>
-<div class="sourceCode" id="cb593"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb593-1"><a href="spatial-weights-as-distance-functions.html#cb593-1" tabindex="-1"></a>quartic.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> quartic,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning in nb2listw(kernal.nb, glist = quartic, style = &quot;B&quot;): zero sum general
-## weights</code></pre>
-<div class="sourceCode" id="cb595"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb595-1"><a href="spatial-weights-as-distance-functions.html#cb595-1" tabindex="-1"></a>quartic.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="spatial-weights-as-distance-functions.html#cb437-1" tabindex="-1"></a>quartic.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> quartic,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb437-2"><a href="spatial-weights-as-distance-functions.html#cb437-2" tabindex="-1"></a>quartic.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.91613736 0.08366410 0.75264779 0.50382076 0.01446886 0.24129297 0.03125597
 ## [8] 0.01174325 0.01416816</code></pre>
@@ -971,13 +965,13 @@ use <code>abs</code> to get the absolute value in our caluculations.</p>
 <p><span class="math inline">\(K(z) = (2\pi)^{1/2}\exp(-z^2/2)\)</span></p>
 <p>For this formula we need the <code>sqrt</code> function and the <code>exp</code> function, but other than that,
 it is a similar contruction as the others.</p>
-<div class="sourceCode" id="cb597"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb597-1"><a href="spatial-weights-as-distance-functions.html#cb597-1" tabindex="-1"></a>gaussian.w <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) <span class="fu">sqrt</span>(<span class="dv">2</span><span class="sc">*</span>pi)<span class="sc">*</span><span class="fu">exp</span>((<span class="sc">-</span>(x<span class="sc">/</span>critical.threshold)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">2</span>))</span>
-<span id="cb597-2"><a href="spatial-weights-as-distance-functions.html#cb597-2" tabindex="-1"></a>gaussian.w[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="spatial-weights-as-distance-functions.html#cb439-1" tabindex="-1"></a>gaussian.w <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) <span class="fu">sqrt</span>(<span class="dv">2</span><span class="sc">*</span>pi)<span class="sc">*</span><span class="fu">exp</span>((<span class="sc">-</span>(x<span class="sc">/</span>critical.threshold)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb439-2"><a href="spatial-weights-as-distance-functions.html#cb439-2" tabindex="-1"></a>gaussian.w[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 2.492308 1.765273 2.379620 2.193458 1.617779 1.959327 1.665681 1.607851
 ## [9] 1.616730</code></pre>
-<div class="sourceCode" id="cb599"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb599-1"><a href="spatial-weights-as-distance-functions.html#cb599-1" tabindex="-1"></a>gaussian.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> gaussian.w,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
-<span id="cb599-2"><a href="spatial-weights-as-distance-functions.html#cb599-2" tabindex="-1"></a>gaussian.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="spatial-weights-as-distance-functions.html#cb441-1" tabindex="-1"></a>gaussian.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> gaussian.w,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb441-2"><a href="spatial-weights-as-distance-functions.html#cb441-2" tabindex="-1"></a>gaussian.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 2.492308 1.765273 2.379620 2.193458 1.617779 1.959327 1.665681 1.607851
 ## [9] 1.616730</code></pre>
@@ -992,7 +986,7 @@ value of 1 for a triangular kernal.</p>
 <p>For the variable bandwidth, we will be using <strong>k6</strong>: a k-nearest neighbors list, created
 earlier in the notebook. We already have the associated disatnces in <strong>k.distances</strong>. We
 will be directly altering the distance object, so we will assign a copy <strong>k.disatnces1</strong>.</p>
-<div class="sourceCode" id="cb601"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb601-1"><a href="spatial-weights-as-distance-functions.html#cb601-1" tabindex="-1"></a>k.distances1 <span class="ot">&lt;-</span> k.distances</span></code></pre></div>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="spatial-weights-as-distance-functions.html#cb443-1" tabindex="-1"></a>k.distances1 <span class="ot">&lt;-</span> k.distances</span></code></pre></div>
 <p>In order to implement our variable bandwidth, we will need to loop through each element of
 <strong>k.distances</strong>, find the maximum distance of each row, then apply the triangular
 kernal weight function of that row with the bandwidth being used to calculate the z
@@ -1006,12 +1000,12 @@ is easily done by callling the <code>max</code> function on the row. We get the 
 <p>Next we compute the new row with our triagular kernal function. We use the <code>abs</code> function
 for absolute value. Lastly, we assign the new row values to the the ith row of the
 <strong>k.distances</strong> structure.</p>
-<div class="sourceCode" id="cb602"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb602-1"><a href="spatial-weights-as-distance-functions.html#cb602-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k.distances1)){</span>
-<span id="cb602-2"><a href="spatial-weights-as-distance-functions.html#cb602-2" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> <span class="fu">max</span>(k.distances1[[i]])</span>
-<span id="cb602-3"><a href="spatial-weights-as-distance-functions.html#cb602-3" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span> <span class="fu">abs</span>(k.distances1[[i]] <span class="sc">/</span> bandwidth)</span>
-<span id="cb602-4"><a href="spatial-weights-as-distance-functions.html#cb602-4" tabindex="-1"></a>  k.distances1[[i]] <span class="ot">&lt;-</span> new_row</span>
-<span id="cb602-5"><a href="spatial-weights-as-distance-functions.html#cb602-5" tabindex="-1"></a>}</span>
-<span id="cb602-6"><a href="spatial-weights-as-distance-functions.html#cb602-6" tabindex="-1"></a>k.distances1[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="spatial-weights-as-distance-functions.html#cb444-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k.distances1)){</span>
+<span id="cb444-2"><a href="spatial-weights-as-distance-functions.html#cb444-2" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> <span class="fu">max</span>(k.distances1[[i]])</span>
+<span id="cb444-3"><a href="spatial-weights-as-distance-functions.html#cb444-3" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span> <span class="fu">abs</span>(k.distances1[[i]] <span class="sc">/</span> bandwidth)</span>
+<span id="cb444-4"><a href="spatial-weights-as-distance-functions.html#cb444-4" tabindex="-1"></a>  k.distances1[[i]] <span class="ot">&lt;-</span> new_row</span>
+<span id="cb444-5"><a href="spatial-weights-as-distance-functions.html#cb444-5" tabindex="-1"></a>}</span>
+<span id="cb444-6"><a href="spatial-weights-as-distance-functions.html#cb444-6" tabindex="-1"></a>k.distances1[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.88159911 0.07376327 0.64331286 0.42856135 0.22364475 0.00000000</code></pre>
 <p>There is one potential issue with what we have done so far for the variable bandwidth. Our bandwidth
 is the same as the largest distance in each row, so one neighbor will get 0 weight in the
@@ -1022,26 +1016,26 @@ of the two values for our bandwith calculations. This will require a few extra s
 adjustments to our <code>for</code> loop.</p>
 <p>The first thing we need to implement this is the k-nearest neighbors for k = 7. This is the
 same process as our previous calculations for k-nearest neighbors.</p>
-<div class="sourceCode" id="cb604"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb604-1"><a href="spatial-weights-as-distance-functions.html#cb604-1" tabindex="-1"></a>k7 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">7</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="spatial-weights-as-distance-functions.html#cb446-1" tabindex="-1"></a>k7 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">7</span>))</span></code></pre></div>
 <p>Next we get the associated distances using <code>nbdists</code>.</p>
-<div class="sourceCode" id="cb605"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb605-1"><a href="spatial-weights-as-distance-functions.html#cb605-1" tabindex="-1"></a>k7.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k7, coords)</span></code></pre></div>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="spatial-weights-as-distance-functions.html#cb447-1" tabindex="-1"></a>k7.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k7, coords)</span></code></pre></div>
 <p>To avoid altering the original <strong>k.distances</strong>, we will assign a new variable to hold the
 necessary information.</p>
-<div class="sourceCode" id="cb606"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb606-1"><a href="spatial-weights-as-distance-functions.html#cb606-1" tabindex="-1"></a>k.distances2 <span class="ot">&lt;-</span> k.distances</span></code></pre></div>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="spatial-weights-as-distance-functions.html#cb448-1" tabindex="-1"></a>k.distances2 <span class="ot">&lt;-</span> k.distances</span></code></pre></div>
 <p>Here we remake the previous <code>for</code> loop with a few changes. Now we loop through and find
 the max distance for both the 7th nearest neighbors and 6th nearest neighbors, then get
 the average between the two before computing the kernal weight function.</p>
-<div class="sourceCode" id="cb607"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb607-1"><a href="spatial-weights-as-distance-functions.html#cb607-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k.distances)){</span>
-<span id="cb607-2"><a href="spatial-weights-as-distance-functions.html#cb607-2" tabindex="-1"></a>  maxk6 <span class="ot">&lt;-</span> <span class="fu">max</span>(k.distances2[[i]])</span>
-<span id="cb607-3"><a href="spatial-weights-as-distance-functions.html#cb607-3" tabindex="-1"></a>  maxk7 <span class="ot">&lt;-</span> <span class="fu">max</span>(k7.distances[[i]])</span>
-<span id="cb607-4"><a href="spatial-weights-as-distance-functions.html#cb607-4" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> (maxk6 <span class="sc">+</span> maxk7) <span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb607-5"><a href="spatial-weights-as-distance-functions.html#cb607-5" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span> <span class="fu">abs</span>(k.distances2[[i]] <span class="sc">/</span> bandwidth)</span>
-<span id="cb607-6"><a href="spatial-weights-as-distance-functions.html#cb607-6" tabindex="-1"></a>  k.distances2[[i]] <span class="ot">&lt;-</span> new_row</span>
-<span id="cb607-7"><a href="spatial-weights-as-distance-functions.html#cb607-7" tabindex="-1"></a>}</span>
-<span id="cb607-8"><a href="spatial-weights-as-distance-functions.html#cb607-8" tabindex="-1"></a>k.distances2[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="spatial-weights-as-distance-functions.html#cb449-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k.distances)){</span>
+<span id="cb449-2"><a href="spatial-weights-as-distance-functions.html#cb449-2" tabindex="-1"></a>  maxk6 <span class="ot">&lt;-</span> <span class="fu">max</span>(k.distances2[[i]])</span>
+<span id="cb449-3"><a href="spatial-weights-as-distance-functions.html#cb449-3" tabindex="-1"></a>  maxk7 <span class="ot">&lt;-</span> <span class="fu">max</span>(k7.distances[[i]])</span>
+<span id="cb449-4"><a href="spatial-weights-as-distance-functions.html#cb449-4" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> (maxk6 <span class="sc">+</span> maxk7) <span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb449-5"><a href="spatial-weights-as-distance-functions.html#cb449-5" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span> <span class="fu">abs</span>(k.distances2[[i]] <span class="sc">/</span> bandwidth)</span>
+<span id="cb449-6"><a href="spatial-weights-as-distance-functions.html#cb449-6" tabindex="-1"></a>  k.distances2[[i]] <span class="ot">&lt;-</span> new_row</span>
+<span id="cb449-7"><a href="spatial-weights-as-distance-functions.html#cb449-7" tabindex="-1"></a>}</span>
+<span id="cb449-8"><a href="spatial-weights-as-distance-functions.html#cb449-8" tabindex="-1"></a>k.distances2[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.88364023 0.08973071 0.64946181 0.43841241 0.23702838 0.01723905</code></pre>
-<div class="sourceCode" id="cb609"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb609-1"><a href="spatial-weights-as-distance-functions.html#cb609-1" tabindex="-1"></a>var.band.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> k.distances2,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
-<span id="cb609-2"><a href="spatial-weights-as-distance-functions.html#cb609-2" tabindex="-1"></a>var.band.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="spatial-weights-as-distance-functions.html#cb451-1" tabindex="-1"></a>var.band.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> k.distances2,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb451-2"><a href="spatial-weights-as-distance-functions.html#cb451-2" tabindex="-1"></a>var.band.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.88364023 0.08973071 0.64946181 0.43841241 0.23702838 0.01723905</code></pre>
 <p>With our new weights structure all the neighbors included have a nonzero weight.</p>
 </div>
@@ -1055,17 +1049,15 @@ from class <strong>listw</strong> to <strong>RsparseMatrix</strong> of the <stro
 <p>To start we use the <code>as</code> function with <strong>var.band.weights</strong> as the first parameter. We specify
 the class to convert to with the string: “RsparseMatrix”. We use <strong>var.band.weights</strong> to remake
 the GeoDa workbook example.</p>
-<div class="sourceCode" id="cb611"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb611-1"><a href="spatial-weights-as-distance-functions.html#cb611-1" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">as</span>(var.band.weights, <span class="st">&quot;RsparseMatrix&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="spatial-weights-as-distance-functions.html#cb453-1" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">as</span>(var.band.weights, <span class="st">&quot;RsparseMatrix&quot;</span>)</span></code></pre></div>
 <p>Now that we have converted, we can assign values of 1 to the diagonal elements with the
 <code>diag</code> function.</p>
-<div class="sourceCode" id="cb612"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb612-1"><a href="spatial-weights-as-distance-functions.html#cb612-1" tabindex="-1"></a><span class="fu">diag</span>(B) <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="spatial-weights-as-distance-functions.html#cb454-1" tabindex="-1"></a><span class="fu">diag</span>(B) <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
 <p>With this, we can now convert back to class <strong>listw</strong> with the <strong>spdep</strong> function <code>mat2listw</code>.
 The function is pretty self explanatory, as it converts from a matrix the <strong>listw</strong>. We
 need one extra step to accomplish the conversion. We first need to convert <strong>B</strong> to class
 <strong>dgRMatrix</strong> before we can use the <code>mat2listw</code> function.</p>
-<div class="sourceCode" id="cb613"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb613-1"><a href="spatial-weights-as-distance-functions.html#cb613-1" tabindex="-1"></a>var.band.w2 <span class="ot">&lt;-</span> <span class="fu">mat2listw</span>(<span class="fu">as</span>(B, <span class="st">&quot;dgRMatrix&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning in mat2listw(as(B, &quot;dgRMatrix&quot;)): style is M (missing); style should be
-## set to a valid value</code></pre>
+<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="spatial-weights-as-distance-functions.html#cb455-1" tabindex="-1"></a>var.band.w2 <span class="ot">&lt;-</span> <span class="fu">mat2listw</span>(<span class="fu">as</span>(B, <span class="st">&quot;dgRMatrix&quot;</span>))</span></code></pre></div>
 </div>
 <div id="properties-of-kernal-weights" class="section level4 unnumbered hasAnchor">
 <h4>Properties of kernal weights<a href="spatial-weights-as-distance-functions.html#properties-of-kernal-weights" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -1076,7 +1068,7 @@ from the ones in GeoDa. This is because we have to add the diagonal elements to 
 structure before moving forward. This is seen below when our 6th-nearest neighbors has an average
 of 7 links. To get a more accurate view of the connectivity properties, the structure will have to
 be examined before the diagonal elements are added.</p>
-<div class="sourceCode" id="cb615"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb615-1"><a href="spatial-weights-as-distance-functions.html#cb615-1" tabindex="-1"></a><span class="fu">summary</span>(var.band.w2)</span></code></pre></div>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="spatial-weights-as-distance-functions.html#cb456-1" tabindex="-1"></a><span class="fu">summary</span>(var.band.w2)</span></code></pre></div>
 <pre><code>## Characteristics of weights list object:
 ## Neighbour list object:
 ## Number of regions: 205 
@@ -1097,7 +1089,7 @@ be examined before the diagonal elements are added.</p>
 ## Weights constants summary:
 ##     n    nn       S0       S1       S2
 ## M 205 42025 622.5036 844.1885 7916.201</code></pre>
-<div class="sourceCode" id="cb617"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb617-1"><a href="spatial-weights-as-distance-functions.html#cb617-1" tabindex="-1"></a><span class="fu">plot</span>(var.band.w2, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="spatial-weights-as-distance-functions.html#cb458-1" tabindex="-1"></a><span class="fu">plot</span>(var.band.w2, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-328-1.png" width="672" /></p>
 
 </div>

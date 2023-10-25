@@ -648,15 +648,15 @@ actually be saving any files.<a href="#fn25" class="footnote-ref" id="fnref25"><
 <h3>Load packages<a href="applications-of-spatial-weights.html#load-packages-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, we load all the required packages using the <code>library</code> command. If you don’t have some of these in your system, make sure to install them first as well as
 their dependencies.<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
-<div class="sourceCode" id="cb618"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb618-1"><a href="applications-of-spatial-weights.html#cb618-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb618-2"><a href="applications-of-spatial-weights.html#cb618-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
-<span id="cb618-3"><a href="applications-of-spatial-weights.html#cb618-3" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
-<span id="cb618-4"><a href="applications-of-spatial-weights.html#cb618-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb618-5"><a href="applications-of-spatial-weights.html#cb618-5" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb618-6"><a href="applications-of-spatial-weights.html#cb618-6" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb618-7"><a href="applications-of-spatial-weights.html#cb618-7" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb618-8"><a href="applications-of-spatial-weights.html#cb618-8" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb618-9"><a href="applications-of-spatial-weights.html#cb618-9" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="applications-of-spatial-weights.html#cb459-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb459-2"><a href="applications-of-spatial-weights.html#cb459-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb459-3"><a href="applications-of-spatial-weights.html#cb459-3" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb459-4"><a href="applications-of-spatial-weights.html#cb459-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb459-5"><a href="applications-of-spatial-weights.html#cb459-5" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb459-6"><a href="applications-of-spatial-weights.html#cb459-6" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb459-7"><a href="applications-of-spatial-weights.html#cb459-7" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb459-8"><a href="applications-of-spatial-weights.html#cb459-8" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb459-9"><a href="applications-of-spatial-weights.html#cb459-9" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
 </div>
 <div id="geodadata-3" class="section level3 unnumbered hasAnchor">
 <h3>geodaData<a href="applications-of-spatial-weights.html#geodadata-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -671,7 +671,7 @@ zipfile, so you will need to unzip it by double clicking on the file in your fil
 finder. From there move the resulting folder titled: nyc into your working directory
 to continue. Once that is done, you can use the <strong>sf</strong> function: <code>st_read()</code> to read
 the shapefile into your R environment.</p>
-<div class="sourceCode" id="cb619"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb619-1"><a href="applications-of-spatial-weights.html#cb619-1" tabindex="-1"></a>clev.points <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>clev_pts</span></code></pre></div>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="applications-of-spatial-weights.html#cb460-1" tabindex="-1"></a>clev.points <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>clev_pts</span></code></pre></div>
 </div>
 </div>
 <div id="spatially-lagged-variables" class="section level2 unnumbered hasAnchor">
@@ -716,15 +716,15 @@ neighbors list to class <strong>listw</strong> with <code>nb2listw</code>. This 
 important to note that we will have to work with neighbors structure in some cases to get the desired
 functionality, which will require creating more than one weights object for the k-nearest neighbors weights
 used in this section of the notebook.</p>
-<div class="sourceCode" id="cb620"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb620-1"><a href="applications-of-spatial-weights.html#cb620-1" tabindex="-1"></a><span class="co"># getting coordinates</span></span>
-<span id="cb620-2"><a href="applications-of-spatial-weights.html#cb620-2" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(clev.points<span class="sc">$</span>x,clev.points<span class="sc">$</span>y)</span>
-<span id="cb620-3"><a href="applications-of-spatial-weights.html#cb620-3" tabindex="-1"></a></span>
-<span id="cb620-4"><a href="applications-of-spatial-weights.html#cb620-4" tabindex="-1"></a><span class="co"># creating neighbors list</span></span>
-<span id="cb620-5"><a href="applications-of-spatial-weights.html#cb620-5" tabindex="-1"></a>k6 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">6</span>))</span>
-<span id="cb620-6"><a href="applications-of-spatial-weights.html#cb620-6" tabindex="-1"></a></span>
-<span id="cb620-7"><a href="applications-of-spatial-weights.html#cb620-7" tabindex="-1"></a><span class="co"># converting to weights structure from neighbors list</span></span>
-<span id="cb620-8"><a href="applications-of-spatial-weights.html#cb620-8" tabindex="-1"></a>k6.weights1 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6)</span>
-<span id="cb620-9"><a href="applications-of-spatial-weights.html#cb620-9" tabindex="-1"></a>k6.weights1<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="applications-of-spatial-weights.html#cb461-1" tabindex="-1"></a><span class="co"># getting coordinates</span></span>
+<span id="cb461-2"><a href="applications-of-spatial-weights.html#cb461-2" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(clev.points<span class="sc">$</span>x,clev.points<span class="sc">$</span>y)</span>
+<span id="cb461-3"><a href="applications-of-spatial-weights.html#cb461-3" tabindex="-1"></a></span>
+<span id="cb461-4"><a href="applications-of-spatial-weights.html#cb461-4" tabindex="-1"></a><span class="co"># creating neighbors list</span></span>
+<span id="cb461-5"><a href="applications-of-spatial-weights.html#cb461-5" tabindex="-1"></a>k6 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">6</span>))</span>
+<span id="cb461-6"><a href="applications-of-spatial-weights.html#cb461-6" tabindex="-1"></a></span>
+<span id="cb461-7"><a href="applications-of-spatial-weights.html#cb461-7" tabindex="-1"></a><span class="co"># converting to weights structure from neighbors list</span></span>
+<span id="cb461-8"><a href="applications-of-spatial-weights.html#cb461-8" tabindex="-1"></a>k6.weights1 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6)</span>
+<span id="cb461-9"><a href="applications-of-spatial-weights.html#cb461-9" tabindex="-1"></a>k6.weights1<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.1666667 0.1666667 0.1666667 0.1666667 0.1666667 0.1666667</code></pre>
 </div>
 <div id="spatial-lag-with-row-standardized-weights" class="section level4 unnumbered hasAnchor">
@@ -737,9 +737,9 @@ be a problem if the variable comes from the same dataset used to create your wei
 <p>We create a new data frame of the <strong>sale_price</strong> variable and the lag variable to get a side by side
 look. To get a brief look at the first few observations of both variables, we use <code>head</code>. Then to get
 a nicer looking table, we use <code>kable</code> from the <strong>knitr</strong> package.</p>
-<div class="sourceCode" id="cb622"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb622-1"><a href="applications-of-spatial-weights.html#cb622-1" tabindex="-1"></a>lag1 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k6.weights1, clev.points<span class="sc">$</span>sale_price)</span>
-<span id="cb622-2"><a href="applications-of-spatial-weights.html#cb622-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sale_price =</span> clev.points<span class="sc">$</span>sale_price, lag1)</span>
-<span id="cb622-3"><a href="applications-of-spatial-weights.html#cb622-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="applications-of-spatial-weights.html#cb463-1" tabindex="-1"></a>lag1 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k6.weights1, clev.points<span class="sc">$</span>sale_price)</span>
+<span id="cb463-2"><a href="applications-of-spatial-weights.html#cb463-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sale_price =</span> clev.points<span class="sc">$</span>sale_price, lag1)</span>
+<span id="cb463-3"><a href="applications-of-spatial-weights.html#cb463-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -780,26 +780,26 @@ significant figures than GeoDa.</p>
 illustrate this by finding the neighboring sale price values for the first observation. To get these values,
 we get the neighbor ids for the first observation by double bracket notation. We then select the sale
 price values by indexing with the resulting numeric vector.</p>
-<div class="sourceCode" id="cb623"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb623-1"><a href="applications-of-spatial-weights.html#cb623-1" tabindex="-1"></a>nb1 <span class="ot">&lt;-</span> k6[[<span class="dv">1</span>]]</span>
-<span id="cb623-2"><a href="applications-of-spatial-weights.html#cb623-2" tabindex="-1"></a>nb1 <span class="ot">&lt;-</span> clev.points<span class="sc">$</span>sale_price[nb1]</span>
-<span id="cb623-3"><a href="applications-of-spatial-weights.html#cb623-3" tabindex="-1"></a>nb1</span></code></pre></div>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="applications-of-spatial-weights.html#cb464-1" tabindex="-1"></a>nb1 <span class="ot">&lt;-</span> k6[[<span class="dv">1</span>]]</span>
+<span id="cb464-2"><a href="applications-of-spatial-weights.html#cb464-2" tabindex="-1"></a>nb1 <span class="ot">&lt;-</span> clev.points<span class="sc">$</span>sale_price[nb1]</span>
+<span id="cb464-3"><a href="applications-of-spatial-weights.html#cb464-3" tabindex="-1"></a>nb1</span></code></pre></div>
 <pre><code>## [1]  65000 120000 131650  81500  76000   5000</code></pre>
 <p>We now verify the value for the spatial lag listed in the table. It is obtained as the average of the sales price
 for the six neighbors, or (131650 + 65000 + 81500 + 76000 + 120000 + 5000)/6 = 79858.33.</p>
 <p>We can quickly assess the effect of spatial averaging by comparing the descriptive statistics for the lag variable
 with those of the original sale price variable.</p>
-<div class="sourceCode" id="cb625"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb625-1"><a href="applications-of-spatial-weights.html#cb625-1" tabindex="-1"></a><span class="fu">summary</span>(clev.points<span class="sc">$</span>sale_price)</span></code></pre></div>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="applications-of-spatial-weights.html#cb466-1" tabindex="-1"></a><span class="fu">summary</span>(clev.points<span class="sc">$</span>sale_price)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    1049    9000   20000   41897   48500  527409</code></pre>
-<div class="sourceCode" id="cb627"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb627-1"><a href="applications-of-spatial-weights.html#cb627-1" tabindex="-1"></a><span class="fu">summary</span>(lag1)</span></code></pre></div>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="applications-of-spatial-weights.html#cb468-1" tabindex="-1"></a><span class="fu">summary</span>(lag1)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    6583   16142   26500   39818   54417  229583</code></pre>
 <p>As seen above, the range for the original sale price variable is 1,049 to 527,409. The range for the
 lag variable is much more compressed, being 6,583 to 229,583. The typical effect of spatial lag is a compression
 of the range and variance of a variable. We can see this further when examing the standard deviation.</p>
-<div class="sourceCode" id="cb629"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb629-1"><a href="applications-of-spatial-weights.html#cb629-1" tabindex="-1"></a><span class="fu">sd</span>(clev.points<span class="sc">$</span>sale_price)</span></code></pre></div>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="applications-of-spatial-weights.html#cb470-1" tabindex="-1"></a><span class="fu">sd</span>(clev.points<span class="sc">$</span>sale_price)</span></code></pre></div>
 <pre><code>## [1] 60654.34</code></pre>
-<div class="sourceCode" id="cb631"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb631-1"><a href="applications-of-spatial-weights.html#cb631-1" tabindex="-1"></a><span class="fu">sd</span>(lag1)</span></code></pre></div>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="applications-of-spatial-weights.html#cb472-1" tabindex="-1"></a><span class="fu">sd</span>(lag1)</span></code></pre></div>
 <pre><code>## [1] 36463.76</code></pre>
 <p>The standard deviation for home sales gets significantly condensed from 60654.34 to 36463.76 in the creation
 of the lag variable.</p>
@@ -816,10 +816,10 @@ frame. We use <code>cbind</code> to do this, as with the coordinates. From there
 package. The necessary inputs are the data(<strong>pcp.vars</strong>) and the scale parameter. We use `scale = “globalminmax”
 to keep the same price values as our lag variable and sale price variable. The default option scales it down,
 which is not what we are looking for in this case.</p>
-<div class="sourceCode" id="cb633"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb633-1"><a href="applications-of-spatial-weights.html#cb633-1" tabindex="-1"></a>sale.price <span class="ot">&lt;-</span> clev.points<span class="sc">$</span>sale_price</span>
-<span id="cb633-2"><a href="applications-of-spatial-weights.html#cb633-2" tabindex="-1"></a>pcp.vars <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sale.price,lag1)</span>
-<span id="cb633-3"><a href="applications-of-spatial-weights.html#cb633-3" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="at">data =</span> pcp.vars,<span class="at">scale =</span><span class="st">&quot;globalminmax&quot;</span>) <span class="sc">+</span></span>
-<span id="cb633-4"><a href="applications-of-spatial-weights.html#cb633-4" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Parallel Coordinate Plot&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="applications-of-spatial-weights.html#cb474-1" tabindex="-1"></a>sale.price <span class="ot">&lt;-</span> clev.points<span class="sc">$</span>sale_price</span>
+<span id="cb474-2"><a href="applications-of-spatial-weights.html#cb474-2" tabindex="-1"></a>pcp.vars <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sale.price,lag1)</span>
+<span id="cb474-3"><a href="applications-of-spatial-weights.html#cb474-3" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="at">data =</span> pcp.vars,<span class="at">scale =</span><span class="st">&quot;globalminmax&quot;</span>) <span class="sc">+</span></span>
+<span id="cb474-4"><a href="applications-of-spatial-weights.html#cb474-4" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Parallel Coordinate Plot&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-339-1.png" width="672" /></p>
 </div>
 <div id="spatial-lag-as-a-sum-of-neighboring-values" class="section level4 unnumbered hasAnchor">
@@ -831,13 +831,13 @@ the <code>nb2listw</code> function to explicitly assign these weights.</p>
 <p>We start by applying a function that will assign a value of 1 per each neighbor. This is done with <code>lapply</code>, which we have been using to manipulate
 the neighbors structure throughout the past notebooks. Basically it applies
 a function across each value in the neighbors structure.</p>
-<div class="sourceCode" id="cb634"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb634-1"><a href="applications-of-spatial-weights.html#cb634-1" tabindex="-1"></a>binary.weights <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k6, <span class="cf">function</span>(x) <span class="dv">0</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb634-2"><a href="applications-of-spatial-weights.html#cb634-2" tabindex="-1"></a>k6.weights2 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6, <span class="at">glist =</span> binary.weights, <span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="applications-of-spatial-weights.html#cb475-1" tabindex="-1"></a>binary.weights <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k6, <span class="cf">function</span>(x) <span class="dv">0</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb475-2"><a href="applications-of-spatial-weights.html#cb475-2" tabindex="-1"></a>k6.weights2 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6, <span class="at">glist =</span> binary.weights, <span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
 <p>With the proper weights assigned, we can use <code>lag.listw</code> to compute a lag
 variable from our weight and sale price data.</p>
-<div class="sourceCode" id="cb635"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb635-1"><a href="applications-of-spatial-weights.html#cb635-1" tabindex="-1"></a>lag2 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k6.weights2, clev.points<span class="sc">$</span>sale_price)</span>
-<span id="cb635-2"><a href="applications-of-spatial-weights.html#cb635-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">lag2 =</span> lag2)</span>
-<span id="cb635-3"><a href="applications-of-spatial-weights.html#cb635-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="applications-of-spatial-weights.html#cb476-1" tabindex="-1"></a>lag2 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k6.weights2, clev.points<span class="sc">$</span>sale_price)</span>
+<span id="cb476-2"><a href="applications-of-spatial-weights.html#cb476-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">lag2 =</span> lag2)</span>
+<span id="cb476-3"><a href="applications-of-spatial-weights.html#cb476-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -887,10 +887,10 @@ diagonal element. To do this in R, we need to go back to the neighbors
 structure and add the diagonal element before assigning weights. To begin
 we assign <strong>k6</strong> to a new variable because we will directly alter its
 structure to add the diagonal elements.</p>
-<div class="sourceCode" id="cb636"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb636-1"><a href="applications-of-spatial-weights.html#cb636-1" tabindex="-1"></a>k6a <span class="ot">&lt;-</span> k6</span></code></pre></div>
+<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb477-1"><a href="applications-of-spatial-weights.html#cb477-1" tabindex="-1"></a>k6a <span class="ot">&lt;-</span> k6</span></code></pre></div>
 <p>To add the diagonal element to the neighbors list, we just need <code>include.self</code>
 from <strong>spdep</strong>.</p>
-<div class="sourceCode" id="cb637"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb637-1"><a href="applications-of-spatial-weights.html#cb637-1" tabindex="-1"></a><span class="fu">include.self</span>(k6a)</span></code></pre></div>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="applications-of-spatial-weights.html#cb478-1" tabindex="-1"></a><span class="fu">include.self</span>(k6a)</span></code></pre></div>
 <pre><code>## Neighbour list object:
 ## Number of regions: 205 
 ## Number of nonzero links: 1435 
@@ -898,12 +898,12 @@ from <strong>spdep</strong>.</p>
 ## Average number of links: 7 
 ## Non-symmetric neighbours list</code></pre>
 <p>Now we obtain weights with <code>nb2listw</code></p>
-<div class="sourceCode" id="cb639"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb639-1"><a href="applications-of-spatial-weights.html#cb639-1" tabindex="-1"></a>k6.weights3 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6a)</span></code></pre></div>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb480-1"><a href="applications-of-spatial-weights.html#cb480-1" tabindex="-1"></a>k6.weights3 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6a)</span></code></pre></div>
 <p>Lastly, we just need to create the lag variable from our weight structure and
 <strong>sale_price</strong> variable.</p>
-<div class="sourceCode" id="cb640"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb640-1"><a href="applications-of-spatial-weights.html#cb640-1" tabindex="-1"></a>lag3 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k6.weights3, clev.points<span class="sc">$</span>sale_price)</span>
-<span id="cb640-2"><a href="applications-of-spatial-weights.html#cb640-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">lag3 =</span> lag3)</span>
-<span id="cb640-3"><a href="applications-of-spatial-weights.html#cb640-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="applications-of-spatial-weights.html#cb481-1" tabindex="-1"></a>lag3 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k6.weights3, clev.points<span class="sc">$</span>sale_price)</span>
+<span id="cb481-2"><a href="applications-of-spatial-weights.html#cb481-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">lag3 =</span> lag3)</span>
+<span id="cb481-3"><a href="applications-of-spatial-weights.html#cb481-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -958,16 +958,16 @@ from <strong>spdep</strong>.</p>
 <p>The spatial window sum is the counter part of the window average, but
 without using row-standardized weights. To do this we assign binary
 weights to the neighbor structure that includes the diagonal element.</p>
-<div class="sourceCode" id="cb641"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb641-1"><a href="applications-of-spatial-weights.html#cb641-1" tabindex="-1"></a>binary.weights2 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k6a, <span class="cf">function</span>(x) <span class="dv">0</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb641-2"><a href="applications-of-spatial-weights.html#cb641-2" tabindex="-1"></a>binary.weights2[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="applications-of-spatial-weights.html#cb482-1" tabindex="-1"></a>binary.weights2 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k6a, <span class="cf">function</span>(x) <span class="dv">0</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb482-2"><a href="applications-of-spatial-weights.html#cb482-2" tabindex="-1"></a>binary.weights2[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 1 1 1 1 1 1</code></pre>
 <p>Again we use <code>nb2listw</code> and <code>glist =</code> to explicitly assign weight values.</p>
-<div class="sourceCode" id="cb643"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb643-1"><a href="applications-of-spatial-weights.html#cb643-1" tabindex="-1"></a>k6.weights4 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6a, <span class="at">glist =</span> binary.weights2, <span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="applications-of-spatial-weights.html#cb484-1" tabindex="-1"></a>k6.weights4 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6a, <span class="at">glist =</span> binary.weights2, <span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
 <p>With our new weight structure, we can compute the lag variable with <code>lag.listw</code>.</p>
-<div class="sourceCode" id="cb644"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb644-1"><a href="applications-of-spatial-weights.html#cb644-1" tabindex="-1"></a>lag4 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k6.weights4, clev.points<span class="sc">$</span>sale_price)</span>
-<span id="cb644-2"><a href="applications-of-spatial-weights.html#cb644-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">lag4 =</span> lag4)</span>
-<span id="cb644-3"><a href="applications-of-spatial-weights.html#cb644-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
+<div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb485-1"><a href="applications-of-spatial-weights.html#cb485-1" tabindex="-1"></a>lag4 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k6.weights4, clev.points<span class="sc">$</span>sale_price)</span>
+<span id="cb485-2"><a href="applications-of-spatial-weights.html#cb485-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">lag4 =</span> lag4)</span>
+<span id="cb485-3"><a href="applications-of-spatial-weights.html#cb485-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1050,22 +1050,22 @@ locations (as defined by the weights).</p>
 <h4>inverse distance for k = 6 nearest neighbors<a href="applications-of-spatial-weights.html#inverse-distance-for-k-6-nearest-neighbors" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To calculate the inverse distances, we must first compute the distances between each neighbor.
 This is done with <code>nbdists</code>.</p>
-<div class="sourceCode" id="cb645"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb645-1"><a href="applications-of-spatial-weights.html#cb645-1" tabindex="-1"></a>k6.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k6,coords)</span></code></pre></div>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="applications-of-spatial-weights.html#cb486-1" tabindex="-1"></a>k6.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k6,coords)</span></code></pre></div>
 <p>Now we apply the function 1/x to each element of the distance structure, which gives us
 the inverse distances.</p>
-<div class="sourceCode" id="cb646"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb646-1"><a href="applications-of-spatial-weights.html#cb646-1" tabindex="-1"></a>invd1a <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k6.distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>x))</span>
-<span id="cb646-2"><a href="applications-of-spatial-weights.html#cb646-2" tabindex="-1"></a>invd1a[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="applications-of-spatial-weights.html#cb487-1" tabindex="-1"></a>invd1a <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k6.distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>x))</span>
+<span id="cb487-2"><a href="applications-of-spatial-weights.html#cb487-2" tabindex="-1"></a>invd1a[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.0025963168 0.0003318873 0.0008618371 0.0005379514 0.0003959608
 ## [6] 0.0003074062</code></pre>
 <p>Now we explicitly assign the inverse distance weight with <code>glist =</code> in the <code>nb2listw</code> function.</p>
-<div class="sourceCode" id="cb648"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb648-1"><a href="applications-of-spatial-weights.html#cb648-1" tabindex="-1"></a>invd.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> invd1a,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="applications-of-spatial-weights.html#cb489-1" tabindex="-1"></a>invd.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> invd1a,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
 <p>The default case with row-standardized weights off and no diagonal elements
 is put into the variable <strong>IDRSND</strong>. The lag values here are very different
 from the sale price because the weight values are relatively small, the largest
 being .0026</p>
-<div class="sourceCode" id="cb649"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb649-1"><a href="applications-of-spatial-weights.html#cb649-1" tabindex="-1"></a>idrsnd <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(invd.weights, clev.points<span class="sc">$</span>sale_price)</span>
-<span id="cb649-2"><a href="applications-of-spatial-weights.html#cb649-2" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(idrsnd))</span></code></pre></div>
+<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb490-1"><a href="applications-of-spatial-weights.html#cb490-1" tabindex="-1"></a>idrsnd <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(invd.weights, clev.points<span class="sc">$</span>sale_price)</span>
+<span id="cb490-2"><a href="applications-of-spatial-weights.html#cb490-2" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(idrsnd))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1093,8 +1093,8 @@ being .0026</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb650"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb650-1"><a href="applications-of-spatial-weights.html#cb650-1" tabindex="-1"></a>idnrwd <span class="ot">&lt;-</span> clev.points<span class="sc">$</span>sale_price <span class="sc">+</span> idrsnd</span>
-<span id="cb650-2"><a href="applications-of-spatial-weights.html#cb650-2" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(idnrwd))</span></code></pre></div>
+<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb491-1"><a href="applications-of-spatial-weights.html#cb491-1" tabindex="-1"></a>idnrwd <span class="ot">&lt;-</span> clev.points<span class="sc">$</span>sale_price <span class="sc">+</span> idrsnd</span>
+<span id="cb491-2"><a href="applications-of-spatial-weights.html#cb491-2" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(idnrwd))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1130,14 +1130,14 @@ equivalent of:
 </div>
 <div id="spatial-lags-with-row-standardized-inverse-distance-weights" class="section level3 unnumbered hasAnchor">
 <h3>Spatial lags with row-standardized inverse distance weights<a href="applications-of-spatial-weights.html#spatial-lags-with-row-standardized-inverse-distance-weights" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb651"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb651-1"><a href="applications-of-spatial-weights.html#cb651-1" tabindex="-1"></a>row_stand <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb651-2"><a href="applications-of-spatial-weights.html#cb651-2" tabindex="-1"></a>  row_sum <span class="ot">&lt;-</span> <span class="fu">sum</span>(x)</span>
-<span id="cb651-3"><a href="applications-of-spatial-weights.html#cb651-3" tabindex="-1"></a>  scalar <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>row_sum</span>
-<span id="cb651-4"><a href="applications-of-spatial-weights.html#cb651-4" tabindex="-1"></a>  x <span class="sc">*</span> scalar</span>
-<span id="cb651-5"><a href="applications-of-spatial-weights.html#cb651-5" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb652"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb652-1"><a href="applications-of-spatial-weights.html#cb652-1" tabindex="-1"></a>row.standw <span class="ot">&lt;-</span> <span class="fu">lapply</span>(invd1a, row_stand)</span>
-<span id="cb652-2"><a href="applications-of-spatial-weights.html#cb652-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">inverse_distance =</span> invd1a[[<span class="dv">1</span>]], <span class="at">row_stand_invd =</span> row.standw[[<span class="dv">1</span>]])</span>
-<span id="cb652-3"><a href="applications-of-spatial-weights.html#cb652-3" tabindex="-1"></a><span class="fu">kable</span>(df)</span></code></pre></div>
+<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb492-1"><a href="applications-of-spatial-weights.html#cb492-1" tabindex="-1"></a>row_stand <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb492-2"><a href="applications-of-spatial-weights.html#cb492-2" tabindex="-1"></a>  row_sum <span class="ot">&lt;-</span> <span class="fu">sum</span>(x)</span>
+<span id="cb492-3"><a href="applications-of-spatial-weights.html#cb492-3" tabindex="-1"></a>  scalar <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>row_sum</span>
+<span id="cb492-4"><a href="applications-of-spatial-weights.html#cb492-4" tabindex="-1"></a>  x <span class="sc">*</span> scalar</span>
+<span id="cb492-5"><a href="applications-of-spatial-weights.html#cb492-5" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb493"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb493-1"><a href="applications-of-spatial-weights.html#cb493-1" tabindex="-1"></a>row.standw <span class="ot">&lt;-</span> <span class="fu">lapply</span>(invd1a, row_stand)</span>
+<span id="cb493-2"><a href="applications-of-spatial-weights.html#cb493-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">inverse_distance =</span> invd1a[[<span class="dv">1</span>]], <span class="at">row_stand_invd =</span> row.standw[[<span class="dv">1</span>]])</span>
+<span id="cb493-3"><a href="applications-of-spatial-weights.html#cb493-3" tabindex="-1"></a><span class="fu">kable</span>(df)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1172,13 +1172,13 @@ equivalent of:
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb653"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb653-1"><a href="applications-of-spatial-weights.html#cb653-1" tabindex="-1"></a><span class="fu">sum</span>(row.standw[[<span class="dv">1</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb494-1"><a href="applications-of-spatial-weights.html#cb494-1" tabindex="-1"></a><span class="fu">sum</span>(row.standw[[<span class="dv">1</span>]])</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb655"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb655-1"><a href="applications-of-spatial-weights.html#cb655-1" tabindex="-1"></a>invd.weights2 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> row.standw,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
-<span id="cb655-2"><a href="applications-of-spatial-weights.html#cb655-2" tabindex="-1"></a>invd.weights2<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb496"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb496-1"><a href="applications-of-spatial-weights.html#cb496-1" tabindex="-1"></a>invd.weights2 <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> row.standw,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb496-2"><a href="applications-of-spatial-weights.html#cb496-2" tabindex="-1"></a>invd.weights2<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.51602688 0.06596374 0.17129309 0.10691969 0.07869856 0.06109804</code></pre>
-<div class="sourceCode" id="cb657"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb657-1"><a href="applications-of-spatial-weights.html#cb657-1" tabindex="-1"></a>lag6 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(invd.weights2, clev.points<span class="sc">$</span>sale_price)</span>
-<span id="cb657-2"><a href="applications-of-spatial-weights.html#cb657-2" tabindex="-1"></a><span class="fu">head</span>(lag6)</span></code></pre></div>
+<div class="sourceCode" id="cb498"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb498-1"><a href="applications-of-spatial-weights.html#cb498-1" tabindex="-1"></a>lag6 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(invd.weights2, clev.points<span class="sc">$</span>sale_price)</span>
+<span id="cb498-2"><a href="applications-of-spatial-weights.html#cb498-2" tabindex="-1"></a><span class="fu">head</span>(lag6)</span></code></pre></div>
 <pre><code>## [1]  79008.67 159632.92  70716.60 101979.20  45949.65  65842.27</code></pre>
 </div>
 </div>
@@ -1192,29 +1192,29 @@ function results in a specific value for the diagonal element, which should not
 be changed either. As a result, the only viable option to create spatially
 lagged variables based on kernel weights is to have no row-standardization and
 have the diagonal elements included.</p>
-<div class="sourceCode" id="cb659"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb659-1"><a href="applications-of-spatial-weights.html#cb659-1" tabindex="-1"></a>k6a.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k6a,coords)</span></code></pre></div>
+<div class="sourceCode" id="cb500"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb500-1"><a href="applications-of-spatial-weights.html#cb500-1" tabindex="-1"></a>k6a.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k6a,coords)</span></code></pre></div>
 <p>Here we apply the Epanechnikov kernal weight function to the distance structure, but
 calculate z as a variable bandwidth rather than the critical threshold. For the variable
 bandwidth, we take the maximum distance between a location and it’s set of 6 neighbors. Then
 this is the distance used to calculate the weights for the neighbors of that location.</p>
-<div class="sourceCode" id="cb660"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb660-1"><a href="applications-of-spatial-weights.html#cb660-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k6a.distances)){</span>
-<span id="cb660-2"><a href="applications-of-spatial-weights.html#cb660-2" tabindex="-1"></a>  maxk6 <span class="ot">&lt;-</span> <span class="fu">max</span>(k6a.distances[[i]])</span>
-<span id="cb660-3"><a href="applications-of-spatial-weights.html#cb660-3" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> maxk6</span>
-<span id="cb660-4"><a href="applications-of-spatial-weights.html#cb660-4" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> .<span class="dv">75</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(k6a.distances[[i]] <span class="sc">/</span> bandwidth)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb660-5"><a href="applications-of-spatial-weights.html#cb660-5" tabindex="-1"></a>  k6a.distances[[i]] <span class="ot">&lt;-</span> new_row</span>
-<span id="cb660-6"><a href="applications-of-spatial-weights.html#cb660-6" tabindex="-1"></a>}</span>
-<span id="cb660-7"><a href="applications-of-spatial-weights.html#cb660-7" tabindex="-1"></a>k6a.distances[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb501"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb501-1"><a href="applications-of-spatial-weights.html#cb501-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k6a.distances)){</span>
+<span id="cb501-2"><a href="applications-of-spatial-weights.html#cb501-2" tabindex="-1"></a>  maxk6 <span class="ot">&lt;-</span> <span class="fu">max</span>(k6a.distances[[i]])</span>
+<span id="cb501-3"><a href="applications-of-spatial-weights.html#cb501-3" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> maxk6</span>
+<span id="cb501-4"><a href="applications-of-spatial-weights.html#cb501-4" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> .<span class="dv">75</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(k6a.distances[[i]] <span class="sc">/</span> bandwidth)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb501-5"><a href="applications-of-spatial-weights.html#cb501-5" tabindex="-1"></a>  k6a.distances[[i]] <span class="ot">&lt;-</span> new_row</span>
+<span id="cb501-6"><a href="applications-of-spatial-weights.html#cb501-6" tabindex="-1"></a>}</span>
+<span id="cb501-7"><a href="applications-of-spatial-weights.html#cb501-7" tabindex="-1"></a>k6a.distances[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.7394859 0.1065641 0.6545807 0.5050934 0.2979544 0.0000000</code></pre>
 <p>Now we create the weights structure with <code>nb2listw</code>, and directly assign the weights values
 to the neighbors structure with <code>glist =</code>.</p>
-<div class="sourceCode" id="cb662"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb662-1"><a href="applications-of-spatial-weights.html#cb662-1" tabindex="-1"></a>epan.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6a,<span class="at">glist =</span> k6a.distances,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
-<span id="cb662-2"><a href="applications-of-spatial-weights.html#cb662-2" tabindex="-1"></a>epan.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb503"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb503-1"><a href="applications-of-spatial-weights.html#cb503-1" tabindex="-1"></a>epan.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6a,<span class="at">glist =</span> k6a.distances,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb503-2"><a href="applications-of-spatial-weights.html#cb503-2" tabindex="-1"></a>epan.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.7394859 0.1065641 0.6545807 0.5050934 0.2979544 0.0000000</code></pre>
 <p>Lastly, we use <code>lag.listw</code> to create the lag variable from our Epanechnikov kernal weights, then take a
 brief look at the resulting lag variable, <strong>epalag</strong>.</p>
-<div class="sourceCode" id="cb664"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb664-1"><a href="applications-of-spatial-weights.html#cb664-1" tabindex="-1"></a>epalag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(epan.weights, clev.points<span class="sc">$</span>sale_price)</span>
-<span id="cb664-2"><a href="applications-of-spatial-weights.html#cb664-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(clev.points<span class="sc">$</span>sale_price,epalag)</span>
-<span id="cb664-3"><a href="applications-of-spatial-weights.html#cb664-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
+<div class="sourceCode" id="cb505"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb505-1"><a href="applications-of-spatial-weights.html#cb505-1" tabindex="-1"></a>epalag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(epan.weights, clev.points<span class="sc">$</span>sale_price)</span>
+<span id="cb505-2"><a href="applications-of-spatial-weights.html#cb505-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(clev.points<span class="sc">$</span>sale_price,epalag)</span>
+<span id="cb505-3"><a href="applications-of-spatial-weights.html#cb505-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1315,7 +1315,7 @@ zipfile, so you will need to unzip it by double clicking on the file in your fil
 finder. From there move the resulting folder titled: nyc into your working directory
 to continue. Once that is done, you can use the <strong>sf</strong> function: <code>st_read()</code> to read
 the shapefile into your R environment.</p>
-<div class="sourceCode" id="cb665"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb665-1"><a href="applications-of-spatial-weights.html#cb665-1" tabindex="-1"></a>ohio_lung <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>ohio_lung</span></code></pre></div>
+<div class="sourceCode" id="cb506"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb506-1"><a href="applications-of-spatial-weights.html#cb506-1" tabindex="-1"></a>ohio_lung <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>ohio_lung</span></code></pre></div>
 </div>
 <div id="creating-a-crude-rate" class="section level4 unnumbered hasAnchor">
 <h4>Creating a Crude Rate<a href="applications-of-spatial-weights.html#creating-a-crude-rate" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -1325,16 +1325,11 @@ females in 68.</p>
 <p>To get the rate we make a new variable, <strong>LRATE</strong> and calculated the rate through
 bivariate operation. We multiply the ratio by 10,000 to the crude rate of lung cancer
 per 10,000 white women in 1968.</p>
-<div class="sourceCode" id="cb666"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb666-1"><a href="applications-of-spatial-weights.html#cb666-1" tabindex="-1"></a>ohio_lung<span class="sc">$</span>LRATE <span class="ot">&lt;-</span> ohio_lung<span class="sc">$</span>LFW68 <span class="sc">/</span> ohio_lung<span class="sc">$</span>POPFW68 <span class="sc">*</span> <span class="dv">10000</span></span></code></pre></div>
-<div class="sourceCode" id="cb667"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb667-1"><a href="applications-of-spatial-weights.html#cb667-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
-<span id="cb667-2"><a href="applications-of-spatial-weights.html#cb667-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;LRATE&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;Standard Deviation: LRATE&quot;</span>) <span class="sc">+</span></span>
-<span id="cb667-3"><a href="applications-of-spatial-weights.html#cb667-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
-<span id="cb667-4"><a href="applications-of-spatial-weights.html#cb667-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<div class="sourceCode" id="cb507"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb507-1"><a href="applications-of-spatial-weights.html#cb507-1" tabindex="-1"></a>ohio_lung<span class="sc">$</span>LRATE <span class="ot">&lt;-</span> ohio_lung<span class="sc">$</span>LFW68 <span class="sc">/</span> ohio_lung<span class="sc">$</span>POPFW68 <span class="sc">*</span> <span class="dv">10000</span></span></code></pre></div>
+<div class="sourceCode" id="cb508"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb508-1"><a href="applications-of-spatial-weights.html#cb508-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
+<span id="cb508-2"><a href="applications-of-spatial-weights.html#cb508-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;LRATE&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;Standard Deviation: LRATE&quot;</span>) <span class="sc">+</span></span>
+<span id="cb508-3"><a href="applications-of-spatial-weights.html#cb508-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
+<span id="cb508-4"><a href="applications-of-spatial-weights.html#cb508-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-365-1.png" width="672" /></p>
 </div>
 <div id="creating-the-weights-1" class="section level4 unnumbered hasAnchor">
@@ -1347,34 +1342,31 @@ included.</p>
 <p>To begin we create a queen contiguity function with the corresponding pattern. We
 use the <code>st_relate</code> function to accomplish this. For a more in depth explanation
 of the specified pattern, check the contiguity based weights notebook.</p>
-<div class="sourceCode" id="cb669"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb669-1"><a href="applications-of-spatial-weights.html#cb669-1" tabindex="-1"></a>st_queen <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb509"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb509-1"><a href="applications-of-spatial-weights.html#cb509-1" tabindex="-1"></a>st_queen <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</span></code></pre></div>
 <p>Here we define a function needed to convert the resulting data structure from the
 <code>st_relate</code> function. Specifically from <strong>sgbp</strong> to <strong>nb</strong>. It’s fairly
 straightforward, we just change the class name, transfer the attributes,
 and check for observations without a neighbor.</p>
-<div class="sourceCode" id="cb670"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb670-1"><a href="applications-of-spatial-weights.html#cb670-1" tabindex="-1"></a>as.nb.sgbp <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
-<span id="cb670-2"><a href="applications-of-spatial-weights.html#cb670-2" tabindex="-1"></a>  attrs <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)</span>
-<span id="cb670-3"><a href="applications-of-spatial-weights.html#cb670-3" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="fu">length</span>(i) <span class="sc">==</span> 0L) 0L <span class="cf">else</span> i } )</span>
-<span id="cb670-4"><a href="applications-of-spatial-weights.html#cb670-4" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="ot">&lt;-</span> attrs</span>
-<span id="cb670-5"><a href="applications-of-spatial-weights.html#cb670-5" tabindex="-1"></a>  <span class="fu">class</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;nb&quot;</span></span>
-<span id="cb670-6"><a href="applications-of-spatial-weights.html#cb670-6" tabindex="-1"></a>  x</span>
-<span id="cb670-7"><a href="applications-of-spatial-weights.html#cb670-7" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb510"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb510-1"><a href="applications-of-spatial-weights.html#cb510-1" tabindex="-1"></a>as.nb.sgbp <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb510-2"><a href="applications-of-spatial-weights.html#cb510-2" tabindex="-1"></a>  attrs <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)</span>
+<span id="cb510-3"><a href="applications-of-spatial-weights.html#cb510-3" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="fu">length</span>(i) <span class="sc">==</span> 0L) 0L <span class="cf">else</span> i } )</span>
+<span id="cb510-4"><a href="applications-of-spatial-weights.html#cb510-4" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="ot">&lt;-</span> attrs</span>
+<span id="cb510-5"><a href="applications-of-spatial-weights.html#cb510-5" tabindex="-1"></a>  <span class="fu">class</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;nb&quot;</span></span>
+<span id="cb510-6"><a href="applications-of-spatial-weights.html#cb510-6" tabindex="-1"></a>  x</span>
+<span id="cb510-7"><a href="applications-of-spatial-weights.html#cb510-7" tabindex="-1"></a>}</span></code></pre></div>
 <p>Now we create a comprehnsive neighbors list with both first and second order
 neighbors. To start, we use the two functions we created to get a 1st order
 neighbors list, then we use <code>nblag</code> to get the first and second order neighbors. The
 next step is reoragnize the data structre so that first and second order neighbors
 are not separated, this is done with <code>nblag_cumul</code>. With these steps, we have a
 neighbors list of first and second order neighbors.</p>
-<div class="sourceCode" id="cb671"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb671-1"><a href="applications-of-spatial-weights.html#cb671-1" tabindex="-1"></a>queen.sgbp <span class="ot">&lt;-</span> <span class="fu">st_queen</span>(ohio_lung)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
-<div class="sourceCode" id="cb673"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb673-1"><a href="applications-of-spatial-weights.html#cb673-1" tabindex="-1"></a>queen.nb <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(queen.sgbp)</span>
-<span id="cb673-2"><a href="applications-of-spatial-weights.html#cb673-2" tabindex="-1"></a>second.order.queen <span class="ot">&lt;-</span> <span class="fu">nblag</span>(queen.nb, <span class="dv">2</span>)</span>
-<span id="cb673-3"><a href="applications-of-spatial-weights.html#cb673-3" tabindex="-1"></a>second.order.queen.cumul <span class="ot">&lt;-</span> <span class="fu">nblag_cumul</span>(second.order.queen)</span></code></pre></div>
+<div class="sourceCode" id="cb511"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb511-1"><a href="applications-of-spatial-weights.html#cb511-1" tabindex="-1"></a>queen.sgbp <span class="ot">&lt;-</span> <span class="fu">st_queen</span>(ohio_lung)</span>
+<span id="cb511-2"><a href="applications-of-spatial-weights.html#cb511-2" tabindex="-1"></a>queen.nb <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(queen.sgbp)</span>
+<span id="cb511-3"><a href="applications-of-spatial-weights.html#cb511-3" tabindex="-1"></a>second.order.queen <span class="ot">&lt;-</span> <span class="fu">nblag</span>(queen.nb, <span class="dv">2</span>)</span>
+<span id="cb511-4"><a href="applications-of-spatial-weights.html#cb511-4" tabindex="-1"></a>second.order.queen.cumul <span class="ot">&lt;-</span> <span class="fu">nblag_cumul</span>(second.order.queen)</span></code></pre></div>
 <p>Here we add the diagonal elements to the neighbors list because we will need them
 later on in computations.</p>
-<div class="sourceCode" id="cb674"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb674-1"><a href="applications-of-spatial-weights.html#cb674-1" tabindex="-1"></a><span class="fu">include.self</span>(second.order.queen.cumul)</span></code></pre></div>
+<div class="sourceCode" id="cb512"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb512-1"><a href="applications-of-spatial-weights.html#cb512-1" tabindex="-1"></a><span class="fu">include.self</span>(second.order.queen.cumul)</span></code></pre></div>
 <pre><code>## Neighbour list object:
 ## Number of regions: 88 
 ## Number of nonzero links: 1376 
@@ -1382,8 +1374,8 @@ later on in computations.</p>
 ## Average number of links: 15.63636</code></pre>
 <p>Now, we just use the <code>nb2listw</code> function to convert the neighbors list to a
 weights structure, which is row-standardized by default.</p>
-<div class="sourceCode" id="cb676"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb676-1"><a href="applications-of-spatial-weights.html#cb676-1" tabindex="-1"></a>queen.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(second.order.queen.cumul)</span>
-<span id="cb676-2"><a href="applications-of-spatial-weights.html#cb676-2" tabindex="-1"></a>queen.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb514"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb514-1"><a href="applications-of-spatial-weights.html#cb514-1" tabindex="-1"></a>queen.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(second.order.queen.cumul)</span>
+<span id="cb514-2"><a href="applications-of-spatial-weights.html#cb514-2" tabindex="-1"></a>queen.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>##  [1] 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1</code></pre>
 </div>
 <div id="k-nearest-neighbors" class="section level5 unnumbered hasAnchor">
@@ -1392,28 +1384,28 @@ weights structure, which is row-standardized by default.</p>
 start, we need the coordinates in a separate data structure before we can proceed
 with the neighbor and distance calculations. We use the same method to extract these
 values as the distance-band weights notebook.</p>
-<div class="sourceCode" id="cb678"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb678-1"><a href="applications-of-spatial-weights.html#cb678-1" tabindex="-1"></a>longitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(ohio_lung<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">1</span>]])</span>
-<span id="cb678-2"><a href="applications-of-spatial-weights.html#cb678-2" tabindex="-1"></a>latitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(ohio_lung<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">2</span>]])</span>
-<span id="cb678-3"><a href="applications-of-spatial-weights.html#cb678-3" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(longitude, latitude)</span></code></pre></div>
+<div class="sourceCode" id="cb516"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb516-1"><a href="applications-of-spatial-weights.html#cb516-1" tabindex="-1"></a>longitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(ohio_lung<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">1</span>]])</span>
+<span id="cb516-2"><a href="applications-of-spatial-weights.html#cb516-2" tabindex="-1"></a>latitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(ohio_lung<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">2</span>]])</span>
+<span id="cb516-3"><a href="applications-of-spatial-weights.html#cb516-3" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(longitude, latitude)</span></code></pre></div>
 <p>From here we just use <code>knearneigh</code> and <code>knn2nb</code> to get our neighbors structure.</p>
-<div class="sourceCode" id="cb679"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb679-1"><a href="applications-of-spatial-weights.html#cb679-1" tabindex="-1"></a>k10 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">10</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb517"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb517-1"><a href="applications-of-spatial-weights.html#cb517-1" tabindex="-1"></a>k10 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">10</span>))</span></code></pre></div>
 <p>Now we need the distances between each observation and its neighbors. Having this will
 allow us to calculate the inverse later and assign these values as weights when
 converting the neighbors structure to a weights structure.</p>
-<div class="sourceCode" id="cb680"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb680-1"><a href="applications-of-spatial-weights.html#cb680-1" tabindex="-1"></a>k10.dists <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k10,coords)</span></code></pre></div>
+<div class="sourceCode" id="cb518"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb518-1"><a href="applications-of-spatial-weights.html#cb518-1" tabindex="-1"></a>k10.dists <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k10,coords)</span></code></pre></div>
 <p>Here we apply a function to the distances of the 10th nearest neighbors and change
 the scale by an order of 10,000. The purpose of changing the scale is to get
 weight values that are not approximently zero.</p>
-<div class="sourceCode" id="cb681"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb681-1"><a href="applications-of-spatial-weights.html#cb681-1" tabindex="-1"></a>invdk10 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k10.dists, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>(x<span class="sc">/</span><span class="dv">10000</span>)))</span>
-<span id="cb681-2"><a href="applications-of-spatial-weights.html#cb681-2" tabindex="-1"></a>invdk10[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb519"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb519-1"><a href="applications-of-spatial-weights.html#cb519-1" tabindex="-1"></a>invdk10 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k10.dists, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>(x<span class="sc">/</span><span class="dv">10000</span>)))</span>
+<span id="cb519-2"><a href="applications-of-spatial-weights.html#cb519-2" tabindex="-1"></a>invdk10[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ##  [1] 0.2537074 0.1289088 0.2415022 0.3469379 0.1935753 0.2138694 0.1299890
 ##  [8] 0.1415348 0.1449763 0.1291574</code></pre>
 <p>With the <code>nb2listw</code> function, we can assign non-default weights to the new weights
 structure by means of the <code>glist</code> argument. Here we just assign the scaled inverse
 weights we created above.</p>
-<div class="sourceCode" id="cb683"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb683-1"><a href="applications-of-spatial-weights.html#cb683-1" tabindex="-1"></a>k10.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k10,<span class="at">glist =</span> invdk10, <span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
-<span id="cb683-2"><a href="applications-of-spatial-weights.html#cb683-2" tabindex="-1"></a>k10.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb521"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb521-1"><a href="applications-of-spatial-weights.html#cb521-1" tabindex="-1"></a>k10.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k10,<span class="at">glist =</span> invdk10, <span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb521-2"><a href="applications-of-spatial-weights.html#cb521-2" tabindex="-1"></a>k10.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>##  [1] 0.2537074 0.1289088 0.2415022 0.3469379 0.1935753 0.2138694 0.1299890
 ##  [8] 0.1415348 0.1449763 0.1291574</code></pre>
 </div>
@@ -1425,21 +1417,21 @@ to add in diagonal elements. This is best done with neighbors list.</p>
 be altering the structure to get the resulting weights.</p>
 <p>This gives us the distances between neighbors in the same structure as the neighbors
 list.</p>
-<div class="sourceCode" id="cb685"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb685-1"><a href="applications-of-spatial-weights.html#cb685-1" tabindex="-1"></a>k10.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k10,coords)</span></code></pre></div>
+<div class="sourceCode" id="cb523"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb523-1"><a href="applications-of-spatial-weights.html#cb523-1" tabindex="-1"></a>k10.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k10,coords)</span></code></pre></div>
 <p>This four loop gives us the epanechnikov weights in the the distance data structure
 that we computed above.</p>
-<div class="sourceCode" id="cb686"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb686-1"><a href="applications-of-spatial-weights.html#cb686-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k10.distances)){</span>
-<span id="cb686-2"><a href="applications-of-spatial-weights.html#cb686-2" tabindex="-1"></a>  maxk10 <span class="ot">&lt;-</span> <span class="fu">max</span>(k10.distances[[i]])</span>
-<span id="cb686-3"><a href="applications-of-spatial-weights.html#cb686-3" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> maxk10</span>
-<span id="cb686-4"><a href="applications-of-spatial-weights.html#cb686-4" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> .<span class="dv">75</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(k10.distances[[i]] <span class="sc">/</span> bandwidth)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb686-5"><a href="applications-of-spatial-weights.html#cb686-5" tabindex="-1"></a>  k10.distances[[i]] <span class="ot">&lt;-</span> new_row</span>
-<span id="cb686-6"><a href="applications-of-spatial-weights.html#cb686-6" tabindex="-1"></a>}</span>
-<span id="cb686-7"><a href="applications-of-spatial-weights.html#cb686-7" tabindex="-1"></a>k10.distances[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb524"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb524-1"><a href="applications-of-spatial-weights.html#cb524-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k10.distances)){</span>
+<span id="cb524-2"><a href="applications-of-spatial-weights.html#cb524-2" tabindex="-1"></a>  maxk10 <span class="ot">&lt;-</span> <span class="fu">max</span>(k10.distances[[i]])</span>
+<span id="cb524-3"><a href="applications-of-spatial-weights.html#cb524-3" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> maxk10</span>
+<span id="cb524-4"><a href="applications-of-spatial-weights.html#cb524-4" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> .<span class="dv">75</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(k10.distances[[i]] <span class="sc">/</span> bandwidth)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb524-5"><a href="applications-of-spatial-weights.html#cb524-5" tabindex="-1"></a>  k10.distances[[i]] <span class="ot">&lt;-</span> new_row</span>
+<span id="cb524-6"><a href="applications-of-spatial-weights.html#cb524-6" tabindex="-1"></a>}</span>
+<span id="cb524-7"><a href="applications-of-spatial-weights.html#cb524-7" tabindex="-1"></a>k10.distances[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>##  [1] 0.556375699 0.000000000 0.536310124 0.646456537 0.417397027 0.477523632
 ##  [7] 0.012413252 0.127843776 0.157031189 0.002884936</code></pre>
 <p>Now we can assign our epanechnikov weight values as weights with the <code>nb2listw</code> function throught the <code>glist =</code> parameter.</p>
-<div class="sourceCode" id="cb688"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb688-1"><a href="applications-of-spatial-weights.html#cb688-1" tabindex="-1"></a>epan.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k10,<span class="at">glist =</span> k10.distances,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
-<span id="cb688-2"><a href="applications-of-spatial-weights.html#cb688-2" tabindex="-1"></a>epan.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb526"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb526-1"><a href="applications-of-spatial-weights.html#cb526-1" tabindex="-1"></a>epan.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k10,<span class="at">glist =</span> k10.distances,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb526-2"><a href="applications-of-spatial-weights.html#cb526-2" tabindex="-1"></a>epan.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>##  [1] 0.556375699 0.000000000 0.536310124 0.646456537 0.417397027 0.477523632
 ##  [7] 0.012413252 0.127843776 0.157031189 0.002884936</code></pre>
 </div>
@@ -1449,17 +1441,12 @@ that we computed above.</p>
 <h3>Simple window average of rates<a href="applications-of-spatial-weights.html#simple-window-average-of-rates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This is an illustration of how not to proceed with the spatial rate calculation.
 Here we use our crude rate and create a spatial lag variable directly from the second order queen contiguity weights.</p>
-<div class="sourceCode" id="cb690"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb690-1"><a href="applications-of-spatial-weights.html#cb690-1" tabindex="-1"></a>ohio_lung<span class="sc">$</span>W_LRATE <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,ohio_lung<span class="sc">$</span>LRATE)</span></code></pre></div>
+<div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb528-1"><a href="applications-of-spatial-weights.html#cb528-1" tabindex="-1"></a>ohio_lung<span class="sc">$</span>W_LRATE <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,ohio_lung<span class="sc">$</span>LRATE)</span></code></pre></div>
 <p>We then plot <strong>W_LRATE</strong> with a standard deviation map.</p>
-<div class="sourceCode" id="cb691"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb691-1"><a href="applications-of-spatial-weights.html#cb691-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
-<span id="cb691-2"><a href="applications-of-spatial-weights.html#cb691-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;W_LRATE&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;Standard Deviation: W_LRATE&quot;</span>) <span class="sc">+</span></span>
-<span id="cb691-3"><a href="applications-of-spatial-weights.html#cb691-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
-<span id="cb691-4"><a href="applications-of-spatial-weights.html#cb691-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb529-1"><a href="applications-of-spatial-weights.html#cb529-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
+<span id="cb529-2"><a href="applications-of-spatial-weights.html#cb529-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;W_LRATE&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;Standard Deviation: W_LRATE&quot;</span>) <span class="sc">+</span></span>
+<span id="cb529-3"><a href="applications-of-spatial-weights.html#cb529-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
+<span id="cb529-4"><a href="applications-of-spatial-weights.html#cb529-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-380-1.png" width="672" /></p>
 <p>Characteristic of the spatial averaging, several larger groupings of similarly
 classified observations appear. The pattern is quite different from that displayed for
@@ -1477,25 +1464,20 @@ some extra steps.</p>
 <p>To get this rate we create lag variables for both population and event count with
 <code>lag.listw</code>. To get the rate, we then divide the event count lag variable by the
 the population lag variable.</p>
-<div class="sourceCode" id="cb693"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb693-1"><a href="applications-of-spatial-weights.html#cb693-1" tabindex="-1"></a>lag_lfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,ohio_lung<span class="sc">$</span>LFW68)</span>
-<span id="cb693-2"><a href="applications-of-spatial-weights.html#cb693-2" tabindex="-1"></a>lag_popfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,ohio_lung<span class="sc">$</span>POPFW68)</span>
-<span id="cb693-3"><a href="applications-of-spatial-weights.html#cb693-3" tabindex="-1"></a>ohio_lung<span class="sc">$</span>R_SPAT_R <span class="ot">&lt;-</span> lag_lfw68 <span class="sc">/</span> lag_popfw68</span></code></pre></div>
+<div class="sourceCode" id="cb530"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb530-1"><a href="applications-of-spatial-weights.html#cb530-1" tabindex="-1"></a>lag_lfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,ohio_lung<span class="sc">$</span>LFW68)</span>
+<span id="cb530-2"><a href="applications-of-spatial-weights.html#cb530-2" tabindex="-1"></a>lag_popfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,ohio_lung<span class="sc">$</span>POPFW68)</span>
+<span id="cb530-3"><a href="applications-of-spatial-weights.html#cb530-3" tabindex="-1"></a>ohio_lung<span class="sc">$</span>R_SPAT_R <span class="ot">&lt;-</span> lag_lfw68 <span class="sc">/</span> lag_popfw68</span></code></pre></div>
 <p>We map the results with <strong>tmap</strong> functions.</p>
-<div class="sourceCode" id="cb694"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb694-1"><a href="applications-of-spatial-weights.html#cb694-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
-<span id="cb694-2"><a href="applications-of-spatial-weights.html#cb694-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;R_SPAT_R&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;SRS-Smoothed LFW68 over POPFW68&quot;</span>) <span class="sc">+</span></span>
-<span id="cb694-3"><a href="applications-of-spatial-weights.html#cb694-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
-<span id="cb694-4"><a href="applications-of-spatial-weights.html#cb694-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<div class="sourceCode" id="cb531"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb531-1"><a href="applications-of-spatial-weights.html#cb531-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
+<span id="cb531-2"><a href="applications-of-spatial-weights.html#cb531-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;R_SPAT_R&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;SRS-Smoothed LFW68 over POPFW68&quot;</span>) <span class="sc">+</span></span>
+<span id="cb531-3"><a href="applications-of-spatial-weights.html#cb531-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
+<span id="cb531-4"><a href="applications-of-spatial-weights.html#cb531-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-382-1.png" width="672" /></p>
 <p>We rescale the spatial rate variable by 10,000 to make it comparable to <strong>W_LRATE</strong>. Then we add all
 of the rate to a data frame with <code>data.frame</code> and take a brief side by side look with <code>head</code> and <code>kable</code>.</p>
-<div class="sourceCode" id="cb696"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb696-1"><a href="applications-of-spatial-weights.html#cb696-1" tabindex="-1"></a>ohio_lung<span class="sc">$</span>R_SPAT_RT <span class="ot">&lt;-</span> ohio_lung<span class="sc">$</span>R_SPAT_R <span class="sc">*</span> <span class="dv">10000</span></span>
-<span id="cb696-2"><a href="applications-of-spatial-weights.html#cb696-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">LRATE =</span> ohio_lung<span class="sc">$</span>LRATE,<span class="at">W_LRATE =</span> ohio_lung<span class="sc">$</span>W_LRATE,<span class="at">R_SPAT_RT=</span> ohio_lung<span class="sc">$</span>R_SPAT_RT)</span>
-<span id="cb696-3"><a href="applications-of-spatial-weights.html#cb696-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
+<div class="sourceCode" id="cb532"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb532-1"><a href="applications-of-spatial-weights.html#cb532-1" tabindex="-1"></a>ohio_lung<span class="sc">$</span>R_SPAT_RT <span class="ot">&lt;-</span> ohio_lung<span class="sc">$</span>R_SPAT_R <span class="sc">*</span> <span class="dv">10000</span></span>
+<span id="cb532-2"><a href="applications-of-spatial-weights.html#cb532-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">LRATE =</span> ohio_lung<span class="sc">$</span>LRATE,<span class="at">W_LRATE =</span> ohio_lung<span class="sc">$</span>W_LRATE,<span class="at">R_SPAT_RT=</span> ohio_lung<span class="sc">$</span>R_SPAT_RT)</span>
+<span id="cb532-3"><a href="applications-of-spatial-weights.html#cb532-3" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1541,15 +1523,14 @@ of the rate to a data frame with <code>data.frame</code> and take a brief side b
 We will not go into depth on the different options here, but will create a basic scatterplot of <strong>W_LRATE</strong>
 and <strong>R_SPAT_RT</strong>. <code>geom_point</code> add the points to the plot, and <code>geom_smooth(method=lm)</code> add a linear
 regression line.</p>
-<div class="sourceCode" id="cb697"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb697-1"><a href="applications-of-spatial-weights.html#cb697-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>ohio_lung,<span class="fu">aes</span>(<span class="at">x=</span>W_LRATE,<span class="at">y=</span>R_SPAT_RT)) <span class="sc">+</span></span>
-<span id="cb697-2"><a href="applications-of-spatial-weights.html#cb697-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb697-3"><a href="applications-of-spatial-weights.html#cb697-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span>lm) </span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb533"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb533-1"><a href="applications-of-spatial-weights.html#cb533-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>ohio_lung,<span class="fu">aes</span>(<span class="at">x=</span>W_LRATE,<span class="at">y=</span>R_SPAT_RT)) <span class="sc">+</span></span>
+<span id="cb533-2"><a href="applications-of-spatial-weights.html#cb533-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb533-3"><a href="applications-of-spatial-weights.html#cb533-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span>lm) </span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-384-1.png" width="672" /></p>
 <p><code>lm</code> calculates the associated regression statistics with the scatterplot above. We then use <code>tidy</code> and
 <code>kable</code> to display these statistics in a neat table.</p>
-<div class="sourceCode" id="cb699"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb699-1"><a href="applications-of-spatial-weights.html#cb699-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(R_SPAT_RT <span class="sc">~</span> W_LRATE,<span class="at">data =</span> ohio_lung)</span>
-<span id="cb699-2"><a href="applications-of-spatial-weights.html#cb699-2" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">tidy</span>(lmfit))</span></code></pre></div>
+<div class="sourceCode" id="cb534"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb534-1"><a href="applications-of-spatial-weights.html#cb534-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(R_SPAT_RT <span class="sc">~</span> W_LRATE,<span class="at">data =</span> ohio_lung)</span>
+<span id="cb534-2"><a href="applications-of-spatial-weights.html#cb534-2" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">tidy</span>(lmfit))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1586,40 +1567,30 @@ element in our rate calculation, we add the event count variable to lag event co
 same with population before dividing to compute the rate. This works because the diagonal element would be assigned 1
 in the weight structure and as a result would just add the original sale proce from the location to the lag sale price,
 if originally included in the weight’s structure.</p>
-<div class="sourceCode" id="cb700"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb700-1"><a href="applications-of-spatial-weights.html#cb700-1" tabindex="-1"></a>lag_lfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k10.weights,ohio_lung<span class="sc">$</span>LFW68)</span>
-<span id="cb700-2"><a href="applications-of-spatial-weights.html#cb700-2" tabindex="-1"></a>lag_popfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k10.weights,ohio_lung<span class="sc">$</span>POPFW68)</span>
-<span id="cb700-3"><a href="applications-of-spatial-weights.html#cb700-3" tabindex="-1"></a>ohio_lung<span class="sc">$</span>ID_RATE <span class="ot">&lt;-</span> (lag_lfw68 <span class="sc">+</span> ohio_lung<span class="sc">$</span>LFW68)<span class="sc">/</span> (lag_popfw68 <span class="sc">+</span> ohio_lung<span class="sc">$</span>POPFW68) <span class="sc">*</span> <span class="dv">10000</span></span></code></pre></div>
-<div class="sourceCode" id="cb701"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb701-1"><a href="applications-of-spatial-weights.html#cb701-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
-<span id="cb701-2"><a href="applications-of-spatial-weights.html#cb701-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;ID_RATE&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;Standard Deviation IDRATE&quot;</span>) <span class="sc">+</span></span>
-<span id="cb701-3"><a href="applications-of-spatial-weights.html#cb701-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
-<span id="cb701-4"><a href="applications-of-spatial-weights.html#cb701-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<div class="sourceCode" id="cb535"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb535-1"><a href="applications-of-spatial-weights.html#cb535-1" tabindex="-1"></a>lag_lfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k10.weights,ohio_lung<span class="sc">$</span>LFW68)</span>
+<span id="cb535-2"><a href="applications-of-spatial-weights.html#cb535-2" tabindex="-1"></a>lag_popfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(k10.weights,ohio_lung<span class="sc">$</span>POPFW68)</span>
+<span id="cb535-3"><a href="applications-of-spatial-weights.html#cb535-3" tabindex="-1"></a>ohio_lung<span class="sc">$</span>ID_RATE <span class="ot">&lt;-</span> (lag_lfw68 <span class="sc">+</span> ohio_lung<span class="sc">$</span>LFW68)<span class="sc">/</span> (lag_popfw68 <span class="sc">+</span> ohio_lung<span class="sc">$</span>POPFW68) <span class="sc">*</span> <span class="dv">10000</span></span></code></pre></div>
+<div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb536-1"><a href="applications-of-spatial-weights.html#cb536-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
+<span id="cb536-2"><a href="applications-of-spatial-weights.html#cb536-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;ID_RATE&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;Standard Deviation IDRATE&quot;</span>) <span class="sc">+</span></span>
+<span id="cb536-3"><a href="applications-of-spatial-weights.html#cb536-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
+<span id="cb536-4"><a href="applications-of-spatial-weights.html#cb536-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-387-1.png" width="672" /></p>
 </div>
 <div id="kernal-smoothed-rate" class="section level4 unnumbered hasAnchor">
 <h4>Kernal Smoothed Rate<a href="applications-of-spatial-weights.html#kernal-smoothed-rate" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>We follow the same process for the kernal weights calculation as the inverse distance, except rescale the diagonal
 element by .75 as done in epanechnikov kernal function.</p>
-<div class="sourceCode" id="cb703"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb703-1"><a href="applications-of-spatial-weights.html#cb703-1" tabindex="-1"></a>lag_lfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(epan.weights,ohio_lung<span class="sc">$</span>LFW68)</span>
-<span id="cb703-2"><a href="applications-of-spatial-weights.html#cb703-2" tabindex="-1"></a>lag_popfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(epan.weights,ohio_lung<span class="sc">$</span>POPFW68)</span>
-<span id="cb703-3"><a href="applications-of-spatial-weights.html#cb703-3" tabindex="-1"></a>ohio_lung<span class="sc">$</span>KERN_RATE <span class="ot">&lt;-</span> (lag_lfw68 <span class="sc">+</span> .<span class="dv">75</span> <span class="sc">*</span> ohio_lung<span class="sc">$</span>LFW68)<span class="sc">/</span> (lag_popfw68 <span class="sc">+</span> .<span class="dv">75</span> <span class="sc">*</span> ohio_lung<span class="sc">$</span>POPFW68) <span class="sc">*</span> <span class="dv">10000</span></span>
-<span id="cb703-4"><a href="applications-of-spatial-weights.html#cb703-4" tabindex="-1"></a>ohio_lung<span class="sc">$</span>KERN_RATE <span class="ot">&lt;-</span> lag_lfw68 <span class="sc">/</span> lag_popfw68 <span class="sc">*</span> <span class="dv">10000</span></span></code></pre></div>
-<div class="sourceCode" id="cb704"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb704-1"><a href="applications-of-spatial-weights.html#cb704-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
-<span id="cb704-2"><a href="applications-of-spatial-weights.html#cb704-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;KERN_RATE&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;Standard Deviation: KERN_RATE&quot;</span>) <span class="sc">+</span></span>
-<span id="cb704-3"><a href="applications-of-spatial-weights.html#cb704-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
-<span id="cb704-4"><a href="applications-of-spatial-weights.html#cb704-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<div class="sourceCode" id="cb537"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb537-1"><a href="applications-of-spatial-weights.html#cb537-1" tabindex="-1"></a>lag_lfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(epan.weights,ohio_lung<span class="sc">$</span>LFW68)</span>
+<span id="cb537-2"><a href="applications-of-spatial-weights.html#cb537-2" tabindex="-1"></a>lag_popfw68 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(epan.weights,ohio_lung<span class="sc">$</span>POPFW68)</span>
+<span id="cb537-3"><a href="applications-of-spatial-weights.html#cb537-3" tabindex="-1"></a>ohio_lung<span class="sc">$</span>KERN_RATE <span class="ot">&lt;-</span> (lag_lfw68 <span class="sc">+</span> .<span class="dv">75</span> <span class="sc">*</span> ohio_lung<span class="sc">$</span>LFW68)<span class="sc">/</span> (lag_popfw68 <span class="sc">+</span> .<span class="dv">75</span> <span class="sc">*</span> ohio_lung<span class="sc">$</span>POPFW68) <span class="sc">*</span> <span class="dv">10000</span></span>
+<span id="cb537-4"><a href="applications-of-spatial-weights.html#cb537-4" tabindex="-1"></a>ohio_lung<span class="sc">$</span>KERN_RATE <span class="ot">&lt;-</span> lag_lfw68 <span class="sc">/</span> lag_popfw68 <span class="sc">*</span> <span class="dv">10000</span></span></code></pre></div>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="applications-of-spatial-weights.html#cb538-1" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
+<span id="cb538-2"><a href="applications-of-spatial-weights.html#cb538-2" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;KERN_RATE&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;Standard Deviation: KERN_RATE&quot;</span>) <span class="sc">+</span></span>
+<span id="cb538-3"><a href="applications-of-spatial-weights.html#cb538-3" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
+<span id="cb538-4"><a href="applications-of-spatial-weights.html#cb538-4" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-389-1.png" width="672" /></p>
-<div class="sourceCode" id="cb706"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb706-1"><a href="applications-of-spatial-weights.html#cb706-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ID_RATE =</span> ohio_lung<span class="sc">$</span>ID_RATE, <span class="at">KERN_RATE =</span> ohio_lung<span class="sc">$</span>KERN_RATE)</span>
-<span id="cb706-2"><a href="applications-of-spatial-weights.html#cb706-2" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
+<div class="sourceCode" id="cb539"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb539-1"><a href="applications-of-spatial-weights.html#cb539-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ID_RATE =</span> ohio_lung<span class="sc">$</span>ID_RATE, <span class="at">KERN_RATE =</span> ohio_lung<span class="sc">$</span>KERN_RATE)</span>
+<span id="cb539-2"><a href="applications-of-spatial-weights.html#cb539-2" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1722,28 +1693,23 @@ the prior, in the same manner as for the standard EB rate</p>
 <h3>Spatial EB rate smoother<a href="applications-of-spatial-weights.html#spatial-eb-rate-smoother" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The spatial Empirical Bayes is included in the <strong>spdep</strong> package. It even has a <code>geoda =</code> that calculates the rate in the same manner as GeoDa. To do this, we use the <code>EBlocal</code> function from <strong>spdep</strong> and input the two variables with a neighbors
 list. We then set <code>geoda =</code> to be TRUE.</p>
-<div class="sourceCode" id="cb707"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb707-1"><a href="applications-of-spatial-weights.html#cb707-1" tabindex="-1"></a>eb_risk <span class="ot">&lt;-</span> <span class="fu">EBlocal</span>(ohio_lung<span class="sc">$</span>LFW68, ohio_lung<span class="sc">$</span>POPFW68, second.order.queen.cumul, <span class="at">geoda =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="applications-of-spatial-weights.html#cb540-1" tabindex="-1"></a>eb_risk <span class="ot">&lt;-</span> <span class="fu">EBlocal</span>(ohio_lung<span class="sc">$</span>LFW68, ohio_lung<span class="sc">$</span>POPFW68, second.order.queen.cumul, <span class="at">geoda =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>With our Empirical Bayes calculation, we can now examine it with a choropleth map.
 Before we proceed, we add <strong>eb_risk</strong> to the data frame. We need to select the <strong>est</strong>
 not the <strong>raw</strong> to get the correct figures.</p>
-<div class="sourceCode" id="cb708"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb708-1"><a href="applications-of-spatial-weights.html#cb708-1" tabindex="-1"></a>ohio_lung <span class="ot">&lt;-</span> ohio_lung <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">eb_risk =</span> eb_risk<span class="sc">$</span>est)</span>
-<span id="cb708-2"><a href="applications-of-spatial-weights.html#cb708-2" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
-<span id="cb708-3"><a href="applications-of-spatial-weights.html#cb708-3" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;eb_risk&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;SEBS-Smoothed LFW68 over POPFW68&quot;</span>) <span class="sc">+</span></span>
-<span id="cb708-4"><a href="applications-of-spatial-weights.html#cb708-4" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
-<span id="cb708-5"><a href="applications-of-spatial-weights.html#cb708-5" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()
-## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<div class="sourceCode" id="cb541"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb541-1"><a href="applications-of-spatial-weights.html#cb541-1" tabindex="-1"></a>ohio_lung <span class="ot">&lt;-</span> ohio_lung <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">eb_risk =</span> eb_risk<span class="sc">$</span>est)</span>
+<span id="cb541-2"><a href="applications-of-spatial-weights.html#cb541-2" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
+<span id="cb541-3"><a href="applications-of-spatial-weights.html#cb541-3" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;eb_risk&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;SEBS-Smoothed LFW68 over POPFW68&quot;</span>) <span class="sc">+</span></span>
+<span id="cb541-4"><a href="applications-of-spatial-weights.html#cb541-4" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
+<span id="cb541-5"><a href="applications-of-spatial-weights.html#cb541-5" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-392-1.png" width="672" /></p>
 <p>We do the same for the 10-nearest neighbors:</p>
-<div class="sourceCode" id="cb710"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb710-1"><a href="applications-of-spatial-weights.html#cb710-1" tabindex="-1"></a>eb_risk_k10 <span class="ot">&lt;-</span> <span class="fu">EBlocal</span>(ohio_lung<span class="sc">$</span>LFW68, ohio_lung<span class="sc">$</span>POPFW68, k10, <span class="at">geoda =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb710-2"><a href="applications-of-spatial-weights.html#cb710-2" tabindex="-1"></a>ohio_lung <span class="ot">&lt;-</span> ohio_lung <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">eb_risk_k10 =</span> eb_risk_k10<span class="sc">$</span>est)</span>
-<span id="cb710-3"><a href="applications-of-spatial-weights.html#cb710-3" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
-<span id="cb710-4"><a href="applications-of-spatial-weights.html#cb710-4" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;eb_risk_k10&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;SEBS-Smoothed LFW68 over POPFW68&quot;</span>) <span class="sc">+</span></span>
-<span id="cb710-5"><a href="applications-of-spatial-weights.html#cb710-5" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
-<span id="cb710-6"><a href="applications-of-spatial-weights.html#cb710-6" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="applications-of-spatial-weights.html#cb542-1" tabindex="-1"></a>eb_risk_k10 <span class="ot">&lt;-</span> <span class="fu">EBlocal</span>(ohio_lung<span class="sc">$</span>LFW68, ohio_lung<span class="sc">$</span>POPFW68, k10, <span class="at">geoda =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb542-2"><a href="applications-of-spatial-weights.html#cb542-2" tabindex="-1"></a>ohio_lung <span class="ot">&lt;-</span> ohio_lung <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">eb_risk_k10 =</span> eb_risk_k10<span class="sc">$</span>est)</span>
+<span id="cb542-3"><a href="applications-of-spatial-weights.html#cb542-3" tabindex="-1"></a><span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
+<span id="cb542-4"><a href="applications-of-spatial-weights.html#cb542-4" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;eb_risk_k10&quot;</span>,<span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>,<span class="at">style =</span><span class="st">&quot;sd&quot;</span>,<span class="at">title =</span> <span class="st">&quot;SEBS-Smoothed LFW68 over POPFW68&quot;</span>) <span class="sc">+</span></span>
+<span id="cb542-5"><a href="applications-of-spatial-weights.html#cb542-5" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span> </span>
+<span id="cb542-6"><a href="applications-of-spatial-weights.html#cb542-6" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-393-1.png" width="672" /></p>
 <p>As for the spatial rate smoothing approaches, a careful sensitivity analysis is in
 order. The results depend considerably on the range used for the reference rate. The

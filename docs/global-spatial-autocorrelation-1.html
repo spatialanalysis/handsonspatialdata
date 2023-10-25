@@ -649,16 +649,16 @@ actually be saving any files.<a href="#fn27" class="footnote-ref" id="fnref27"><
 <h3><span class="header-section-number">10.1.1</span> Load packages<a href="global-spatial-autocorrelation-1.html#load-packages-8" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>First, we load all the required packages using the <code>library</code> command. If you don’t have some of these in your system, make sure to install them first as well as
 their dependencies.<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
-<div class="sourceCode" id="cb711"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb711-1"><a href="global-spatial-autocorrelation-1.html#cb711-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb711-2"><a href="global-spatial-autocorrelation-1.html#cb711-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
-<span id="cb711-3"><a href="global-spatial-autocorrelation-1.html#cb711-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb711-4"><a href="global-spatial-autocorrelation-1.html#cb711-4" tabindex="-1"></a><span class="fu">library</span>(deldir)</span>
-<span id="cb711-5"><a href="global-spatial-autocorrelation-1.html#cb711-5" tabindex="-1"></a><span class="fu">library</span>(robustHD)</span>
-<span id="cb711-6"><a href="global-spatial-autocorrelation-1.html#cb711-6" tabindex="-1"></a><span class="fu">library</span>(Hmisc)</span>
-<span id="cb711-7"><a href="global-spatial-autocorrelation-1.html#cb711-7" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb711-8"><a href="global-spatial-autocorrelation-1.html#cb711-8" tabindex="-1"></a><span class="fu">library</span>(gap)</span>
-<span id="cb711-9"><a href="global-spatial-autocorrelation-1.html#cb711-9" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
-<span id="cb711-10"><a href="global-spatial-autocorrelation-1.html#cb711-10" tabindex="-1"></a><span class="fu">library</span>(geodaData)</span></code></pre></div>
+<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb543-1"><a href="global-spatial-autocorrelation-1.html#cb543-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb543-2"><a href="global-spatial-autocorrelation-1.html#cb543-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb543-3"><a href="global-spatial-autocorrelation-1.html#cb543-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb543-4"><a href="global-spatial-autocorrelation-1.html#cb543-4" tabindex="-1"></a><span class="fu">library</span>(deldir)</span>
+<span id="cb543-5"><a href="global-spatial-autocorrelation-1.html#cb543-5" tabindex="-1"></a><span class="fu">library</span>(robustHD)</span>
+<span id="cb543-6"><a href="global-spatial-autocorrelation-1.html#cb543-6" tabindex="-1"></a><span class="fu">library</span>(Hmisc)</span>
+<span id="cb543-7"><a href="global-spatial-autocorrelation-1.html#cb543-7" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb543-8"><a href="global-spatial-autocorrelation-1.html#cb543-8" tabindex="-1"></a><span class="fu">library</span>(gap)</span>
+<span id="cb543-9"><a href="global-spatial-autocorrelation-1.html#cb543-9" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb543-10"><a href="global-spatial-autocorrelation-1.html#cb543-10" tabindex="-1"></a><span class="fu">library</span>(geodaData)</span></code></pre></div>
 </div>
 <div id="geodadata-website" class="section level3 unnumbered hasAnchor">
 <h3>geodaData website<a href="global-spatial-autocorrelation-1.html#geodadata-website" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -673,7 +673,7 @@ zipfile, so you will need to unzip it by double clicking on the file in your fil
 finder. From there move the resulting folder titled: nyc into your working directory
 to continue. Once that is done, you can use the <strong>sf</strong> function: <code>st_read()</code> to read
 the shapefile into your R environment.</p>
-<div class="sourceCode" id="cb712"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb712-1"><a href="global-spatial-autocorrelation-1.html#cb712-1" tabindex="-1"></a>clev.points <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>clev_pts</span></code></pre></div>
+<div class="sourceCode" id="cb544"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb544-1"><a href="global-spatial-autocorrelation-1.html#cb544-1" tabindex="-1"></a>clev.points <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>clev_pts</span></code></pre></div>
 </div>
 <div id="making-the-weights" class="section level3 hasAnchor" number="10.1.2">
 <h3><span class="header-section-number">10.1.2</span> Making the weights<a href="global-spatial-autocorrelation-1.html#making-the-weights" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -687,39 +687,35 @@ voronoi polygons. The only inputs needed are a vector of the x coordinates and a
 coordinates. The base R <code>plot</code> function can give us a preliminary look at the voronoi polygons.
 We will need a few additional parameters other than <strong>vtess</strong>, so the plot is legitable.
 Set <code>wlines = "tess"</code>, <code>wpoints = "none"</code> and <code>lty = 1</code>.</p>
-<div class="sourceCode" id="cb713"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb713-1"><a href="global-spatial-autocorrelation-1.html#cb713-1" tabindex="-1"></a>vtess <span class="ot">&lt;-</span> <span class="fu">deldir</span>(clev.points<span class="sc">$</span>x, clev.points<span class="sc">$</span>y)</span>
-<span id="cb713-2"><a href="global-spatial-autocorrelation-1.html#cb713-2" tabindex="-1"></a><span class="fu">plot</span>(vtess, <span class="at">wlines=</span><span class="st">&quot;tess&quot;</span>, <span class="at">wpoints=</span><span class="st">&quot;none&quot;</span>,</span>
-<span id="cb713-3"><a href="global-spatial-autocorrelation-1.html#cb713-3" tabindex="-1"></a>      <span class="at">lty=</span><span class="dv">1</span>)</span></code></pre></div>
-<pre><code>## Warning in (function (x0, y0, x1 = x0, y1 = y0, col = par(&quot;fg&quot;), lty =
-## par(&quot;lty&quot;), : &quot;wpoints&quot; is not a graphical parameter</code></pre>
-<pre><code>## Warning in plot.xy(xy.coords(x, y), type = type, ...): &quot;wpoints&quot; is not a
-## graphical parameter</code></pre>
+<div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb545-1"><a href="global-spatial-autocorrelation-1.html#cb545-1" tabindex="-1"></a>vtess <span class="ot">&lt;-</span> <span class="fu">deldir</span>(clev.points<span class="sc">$</span>x, clev.points<span class="sc">$</span>y)</span>
+<span id="cb545-2"><a href="global-spatial-autocorrelation-1.html#cb545-2" tabindex="-1"></a><span class="fu">plot</span>(vtess, <span class="at">wlines=</span><span class="st">&quot;tess&quot;</span>, <span class="at">wpoints=</span><span class="st">&quot;none&quot;</span>,</span>
+<span id="cb545-3"><a href="global-spatial-autocorrelation-1.html#cb545-3" tabindex="-1"></a>      <span class="at">lty=</span><span class="dv">1</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-397-1.png" width="672" /></p>
 <p>This function will be used to convert the <strong>deldir</strong> voronoi polygons to <strong>sp</strong>, where we
 can easily convert them to <strong>sf</strong>. We are not going to cover the individual steps of this
 function because it is outside the scope of these notebooks. The important thing to note
 here is that this function converts <strong>deldir</strong> voronoi polygons to <strong>sp</strong>.</p>
-<div class="sourceCode" id="cb716"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb716-1"><a href="global-spatial-autocorrelation-1.html#cb716-1" tabindex="-1"></a>voronoipolygons <span class="ot">=</span> <span class="cf">function</span>(thiess) {</span>
-<span id="cb716-2"><a href="global-spatial-autocorrelation-1.html#cb716-2" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">tile.list</span>(thiess)</span>
-<span id="cb716-3"><a href="global-spatial-autocorrelation-1.html#cb716-3" tabindex="-1"></a>polys <span class="ot">=</span> <span class="fu">vector</span>(<span class="at">mode=</span><span class="st">&#39;list&#39;</span>, <span class="at">length=</span><span class="fu">length</span>(w))</span>
-<span id="cb716-4"><a href="global-spatial-autocorrelation-1.html#cb716-4" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="at">along=</span>polys)) {</span>
-<span id="cb716-5"><a href="global-spatial-autocorrelation-1.html#cb716-5" tabindex="-1"></a>    pcrds <span class="ot">=</span> <span class="fu">cbind</span>(w[[i]]<span class="sc">$</span>x, w[[i]]<span class="sc">$</span>y)</span>
-<span id="cb716-6"><a href="global-spatial-autocorrelation-1.html#cb716-6" tabindex="-1"></a>    pcrds <span class="ot">=</span> <span class="fu">rbind</span>(pcrds, pcrds[<span class="dv">1</span>,])</span>
-<span id="cb716-7"><a href="global-spatial-autocorrelation-1.html#cb716-7" tabindex="-1"></a>    polys[[i]] <span class="ot">=</span> <span class="fu">Polygons</span>(<span class="fu">list</span>(<span class="fu">Polygon</span>(pcrds)), <span class="at">ID=</span><span class="fu">as.character</span>(i))</span>
-<span id="cb716-8"><a href="global-spatial-autocorrelation-1.html#cb716-8" tabindex="-1"></a>}</span>
-<span id="cb716-9"><a href="global-spatial-autocorrelation-1.html#cb716-9" tabindex="-1"></a>SP <span class="ot">=</span> <span class="fu">SpatialPolygons</span>(polys)</span>
-<span id="cb716-10"><a href="global-spatial-autocorrelation-1.html#cb716-10" tabindex="-1"></a> voronoi <span class="ot">=</span> <span class="fu">SpatialPolygonsDataFrame</span>(SP, <span class="at">data=</span><span class="fu">data.frame</span>(<span class="at">dummy =</span> <span class="fu">seq</span>(<span class="fu">length</span>(SP)), <span class="at">row.names=</span><span class="fu">sapply</span>(<span class="fu">slot</span>(SP, <span class="st">&#39;polygons&#39;</span>), </span>
-<span id="cb716-11"><a href="global-spatial-autocorrelation-1.html#cb716-11" tabindex="-1"></a>    <span class="cf">function</span>(x) <span class="fu">slot</span>(x, <span class="st">&#39;ID&#39;</span>))))</span>
-<span id="cb716-12"><a href="global-spatial-autocorrelation-1.html#cb716-12" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb546"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb546-1"><a href="global-spatial-autocorrelation-1.html#cb546-1" tabindex="-1"></a>voronoipolygons <span class="ot">=</span> <span class="cf">function</span>(thiess) {</span>
+<span id="cb546-2"><a href="global-spatial-autocorrelation-1.html#cb546-2" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">tile.list</span>(thiess)</span>
+<span id="cb546-3"><a href="global-spatial-autocorrelation-1.html#cb546-3" tabindex="-1"></a>polys <span class="ot">=</span> <span class="fu">vector</span>(<span class="at">mode=</span><span class="st">&#39;list&#39;</span>, <span class="at">length=</span><span class="fu">length</span>(w))</span>
+<span id="cb546-4"><a href="global-spatial-autocorrelation-1.html#cb546-4" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="at">along=</span>polys)) {</span>
+<span id="cb546-5"><a href="global-spatial-autocorrelation-1.html#cb546-5" tabindex="-1"></a>    pcrds <span class="ot">=</span> <span class="fu">cbind</span>(w[[i]]<span class="sc">$</span>x, w[[i]]<span class="sc">$</span>y)</span>
+<span id="cb546-6"><a href="global-spatial-autocorrelation-1.html#cb546-6" tabindex="-1"></a>    pcrds <span class="ot">=</span> <span class="fu">rbind</span>(pcrds, pcrds[<span class="dv">1</span>,])</span>
+<span id="cb546-7"><a href="global-spatial-autocorrelation-1.html#cb546-7" tabindex="-1"></a>    polys[[i]] <span class="ot">=</span> <span class="fu">Polygons</span>(<span class="fu">list</span>(<span class="fu">Polygon</span>(pcrds)), <span class="at">ID=</span><span class="fu">as.character</span>(i))</span>
+<span id="cb546-8"><a href="global-spatial-autocorrelation-1.html#cb546-8" tabindex="-1"></a>}</span>
+<span id="cb546-9"><a href="global-spatial-autocorrelation-1.html#cb546-9" tabindex="-1"></a>SP <span class="ot">=</span> <span class="fu">SpatialPolygons</span>(polys)</span>
+<span id="cb546-10"><a href="global-spatial-autocorrelation-1.html#cb546-10" tabindex="-1"></a> voronoi <span class="ot">=</span> <span class="fu">SpatialPolygonsDataFrame</span>(SP, <span class="at">data=</span><span class="fu">data.frame</span>(<span class="at">dummy =</span> <span class="fu">seq</span>(<span class="fu">length</span>(SP)), <span class="at">row.names=</span><span class="fu">sapply</span>(<span class="fu">slot</span>(SP, <span class="st">&#39;polygons&#39;</span>), </span>
+<span id="cb546-11"><a href="global-spatial-autocorrelation-1.html#cb546-11" tabindex="-1"></a>    <span class="cf">function</span>(x) <span class="fu">slot</span>(x, <span class="st">&#39;ID&#39;</span>))))</span>
+<span id="cb546-12"><a href="global-spatial-autocorrelation-1.html#cb546-12" tabindex="-1"></a>}</span></code></pre></div>
 <p>Again, we can use the base R <code>plot</code> function to take a look at voronoi polygons. Now that they
 are class <strong>sp</strong>, we don’t need the extra parameters in <code>plot</code>.</p>
-<div class="sourceCode" id="cb717"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb717-1"><a href="global-spatial-autocorrelation-1.html#cb717-1" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">voronoipolygons</span>(vtess)</span>
-<span id="cb717-2"><a href="global-spatial-autocorrelation-1.html#cb717-2" tabindex="-1"></a><span class="fu">plot</span>(v)</span></code></pre></div>
+<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb547-1"><a href="global-spatial-autocorrelation-1.html#cb547-1" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">voronoipolygons</span>(vtess)</span>
+<span id="cb547-2"><a href="global-spatial-autocorrelation-1.html#cb547-2" tabindex="-1"></a><span class="fu">plot</span>(v)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-399-1.png" width="672" /></p>
 <p>With the voronoi polygons in <strong>sp</strong> class, we can easily conert them to <strong>sf</strong> with
 <code>st_as_sf</code>. Again we use the base R <code>plot</code> function to view the polygons.</p>
-<div class="sourceCode" id="cb718"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb718-1"><a href="global-spatial-autocorrelation-1.html#cb718-1" tabindex="-1"></a>vtess.sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(v)</span>
-<span id="cb718-2"><a href="global-spatial-autocorrelation-1.html#cb718-2" tabindex="-1"></a><span class="fu">plot</span>(vtess.sf<span class="sc">$</span>geometry)</span></code></pre></div>
+<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb548-1"><a href="global-spatial-autocorrelation-1.html#cb548-1" tabindex="-1"></a>vtess.sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(v)</span>
+<span id="cb548-2"><a href="global-spatial-autocorrelation-1.html#cb548-2" tabindex="-1"></a><span class="fu">plot</span>(vtess.sf<span class="sc">$</span>geometry)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-400-1.png" width="672" /></p>
 <p>Now that we have the voronoi polygons as an <strong>sf</strong> object, we can use the queen contiguity
 process outline in the Contiguity Based Weights notebook. We will briefly cover
@@ -727,30 +723,30 @@ each step of the process. For more indepth information please see the Contiguity
 Based Weights notebook.</p>
 <p>To start we create a function for queen contiguity, which is just <code>st_relate</code> with
 the specified pattern for queen contiguity which is <code>F***T****</code></p>
-<div class="sourceCode" id="cb719"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb719-1"><a href="global-spatial-autocorrelation-1.html#cb719-1" tabindex="-1"></a>st_queen <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb549-1"><a href="global-spatial-autocorrelation-1.html#cb549-1" tabindex="-1"></a>st_queen <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</span></code></pre></div>
 <p>We apply the queen contiguity function to the voronoi polygons and see that the class
 of the output is <strong>sgbp</strong>. This structure is close to the <strong>nb</strong> structure, but has
 a few differences that we will need to correct to use the rest of <strong>spdep</strong> functionality.</p>
-<div class="sourceCode" id="cb720"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb720-1"><a href="global-spatial-autocorrelation-1.html#cb720-1" tabindex="-1"></a>queen.sgbp <span class="ot">&lt;-</span> <span class="fu">st_queen</span>(vtess.sf)</span>
-<span id="cb720-2"><a href="global-spatial-autocorrelation-1.html#cb720-2" tabindex="-1"></a><span class="fu">class</span>(queen.sgbp)</span></code></pre></div>
+<div class="sourceCode" id="cb550"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb550-1"><a href="global-spatial-autocorrelation-1.html#cb550-1" tabindex="-1"></a>queen.sgbp <span class="ot">&lt;-</span> <span class="fu">st_queen</span>(vtess.sf)</span>
+<span id="cb550-2"><a href="global-spatial-autocorrelation-1.html#cb550-2" tabindex="-1"></a><span class="fu">class</span>(queen.sgbp)</span></code></pre></div>
 <pre><code>## [1] &quot;sgbp&quot; &quot;list&quot;</code></pre>
 <p>This function converts type <strong>sgbp</strong> to <strong>nb</strong>. It is covered in more depth in the
 Contiguity Based Weight notebook. In short, it explicitly changes the name of the
 class and deals with the observations that have no neighbors.</p>
-<div class="sourceCode" id="cb722"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb722-1"><a href="global-spatial-autocorrelation-1.html#cb722-1" tabindex="-1"></a>as.nb.sgbp <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
-<span id="cb722-2"><a href="global-spatial-autocorrelation-1.html#cb722-2" tabindex="-1"></a>  attrs <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)</span>
-<span id="cb722-3"><a href="global-spatial-autocorrelation-1.html#cb722-3" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="fu">length</span>(i) <span class="sc">==</span> 0L) 0L <span class="cf">else</span> i } )</span>
-<span id="cb722-4"><a href="global-spatial-autocorrelation-1.html#cb722-4" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="ot">&lt;-</span> attrs</span>
-<span id="cb722-5"><a href="global-spatial-autocorrelation-1.html#cb722-5" tabindex="-1"></a>  <span class="fu">class</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;nb&quot;</span></span>
-<span id="cb722-6"><a href="global-spatial-autocorrelation-1.html#cb722-6" tabindex="-1"></a>  x</span>
-<span id="cb722-7"><a href="global-spatial-autocorrelation-1.html#cb722-7" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb552-1"><a href="global-spatial-autocorrelation-1.html#cb552-1" tabindex="-1"></a>as.nb.sgbp <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb552-2"><a href="global-spatial-autocorrelation-1.html#cb552-2" tabindex="-1"></a>  attrs <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)</span>
+<span id="cb552-3"><a href="global-spatial-autocorrelation-1.html#cb552-3" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="fu">length</span>(i) <span class="sc">==</span> 0L) 0L <span class="cf">else</span> i } )</span>
+<span id="cb552-4"><a href="global-spatial-autocorrelation-1.html#cb552-4" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="ot">&lt;-</span> attrs</span>
+<span id="cb552-5"><a href="global-spatial-autocorrelation-1.html#cb552-5" tabindex="-1"></a>  <span class="fu">class</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;nb&quot;</span></span>
+<span id="cb552-6"><a href="global-spatial-autocorrelation-1.html#cb552-6" tabindex="-1"></a>  x</span>
+<span id="cb552-7"><a href="global-spatial-autocorrelation-1.html#cb552-7" tabindex="-1"></a>}</span></code></pre></div>
 <p>We use <code>as.nb.sgbp</code> to convert neighbor types and then check the class with <code>class</code>.</p>
-<div class="sourceCode" id="cb723"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb723-1"><a href="global-spatial-autocorrelation-1.html#cb723-1" tabindex="-1"></a>queen.nb <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(queen.sgbp)</span>
-<span id="cb723-2"><a href="global-spatial-autocorrelation-1.html#cb723-2" tabindex="-1"></a><span class="fu">class</span>(queen.nb)</span></code></pre></div>
+<div class="sourceCode" id="cb553"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb553-1"><a href="global-spatial-autocorrelation-1.html#cb553-1" tabindex="-1"></a>queen.nb <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(queen.sgbp)</span>
+<span id="cb553-2"><a href="global-spatial-autocorrelation-1.html#cb553-2" tabindex="-1"></a><span class="fu">class</span>(queen.nb)</span></code></pre></div>
 <pre><code>## [1] &quot;nb&quot;</code></pre>
 <p>To go from neighbors object to weights object, we use <code>nb2listw</code>, with default parameters, we will
 get row standardized weights.</p>
-<div class="sourceCode" id="cb725"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb725-1"><a href="global-spatial-autocorrelation-1.html#cb725-1" tabindex="-1"></a>queen.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(queen.nb)</span></code></pre></div>
+<div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb555-1"><a href="global-spatial-autocorrelation-1.html#cb555-1" tabindex="-1"></a>queen.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(queen.nb)</span></code></pre></div>
 </div>
 </div>
 <div id="the-moran-scatter-plot" class="section level2 hasAnchor" number="10.2">
@@ -833,16 +829,16 @@ spatial association (LISA).</p>
 structure, the length of the dataset, and then <code>Szero</code> of the queen
 weights, which calculates the constants needed for tests of spatial
 autocorrelation.</p>
-<div class="sourceCode" id="cb726"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb726-1"><a href="global-spatial-autocorrelation-1.html#cb726-1" tabindex="-1"></a>moran <span class="ot">&lt;-</span> <span class="fu">moran</span>(clev.points<span class="sc">$</span>sale_price, queen.weights, <span class="fu">length</span>(queen.nb), <span class="fu">Szero</span>(queen.weights))</span>
-<span id="cb726-2"><a href="global-spatial-autocorrelation-1.html#cb726-2" tabindex="-1"></a>moran<span class="sc">$</span>I</span></code></pre></div>
+<div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb556-1"><a href="global-spatial-autocorrelation-1.html#cb556-1" tabindex="-1"></a>moran <span class="ot">&lt;-</span> <span class="fu">moran</span>(clev.points<span class="sc">$</span>sale_price, queen.weights, <span class="fu">length</span>(queen.nb), <span class="fu">Szero</span>(queen.weights))</span>
+<span id="cb556-2"><a href="global-spatial-autocorrelation-1.html#cb556-2" tabindex="-1"></a>moran<span class="sc">$</span>I</span></code></pre></div>
 <pre><code>## [1] 0.2810649</code></pre>
 <p>We get a value of .281, which is the Moran’s I statistic, which also
 corresponds to the slope of the Moran’s I scatter plot.</p>
 <p>In creating the Moran’s I scatterplot, we will need to to create a lag variable of sale price from
 our queen weights. This is just done with the function <code>lag.listw</code>, which takes a weights structure
 and a variable of equal length to create a lag variable from.</p>
-<div class="sourceCode" id="cb728"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb728-1"><a href="global-spatial-autocorrelation-1.html#cb728-1" tabindex="-1"></a>clev.points<span class="sc">$</span>lagged_sale_price <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,clev.points<span class="sc">$</span>sale_price)</span>
-<span id="cb728-2"><a href="global-spatial-autocorrelation-1.html#cb728-2" tabindex="-1"></a>clev.points<span class="sc">$</span>lagged_sale_price</span></code></pre></div>
+<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="global-spatial-autocorrelation-1.html#cb558-1" tabindex="-1"></a>clev.points<span class="sc">$</span>lagged_sale_price <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,clev.points<span class="sc">$</span>sale_price)</span>
+<span id="cb558-2"><a href="global-spatial-autocorrelation-1.html#cb558-2" tabindex="-1"></a>clev.points<span class="sc">$</span>lagged_sale_price</span></code></pre></div>
 <pre><code>##   [1]  83287.500 112912.500  80178.571 108550.000  58375.000  96816.667
 ##   [7] 115600.000  41503.571  59732.143  80025.000  48785.714 110750.000
 ##  [13] 103000.000  72300.000 113050.000 141918.167 112900.000  55142.857
@@ -883,8 +879,8 @@ to build the Moran’I scatterplot. Standardized values are just z scores for ea
 observation(<span class="math inline">\(z_i =\frac{ x_i -\mu}{\sqrt{Var(x)}}\)</span>). To get the standardized values, we will use <code>standardize</code>
 from the <strong>robustHD</strong> package. We could very easily calculate these with Base R
 vectorized operations, but it is faster to just use a package function.</p>
-<div class="sourceCode" id="cb730"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb730-1"><a href="global-spatial-autocorrelation-1.html#cb730-1" tabindex="-1"></a>clev.points<span class="sc">$</span>standardized_sale_price <span class="ot">&lt;-</span> <span class="fu">standardize</span>(clev.points<span class="sc">$</span>sale_price)</span>
-<span id="cb730-2"><a href="global-spatial-autocorrelation-1.html#cb730-2" tabindex="-1"></a>clev.points<span class="sc">$</span>standardized_lag_sale_price <span class="ot">&lt;-</span> <span class="fu">standardize</span>(clev.points<span class="sc">$</span>lagged_sale_price)</span></code></pre></div>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="global-spatial-autocorrelation-1.html#cb560-1" tabindex="-1"></a>clev.points<span class="sc">$</span>standardized_sale_price <span class="ot">&lt;-</span> <span class="fu">standardize</span>(clev.points<span class="sc">$</span>sale_price)</span>
+<span id="cb560-2"><a href="global-spatial-autocorrelation-1.html#cb560-2" tabindex="-1"></a>clev.points<span class="sc">$</span>standardized_lag_sale_price <span class="ot">&lt;-</span> <span class="fu">standardize</span>(clev.points<span class="sc">$</span>lagged_sale_price)</span></code></pre></div>
 <p>To construct the moran’s I scatterplot, we will use <strong>ggplot2</strong> for more aesthically
 pleasing plots. We will not go into too much depth on the options available for
 for these plots, but for more information, check out <a href="https://ggplot2.tidyverse.org/reference/index.html">ggplot2 documentation</a>. In addition, The first
@@ -896,15 +892,14 @@ default option is a loess smooth line, we specify the <code>method = lm</code> t
 x and y axis to separate the 4 types of spatial autocorrelation. We do this with
 <code>geom_hline</code> for the x axis and <code>geom_vline</code> for the y axis. To get the speciifcations of
 the scatterplot to better match up with GeoDa, we set the x and y scale limits to -10 and 10.</p>
-<div class="sourceCode" id="cb731"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb731-1"><a href="global-spatial-autocorrelation-1.html#cb731-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clev.points, <span class="fu">aes</span>(<span class="at">x=</span>standardized_sale_price, <span class="at">y =</span> standardized_lag_sale_price)) <span class="sc">+</span></span>
-<span id="cb731-2"><a href="global-spatial-autocorrelation-1.html#cb731-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb731-3"><a href="global-spatial-autocorrelation-1.html#cb731-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb731-4"><a href="global-spatial-autocorrelation-1.html#cb731-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb731-5"><a href="global-spatial-autocorrelation-1.html#cb731-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb731-6"><a href="global-spatial-autocorrelation-1.html#cb731-6" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb731-7"><a href="global-spatial-autocorrelation-1.html#cb731-7" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>) <span class="sc">+</span> </span>
-<span id="cb731-8"><a href="global-spatial-autocorrelation-1.html#cb731-8" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Moran scatter plot sale price&quot;</span>)</span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb561"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb561-1"><a href="global-spatial-autocorrelation-1.html#cb561-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clev.points, <span class="fu">aes</span>(<span class="at">x=</span>standardized_sale_price, <span class="at">y =</span> standardized_lag_sale_price)) <span class="sc">+</span></span>
+<span id="cb561-2"><a href="global-spatial-autocorrelation-1.html#cb561-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb561-3"><a href="global-spatial-autocorrelation-1.html#cb561-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb561-4"><a href="global-spatial-autocorrelation-1.html#cb561-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb561-5"><a href="global-spatial-autocorrelation-1.html#cb561-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb561-6"><a href="global-spatial-autocorrelation-1.html#cb561-6" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb561-7"><a href="global-spatial-autocorrelation-1.html#cb561-7" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>) <span class="sc">+</span> </span>
+<span id="cb561-8"><a href="global-spatial-autocorrelation-1.html#cb561-8" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Moran scatter plot sale price&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-409-1.png" width="672" /></p>
 <div id="interpretation" class="section level4 hasAnchor" number="10.2.2.1">
 <h4><span class="header-section-number">10.2.2.1</span> Interpretation<a href="global-spatial-autocorrelation-1.html#interpretation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -931,7 +926,7 @@ of the sample distribution statistics are as extreme or more extreme than the te
 <p>To faciliate replication, it is best to set a seed for the random number generator. The one
 used in GeoDa is 123456789, so we will demonstrate how to set the seed here. It is just
 <code>set.seed</code> and the desired seed number as an input.</p>
-<div class="sourceCode" id="cb733"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb733-1"><a href="global-spatial-autocorrelation-1.html#cb733-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456789</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="global-spatial-autocorrelation-1.html#cb562-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456789</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="reference-distribution" class="section level4 hasAnchor" number="10.2.2.3">
@@ -947,8 +942,8 @@ function. We choose the same size as the number of sale price data observations
 to make a spatially randomized vector of our sale price data. The point of this is to randomly
 assign the housing prices to the voronoi polygons, then to compute the Moran’s I
 statistic for the spatially random assignment based off the original weights structure.</p>
-<div class="sourceCode" id="cb734"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb734-1"><a href="global-spatial-autocorrelation-1.html#cb734-1" tabindex="-1"></a>draw <span class="ot">&lt;-</span> <span class="fu">sample</span>(clev.points<span class="sc">$</span>sale_price, <span class="at">size =</span> <span class="fu">length</span>(clev.points<span class="sc">$</span>sale_price))</span>
-<span id="cb734-2"><a href="global-spatial-autocorrelation-1.html#cb734-2" tabindex="-1"></a>draw</span></code></pre></div>
+<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb563-1"><a href="global-spatial-autocorrelation-1.html#cb563-1" tabindex="-1"></a>draw <span class="ot">&lt;-</span> <span class="fu">sample</span>(clev.points<span class="sc">$</span>sale_price, <span class="at">size =</span> <span class="fu">length</span>(clev.points<span class="sc">$</span>sale_price))</span>
+<span id="cb563-2"><a href="global-spatial-autocorrelation-1.html#cb563-2" tabindex="-1"></a>draw</span></code></pre></div>
 <pre><code>##   [1]  28000  82500  14500 135000  29150  13000  25250  34750  30000  14000
 ##  [11]   3500  45000  76000   8000  25000  14500  15000   7500   5000  26400
 ##  [21]  40000  65000  25750  15000   5800   4924   9000  41000  65000 527409
@@ -972,13 +967,13 @@ statistic for the spatially random assignment based off the original weights str
 ## [201]   7000  12000  68900  34000   5000</code></pre>
 <p>Now we can begin to calculate the Moran’s I statistic by first calculating the
 spatial lag variable based on our queen weights and the spatially random sample.</p>
-<div class="sourceCode" id="cb736"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb736-1"><a href="global-spatial-autocorrelation-1.html#cb736-1" tabindex="-1"></a>lag1 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,draw)</span></code></pre></div>
+<div class="sourceCode" id="cb565"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb565-1"><a href="global-spatial-autocorrelation-1.html#cb565-1" tabindex="-1"></a>lag1 <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,draw)</span></code></pre></div>
 <p>We can get the Moran’s I statistic by regressing the standardized values of
 the spatial lag variable on the standardized values of the random draw. We
 can get the standardized value with the <code>standardize</code> function. The <code>summary</code>
 function allows us to see a summary of the regression statistics.</p>
-<div class="sourceCode" id="cb737"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb737-1"><a href="global-spatial-autocorrelation-1.html#cb737-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">standardize</span>(lag1) <span class="sc">~</span> <span class="fu">standardize</span>(draw))</span>
-<span id="cb737-2"><a href="global-spatial-autocorrelation-1.html#cb737-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
+<div class="sourceCode" id="cb566"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb566-1"><a href="global-spatial-autocorrelation-1.html#cb566-1" tabindex="-1"></a>lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">standardize</span>(lag1) <span class="sc">~</span> <span class="fu">standardize</span>(draw))</span>
+<span id="cb566-2"><a href="global-spatial-autocorrelation-1.html#cb566-2" tabindex="-1"></a><span class="fu">summary</span>(lmfit)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = standardize(lag1) ~ standardize(draw))
@@ -1001,7 +996,7 @@ close to zero as the randomization process makes makes the draw spatially random
 We can accomplish this by way of a <code>for</code> loop. We will need somewhere to store
 our Moran’s I result for each iteration. To do this we will make an empty
 vector of a length corresponding to our desired number of permutations.</p>
-<div class="sourceCode" id="cb739"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb739-1"><a href="global-spatial-autocorrelation-1.html#cb739-1" tabindex="-1"></a>randomized_moran <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">999</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb568"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb568-1"><a href="global-spatial-autocorrelation-1.html#cb568-1" tabindex="-1"></a>randomized_moran <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">999</span>)</span></code></pre></div>
 <p>The process here is the same as the one followed for one draw, but here we use the
 <code>for</code> loop to get 999 iterations and store the resulting Moran’s I values in the vector
 that we created above. First we do the random sample with the <code>sample</code> function.
@@ -1011,23 +1006,23 @@ of the lag variable and random draw variable. Lastly, we extract the slope
 coefficient which is our Moran’s I statistic and store it in index i. Each
 iteration of the loop will store the value at the subsequent index ie 1, then 2,
 then 3, and so on.</p>
-<div class="sourceCode" id="cb740"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb740-1"><a href="global-spatial-autocorrelation-1.html#cb740-1" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">999</span>){</span>
-<span id="cb740-2"><a href="global-spatial-autocorrelation-1.html#cb740-2" tabindex="-1"></a>  draw <span class="ot">&lt;-</span> <span class="fu">sample</span>(clev.points<span class="sc">$</span>sale_price, <span class="at">size =</span> <span class="fu">length</span>(clev.points<span class="sc">$</span>sale_price))</span>
-<span id="cb740-3"><a href="global-spatial-autocorrelation-1.html#cb740-3" tabindex="-1"></a>  lag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,draw)</span>
-<span id="cb740-4"><a href="global-spatial-autocorrelation-1.html#cb740-4" tabindex="-1"></a>  lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">standardize</span>(lag) <span class="sc">~</span> <span class="fu">standardize</span>(draw))</span>
-<span id="cb740-5"><a href="global-spatial-autocorrelation-1.html#cb740-5" tabindex="-1"></a>  randomized_moran[i] <span class="ot">&lt;-</span> lmfit<span class="sc">$</span>coefficients[<span class="dv">2</span>] </span>
-<span id="cb740-6"><a href="global-spatial-autocorrelation-1.html#cb740-6" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb569-1"><a href="global-spatial-autocorrelation-1.html#cb569-1" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">999</span>){</span>
+<span id="cb569-2"><a href="global-spatial-autocorrelation-1.html#cb569-2" tabindex="-1"></a>  draw <span class="ot">&lt;-</span> <span class="fu">sample</span>(clev.points<span class="sc">$</span>sale_price, <span class="at">size =</span> <span class="fu">length</span>(clev.points<span class="sc">$</span>sale_price))</span>
+<span id="cb569-3"><a href="global-spatial-autocorrelation-1.html#cb569-3" tabindex="-1"></a>  lag <span class="ot">&lt;-</span> <span class="fu">lag.listw</span>(queen.weights,draw)</span>
+<span id="cb569-4"><a href="global-spatial-autocorrelation-1.html#cb569-4" tabindex="-1"></a>  lmfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">standardize</span>(lag) <span class="sc">~</span> <span class="fu">standardize</span>(draw))</span>
+<span id="cb569-5"><a href="global-spatial-autocorrelation-1.html#cb569-5" tabindex="-1"></a>  randomized_moran[i] <span class="ot">&lt;-</span> lmfit<span class="sc">$</span>coefficients[<span class="dv">2</span>] </span>
+<span id="cb569-6"><a href="global-spatial-autocorrelation-1.html#cb569-6" tabindex="-1"></a>}</span></code></pre></div>
 <p>We can obtain summary statistics of our distribution with <code>summary</code></p>
-<div class="sourceCode" id="cb741"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb741-1"><a href="global-spatial-autocorrelation-1.html#cb741-1" tabindex="-1"></a><span class="fu">summary</span>(randomized_moran)</span></code></pre></div>
+<div class="sourceCode" id="cb570"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb570-1"><a href="global-spatial-autocorrelation-1.html#cb570-1" tabindex="-1"></a><span class="fu">summary</span>(randomized_moran)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## -0.26210 -0.08531 -0.02554 -0.01655  0.04257  0.31351</code></pre>
-<div class="sourceCode" id="cb743"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb743-1"><a href="global-spatial-autocorrelation-1.html#cb743-1" tabindex="-1"></a><span class="fu">sd</span>(randomized_moran)</span></code></pre></div>
+<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="global-spatial-autocorrelation-1.html#cb572-1" tabindex="-1"></a><span class="fu">sd</span>(randomized_moran)</span></code></pre></div>
 <pre><code>## [1] 0.09375454</code></pre>
 <p>Now to get the p value, we will check the number of samples that had higher Moran’s I
 statistic than the observed value. To do this, we use the base R <code>which</code> function
 to get a vector of the indices at which the conditional is TRUE. We then get the length
 of the vector with <code>length</code>.</p>
-<div class="sourceCode" id="cb745"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb745-1"><a href="global-spatial-autocorrelation-1.html#cb745-1" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(randomized_moran <span class="sc">&gt;</span> .<span class="dv">281</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb574-1"><a href="global-spatial-autocorrelation-1.html#cb574-1" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(randomized_moran <span class="sc">&gt;</span> .<span class="dv">281</span>))</span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>Since the result is 1, there is only 1 value in all of the permutations that is higher
 than the test statistic. This means that the p value is .002, <span class="math inline">\(\frac{1 + R}{1 + M}\)</span>, where
@@ -1042,19 +1037,18 @@ column, which is just <code>moran</code> in this case.</p>
 <p>The first option is a density plot. This requires the standard <code>ggplot</code> function with
 <code>aes</code> containing the x axis. Additionally we need <code>geom_density</code>. We use <code>geom_vline</code>
 to plot the mean of the distribution and our observed statistic.</p>
-<div class="sourceCode" id="cb747"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb747-1"><a href="global-spatial-autocorrelation-1.html#cb747-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">moran =</span> randomized_moran)</span>
-<span id="cb747-2"><a href="global-spatial-autocorrelation-1.html#cb747-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df,<span class="fu">aes</span>(<span class="at">x=</span>moran)) <span class="sc">+</span></span>
-<span id="cb747-3"><a href="global-spatial-autocorrelation-1.html#cb747-3" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
-<span id="cb747-4"><a href="global-spatial-autocorrelation-1.html#cb747-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> moran[[<span class="dv">1</span>]], <span class="at">col =</span> <span class="st">&quot;green&quot;</span>) <span class="sc">+</span></span>
-<span id="cb747-5"><a href="global-spatial-autocorrelation-1.html#cb747-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(randomized_moran), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb576"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb576-1"><a href="global-spatial-autocorrelation-1.html#cb576-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">moran =</span> randomized_moran)</span>
+<span id="cb576-2"><a href="global-spatial-autocorrelation-1.html#cb576-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df,<span class="fu">aes</span>(<span class="at">x=</span>moran)) <span class="sc">+</span></span>
+<span id="cb576-3"><a href="global-spatial-autocorrelation-1.html#cb576-3" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb576-4"><a href="global-spatial-autocorrelation-1.html#cb576-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> moran[[<span class="dv">1</span>]], <span class="at">col =</span> <span class="st">&quot;green&quot;</span>) <span class="sc">+</span></span>
+<span id="cb576-5"><a href="global-spatial-autocorrelation-1.html#cb576-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(randomized_moran), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-419-1.png" width="672" /></p>
 <p>The next option is a histogram. The only difference here is that we use <code>geom_histogram</code>
 instead of `geom_density.</p>
-<div class="sourceCode" id="cb748"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb748-1"><a href="global-spatial-autocorrelation-1.html#cb748-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>moran)) <span class="sc">+</span></span>
-<span id="cb748-2"><a href="global-spatial-autocorrelation-1.html#cb748-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb748-3"><a href="global-spatial-autocorrelation-1.html#cb748-3" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> moran[[<span class="dv">1</span>]], <span class="at">col =</span> <span class="st">&quot;green&quot;</span>) <span class="sc">+</span></span>
-<span id="cb748-4"><a href="global-spatial-autocorrelation-1.html#cb748-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(randomized_moran), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<div class="sourceCode" id="cb577"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb577-1"><a href="global-spatial-autocorrelation-1.html#cb577-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>moran)) <span class="sc">+</span></span>
+<span id="cb577-2"><a href="global-spatial-autocorrelation-1.html#cb577-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb577-3"><a href="global-spatial-autocorrelation-1.html#cb577-3" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> moran[[<span class="dv">1</span>]], <span class="at">col =</span> <span class="st">&quot;green&quot;</span>) <span class="sc">+</span></span>
+<span id="cb577-4"><a href="global-spatial-autocorrelation-1.html#cb577-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(randomized_moran), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-420-1.png" width="672" />
 #### LOWESS smoother</p>
 <p>The LOWESS smoother is not implemented directly in <strong>ggplot2</strong>, but can be found in an
@@ -1066,16 +1060,14 @@ set the <code>span =</code> parameter to .2.</p>
 spatial autocorrelation. For example some parts of the data, the curve may be very steep,
 and positive, indicating strong spatial autocorrelation, whereas in other parts, it
 could be flat, indicating no spatial autocorrelation.</p>
-<div class="sourceCode" id="cb750"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb750-1"><a href="global-spatial-autocorrelation-1.html#cb750-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clev.points, <span class="fu">aes</span>(<span class="at">x=</span>standardized_sale_price, <span class="at">y =</span> standardized_lag_sale_price)) <span class="sc">+</span></span>
-<span id="cb750-2"><a href="global-spatial-autocorrelation-1.html#cb750-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb750-3"><a href="global-spatial-autocorrelation-1.html#cb750-3" tabindex="-1"></a>  <span class="fu">stat_plsmo</span>(<span class="at">span =</span> .<span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
-<span id="cb750-4"><a href="global-spatial-autocorrelation-1.html#cb750-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb750-5"><a href="global-spatial-autocorrelation-1.html#cb750-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb750-6"><a href="global-spatial-autocorrelation-1.html#cb750-6" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb750-7"><a href="global-spatial-autocorrelation-1.html#cb750-7" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>) <span class="sc">+</span> </span>
-<span id="cb750-8"><a href="global-spatial-autocorrelation-1.html#cb750-8" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;LOWESS smooth of Moran Scatterplot&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-## collapsing to unique &#39;x&#39; values</code></pre>
+<div class="sourceCode" id="cb578"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb578-1"><a href="global-spatial-autocorrelation-1.html#cb578-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> clev.points, <span class="fu">aes</span>(<span class="at">x=</span>standardized_sale_price, <span class="at">y =</span> standardized_lag_sale_price)) <span class="sc">+</span></span>
+<span id="cb578-2"><a href="global-spatial-autocorrelation-1.html#cb578-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb578-3"><a href="global-spatial-autocorrelation-1.html#cb578-3" tabindex="-1"></a>  <span class="fu">stat_plsmo</span>(<span class="at">span =</span> .<span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb578-4"><a href="global-spatial-autocorrelation-1.html#cb578-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb578-5"><a href="global-spatial-autocorrelation-1.html#cb578-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb578-6"><a href="global-spatial-autocorrelation-1.html#cb578-6" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb578-7"><a href="global-spatial-autocorrelation-1.html#cb578-7" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>) <span class="sc">+</span> </span>
+<span id="cb578-8"><a href="global-spatial-autocorrelation-1.html#cb578-8" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;LOWESS smooth of Moran Scatterplot&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-421-1.png" width="672" /></p>
 </div>
 <div id="chow-test-morans-i-scatterplot" class="section level4 hasAnchor" number="10.2.2.4">
@@ -1094,9 +1086,9 @@ to the rest of the points by way of the <code>if_else</code> function. This func
 a conditional, a result to assign in the case where the conditional is TRUE, and
 a result to assign when the conditional is FALSE. In our case it is “Select” and
 “Rest”.</p>
-<div class="sourceCode" id="cb752"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb752-1"><a href="global-spatial-autocorrelation-1.html#cb752-1" tabindex="-1"></a>mid_x <span class="ot">&lt;-</span> <span class="fu">mean</span>(clev.points<span class="sc">$</span>x)</span>
-<span id="cb752-2"><a href="global-spatial-autocorrelation-1.html#cb752-2" tabindex="-1"></a>mid_y <span class="ot">&lt;-</span> <span class="fu">mean</span>(clev.points<span class="sc">$</span>y)</span>
-<span id="cb752-3"><a href="global-spatial-autocorrelation-1.html#cb752-3" tabindex="-1"></a>clev.points<span class="ot">&lt;-</span> clev.points <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">bottom_left =</span> <span class="fu">if_else</span>((x <span class="sc">&lt;</span> mid_x <span class="sc">&amp;</span> y <span class="sc">&lt;</span> mid_y),<span class="st">&quot;Select&quot;</span>, <span class="st">&quot;Rest&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb579"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb579-1"><a href="global-spatial-autocorrelation-1.html#cb579-1" tabindex="-1"></a>mid_x <span class="ot">&lt;-</span> <span class="fu">mean</span>(clev.points<span class="sc">$</span>x)</span>
+<span id="cb579-2"><a href="global-spatial-autocorrelation-1.html#cb579-2" tabindex="-1"></a>mid_y <span class="ot">&lt;-</span> <span class="fu">mean</span>(clev.points<span class="sc">$</span>y)</span>
+<span id="cb579-3"><a href="global-spatial-autocorrelation-1.html#cb579-3" tabindex="-1"></a>clev.points<span class="ot">&lt;-</span> clev.points <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">bottom_left =</span> <span class="fu">if_else</span>((x <span class="sc">&lt;</span> mid_x <span class="sc">&amp;</span> y <span class="sc">&lt;</span> mid_y),<span class="st">&quot;Select&quot;</span>, <span class="st">&quot;Rest&quot;</span>))</span></code></pre></div>
 <p>Before we run the chow test, we will visualize the difference in slopes of the selected data, non-selected
 data and the aggregate data. With <strong>ggplot2</strong>, we can accomplish this by setting categorical colors based
 whether or not an observation is “Selected” or “Rest”. To do this, we specify <code>aes(color = bottom_left)</code> in
@@ -1104,34 +1096,30 @@ both <code>geom_point</code> and <code>geom_smooth</code>. This will give us col
 and “Rest”. Then to get blue and red colors, we use <code>scale_color_manual</code>. For this plot, we do not set
 x and y limits because the -10 to 10 speciifcation is too dificult to see the differences in the regression
 lines.</p>
-<div class="sourceCode" id="cb753"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb753-1"><a href="global-spatial-autocorrelation-1.html#cb753-1" tabindex="-1"></a><span class="fu">ggplot</span>(clev.points, <span class="fu">aes</span>(<span class="at">x=</span>standardized_sale_price,<span class="at">y=</span>standardized_lag_sale_price)) <span class="sc">+</span></span>
-<span id="cb753-2"><a href="global-spatial-autocorrelation-1.html#cb753-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span>bottom_left)) <span class="sc">+</span></span>
-<span id="cb753-3"><a href="global-spatial-autocorrelation-1.html#cb753-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color=</span>bottom_left), <span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb753-4"><a href="global-spatial-autocorrelation-1.html#cb753-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span>lm,<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb753-5"><a href="global-spatial-autocorrelation-1.html#cb753-5" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>))  <span class="sc">+</span></span>
-<span id="cb753-6"><a href="global-spatial-autocorrelation-1.html#cb753-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color=</span><span class="st">&quot;Selection&quot;</span>) <span class="sc">+</span></span>
-<span id="cb753-7"><a href="global-spatial-autocorrelation-1.html#cb753-7" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb753-8"><a href="global-spatial-autocorrelation-1.html#cb753-8" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb753-9"><a href="global-spatial-autocorrelation-1.html#cb753-9" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Chow test Moran Scatterplot&quot;</span>)</span></code></pre></div>
-<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
-## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb580"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb580-1"><a href="global-spatial-autocorrelation-1.html#cb580-1" tabindex="-1"></a><span class="fu">ggplot</span>(clev.points, <span class="fu">aes</span>(<span class="at">x=</span>standardized_sale_price,<span class="at">y=</span>standardized_lag_sale_price)) <span class="sc">+</span></span>
+<span id="cb580-2"><a href="global-spatial-autocorrelation-1.html#cb580-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span>bottom_left)) <span class="sc">+</span></span>
+<span id="cb580-3"><a href="global-spatial-autocorrelation-1.html#cb580-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color=</span>bottom_left), <span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb580-4"><a href="global-spatial-autocorrelation-1.html#cb580-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span>lm,<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb580-5"><a href="global-spatial-autocorrelation-1.html#cb580-5" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>))  <span class="sc">+</span></span>
+<span id="cb580-6"><a href="global-spatial-autocorrelation-1.html#cb580-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color=</span><span class="st">&quot;Selection&quot;</span>) <span class="sc">+</span></span>
+<span id="cb580-7"><a href="global-spatial-autocorrelation-1.html#cb580-7" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb580-8"><a href="global-spatial-autocorrelation-1.html#cb580-8" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb580-9"><a href="global-spatial-autocorrelation-1.html#cb580-9" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Chow test Moran Scatterplot&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-423-1.png" width="672" /></p>
 <p>To perform the chow test, we need two separate data frames as inputs for the function. To get the
 two data frames, we use the <strong>tidyverse</strong> <code>filter</code> function. This function filter out observations
 based on a conditional. TRUE values for the conditional remain in the data frame while FALSE values are
 filtered out.</p>
-<div class="sourceCode" id="cb755"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb755-1"><a href="global-spatial-autocorrelation-1.html#cb755-1" tabindex="-1"></a>clev.select <span class="ot">&lt;-</span> clev.points <span class="sc">%&gt;%</span> <span class="fu">filter</span>(bottom_left <span class="sc">==</span> <span class="st">&quot;Select&quot;</span>)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
-<div class="sourceCode" id="cb757"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb757-1"><a href="global-spatial-autocorrelation-1.html#cb757-1" tabindex="-1"></a>clev.rest <span class="ot">&lt;-</span> clev.points <span class="sc">%&gt;%</span> <span class="fu">filter</span>(bottom_left <span class="sc">==</span> <span class="st">&quot;Rest&quot;</span>)</span></code></pre></div>
-<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<div class="sourceCode" id="cb581"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb581-1"><a href="global-spatial-autocorrelation-1.html#cb581-1" tabindex="-1"></a>clev.select <span class="ot">&lt;-</span> clev.points <span class="sc">%&gt;%</span> <span class="fu">filter</span>(bottom_left <span class="sc">==</span> <span class="st">&quot;Select&quot;</span>)</span>
+<span id="cb581-2"><a href="global-spatial-autocorrelation-1.html#cb581-2" tabindex="-1"></a>clev.rest <span class="ot">&lt;-</span> clev.points <span class="sc">%&gt;%</span> <span class="fu">filter</span>(bottom_left <span class="sc">==</span> <span class="st">&quot;Rest&quot;</span>)</span></code></pre></div>
 <p>Now we use the base R <code>lm</code> function to run separate regressions on the standardized lag variable and
 standardized sale price variable.</p>
-<div class="sourceCode" id="cb759"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb759-1"><a href="global-spatial-autocorrelation-1.html#cb759-1" tabindex="-1"></a>reg.select <span class="ot">&lt;-</span> <span class="fu">lm</span>(standardized_lag_sale_price<span class="sc">~</span>standardized_sale_price, <span class="at">data=</span>clev.select)</span>
-<span id="cb759-2"><a href="global-spatial-autocorrelation-1.html#cb759-2" tabindex="-1"></a>reg.rest <span class="ot">&lt;-</span> <span class="fu">lm</span>(standardized_lag_sale_price<span class="sc">~</span>standardized_sale_price, <span class="at">data=</span>clev.rest)</span></code></pre></div>
+<div class="sourceCode" id="cb582"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb582-1"><a href="global-spatial-autocorrelation-1.html#cb582-1" tabindex="-1"></a>reg.select <span class="ot">&lt;-</span> <span class="fu">lm</span>(standardized_lag_sale_price<span class="sc">~</span>standardized_sale_price, <span class="at">data=</span>clev.select)</span>
+<span id="cb582-2"><a href="global-spatial-autocorrelation-1.html#cb582-2" tabindex="-1"></a>reg.rest <span class="ot">&lt;-</span> <span class="fu">lm</span>(standardized_lag_sale_price<span class="sc">~</span>standardized_sale_price, <span class="at">data=</span>clev.rest)</span></code></pre></div>
 <p>Now we use the <code>summary</code> function on each regression object to get summary statistics of the residuals,
 the regression coefficients and and their respective standard errors, the R squared values, and the
 F statistic.</p>
-<div class="sourceCode" id="cb760"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb760-1"><a href="global-spatial-autocorrelation-1.html#cb760-1" tabindex="-1"></a><span class="fu">summary</span>(reg.select)</span></code></pre></div>
+<div class="sourceCode" id="cb583"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb583-1"><a href="global-spatial-autocorrelation-1.html#cb583-1" tabindex="-1"></a><span class="fu">summary</span>(reg.select)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = standardized_lag_sale_price ~ standardized_sale_price, 
@@ -1151,7 +1139,7 @@ F statistic.</p>
 ## Residual standard error: 0.492 on 74 degrees of freedom
 ## Multiple R-squared:  0.2025, Adjusted R-squared:  0.1917 
 ## F-statistic: 18.79 on 1 and 74 DF,  p-value: 4.534e-05</code></pre>
-<div class="sourceCode" id="cb762"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb762-1"><a href="global-spatial-autocorrelation-1.html#cb762-1" tabindex="-1"></a><span class="fu">summary</span>(reg.rest)</span></code></pre></div>
+<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="global-spatial-autocorrelation-1.html#cb585-1" tabindex="-1"></a><span class="fu">summary</span>(reg.rest)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = standardized_lag_sale_price ~ standardized_sale_price, 
@@ -1175,8 +1163,8 @@ F statistic.</p>
 <p>To run the chow test, we need 4 inputs for <code>chow.test</code>. We need the two standardized
 variables from the the “Select” data frame: <strong>clev.select</strong> and the two standardized
 variables from the the “Rest” data frame: <strong>clev.rest</strong>.</p>
-<div class="sourceCode" id="cb764"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb764-1"><a href="global-spatial-autocorrelation-1.html#cb764-1" tabindex="-1"></a>chow <span class="ot">&lt;-</span> <span class="fu">chow.test</span>(clev.select<span class="sc">$</span>standardized_lag_sale_price, clev.select<span class="sc">$</span>standardized_sale_price, clev.rest<span class="sc">$</span>standardized_lag_sale_price, clev.rest<span class="sc">$</span>standardized_sale_price)</span>
-<span id="cb764-2"><a href="global-spatial-autocorrelation-1.html#cb764-2" tabindex="-1"></a>chow</span></code></pre></div>
+<div class="sourceCode" id="cb587"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb587-1"><a href="global-spatial-autocorrelation-1.html#cb587-1" tabindex="-1"></a>chow <span class="ot">&lt;-</span> <span class="fu">chow.test</span>(clev.select<span class="sc">$</span>standardized_lag_sale_price, clev.select<span class="sc">$</span>standardized_sale_price, clev.rest<span class="sc">$</span>standardized_lag_sale_price, clev.rest<span class="sc">$</span>standardized_sale_price)</span>
+<span id="cb587-2"><a href="global-spatial-autocorrelation-1.html#cb587-2" tabindex="-1"></a>chow</span></code></pre></div>
 <pre><code>##     F value       d.f.1       d.f.2     P value 
 ##   2.2974700   2.0000000 201.0000000   0.1031467</code></pre>
 <p>With a p-value of .103 we do not have significant evidence to conclude that the slopes of the
@@ -1207,126 +1195,121 @@ create a neighbors structure base on the distance breaks desired for the
 correlogram.</p>
 <p>To start, we use <code>cbind</code> to put the x and y coordinates together for use in
 the distance based neighbor functions of <strong>spdep</strong>.</p>
-<div class="sourceCode" id="cb766"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb766-1"><a href="global-spatial-autocorrelation-1.html#cb766-1" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(clev.points<span class="sc">$</span>x, clev.points<span class="sc">$</span>y)</span></code></pre></div>
+<div class="sourceCode" id="cb589"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb589-1"><a href="global-spatial-autocorrelation-1.html#cb589-1" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(clev.points<span class="sc">$</span>x, clev.points<span class="sc">$</span>y)</span></code></pre></div>
 <p>Now we create distance based neighbors coordinate matrix and lower distance bound and an upper distance bound, which is used to define neighbors. We use <code>dnearneigh</code> to create
 the distance band neighbors. For more in depth information on distance based neighbors,
 please see the Disatnce Based Weights notebook. We use a distance of 4823.27 to emulate
 the first example in the GeoDa workbook.</p>
-<div class="sourceCode" id="cb767"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb767-1"><a href="global-spatial-autocorrelation-1.html#cb767-1" tabindex="-1"></a>dist.band.nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords,<span class="dv">0</span>,<span class="fl">4823.27</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb590"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb590-1"><a href="global-spatial-autocorrelation-1.html#cb590-1" tabindex="-1"></a>dist.band.nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords,<span class="dv">0</span>,<span class="fl">4823.27</span>)</span></code></pre></div>
 <p>Using the <strong>spdep</strong> function `sp.correlogram, we can get measures of spatial autocorrelation
 for an input number of lag orders. We can then use the base R plotting function to get a look
 at the autocorrelation values for each lag order.</p>
-<div class="sourceCode" id="cb768"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb768-1"><a href="global-spatial-autocorrelation-1.html#cb768-1" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">sp.correlogram</span>(dist.band.nb, clev.points<span class="sc">$</span>sale_price, <span class="at">order =</span> <span class="dv">10</span>, <span class="at">method =</span> <span class="st">&quot;I&quot;</span>,<span class="at">style =</span> <span class="st">&quot;W&quot;</span>, <span class="at">randomisation =</span> <span class="cn">TRUE</span>, <span class="at">spChk =</span> <span class="cn">NULL</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb768-2"><a href="global-spatial-autocorrelation-1.html#cb768-2" tabindex="-1"></a><span class="fu">plot</span>(sp)</span></code></pre></div>
+<div class="sourceCode" id="cb591"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb591-1"><a href="global-spatial-autocorrelation-1.html#cb591-1" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">sp.correlogram</span>(dist.band.nb, clev.points<span class="sc">$</span>sale_price, <span class="at">order =</span> <span class="dv">10</span>, <span class="at">method =</span> <span class="st">&quot;I&quot;</span>,<span class="at">style =</span> <span class="st">&quot;W&quot;</span>, <span class="at">randomisation =</span> <span class="cn">TRUE</span>, <span class="at">spChk =</span> <span class="cn">NULL</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb591-2"><a href="global-spatial-autocorrelation-1.html#cb591-2" tabindex="-1"></a><span class="fu">plot</span>(sp)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-431-1.png" width="672" /></p>
 <p>To get a better looking plot, we can extract the moran’s I values and put
 them into a data frame, so we can use <strong>ggplot2</strong> plotting functionality.</p>
-<div class="sourceCode" id="cb769"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb769-1"><a href="global-spatial-autocorrelation-1.html#cb769-1" tabindex="-1"></a>morans <span class="ot">&lt;-</span> sp<span class="sc">$</span>res[,<span class="dv">1</span>]</span>
-<span id="cb769-2"><a href="global-spatial-autocorrelation-1.html#cb769-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Morans_I =</span> morans,<span class="at">lags =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> )</span>
-<span id="cb769-3"><a href="global-spatial-autocorrelation-1.html#cb769-3" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>lags,<span class="at">y=</span>Morans_I)) <span class="sc">+</span></span>
-<span id="cb769-4"><a href="global-spatial-autocorrelation-1.html#cb769-4" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb769-5"><a href="global-spatial-autocorrelation-1.html#cb769-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb769-6"><a href="global-spatial-autocorrelation-1.html#cb769-6" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb769-7"><a href="global-spatial-autocorrelation-1.html#cb769-7" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span>.<span class="dv">5</span>,.<span class="dv">5</span>) </span></code></pre></div>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb592"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb592-1"><a href="global-spatial-autocorrelation-1.html#cb592-1" tabindex="-1"></a>morans <span class="ot">&lt;-</span> sp<span class="sc">$</span>res[,<span class="dv">1</span>]</span>
+<span id="cb592-2"><a href="global-spatial-autocorrelation-1.html#cb592-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Morans_I =</span> morans,<span class="at">lags =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> )</span>
+<span id="cb592-3"><a href="global-spatial-autocorrelation-1.html#cb592-3" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>lags,<span class="at">y=</span>Morans_I)) <span class="sc">+</span></span>
+<span id="cb592-4"><a href="global-spatial-autocorrelation-1.html#cb592-4" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb592-5"><a href="global-spatial-autocorrelation-1.html#cb592-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb592-6"><a href="global-spatial-autocorrelation-1.html#cb592-6" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb592-7"><a href="global-spatial-autocorrelation-1.html#cb592-7" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span>.<span class="dv">5</span>,.<span class="dv">5</span>) </span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-432-1.png" width="672" /></p>
 <p>To get closer to the GeoDa correlogram plotting functionality, we can convert lags to
 euclidean distance.</p>
-<div class="sourceCode" id="cb771"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb771-1"><a href="global-spatial-autocorrelation-1.html#cb771-1" tabindex="-1"></a>df<span class="sc">$</span>euclidean_distance <span class="ot">&lt;-</span> df<span class="sc">$</span>lags <span class="sc">*</span> <span class="fl">4823.3</span></span>
-<span id="cb771-2"><a href="global-spatial-autocorrelation-1.html#cb771-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>euclidean_distance,<span class="at">y=</span>Morans_I)) <span class="sc">+</span></span>
-<span id="cb771-3"><a href="global-spatial-autocorrelation-1.html#cb771-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb771-4"><a href="global-spatial-autocorrelation-1.html#cb771-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb771-5"><a href="global-spatial-autocorrelation-1.html#cb771-5" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb771-6"><a href="global-spatial-autocorrelation-1.html#cb771-6" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span>.<span class="dv">5</span>,.<span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb771-7"><a href="global-spatial-autocorrelation-1.html#cb771-7" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span></code></pre></div>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb593"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb593-1"><a href="global-spatial-autocorrelation-1.html#cb593-1" tabindex="-1"></a>df<span class="sc">$</span>euclidean_distance <span class="ot">&lt;-</span> df<span class="sc">$</span>lags <span class="sc">*</span> <span class="fl">4823.3</span></span>
+<span id="cb593-2"><a href="global-spatial-autocorrelation-1.html#cb593-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>euclidean_distance,<span class="at">y=</span>Morans_I)) <span class="sc">+</span></span>
+<span id="cb593-3"><a href="global-spatial-autocorrelation-1.html#cb593-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb593-4"><a href="global-spatial-autocorrelation-1.html#cb593-4" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb593-5"><a href="global-spatial-autocorrelation-1.html#cb593-5" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb593-6"><a href="global-spatial-autocorrelation-1.html#cb593-6" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span>.<span class="dv">5</span>,.<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb593-7"><a href="global-spatial-autocorrelation-1.html#cb593-7" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-433-1.png" width="672" /></p>
 <p>The spatial correlogram can be paired with a bar chart that shows the number of
 neighbor pairs for each lag order. To get this information, we will need to work
 outside the <strong>spdep</strong> package and compute them ourselves.</p>
 <p>To begin, we set up an empty vector to store the pair numbers.</p>
-<div class="sourceCode" id="cb773"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb773-1"><a href="global-spatial-autocorrelation-1.html#cb773-1" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb594"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb594-1"><a href="global-spatial-autocorrelation-1.html#cb594-1" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">10</span>)</span></code></pre></div>
 <p>Here we run <code>dnearneigh</code> on each interval of euclidean distance that corresponds to a lag in
 1 to 10. To get the number of pairs for each lag order, we simply sum up the cardinality
 of the neighbor structure per each lag order and then divide it by two because this sum gives the
 total number of neighbors and the total number of pairs will be half this number.</p>
-<div class="sourceCode" id="cb774"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb774-1"><a href="global-spatial-autocorrelation-1.html#cb774-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>){</span>
-<span id="cb774-2"><a href="global-spatial-autocorrelation-1.html#cb774-2" tabindex="-1"></a>  nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, (i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fl">4823.28</span>, i <span class="sc">*</span> <span class="fl">4823.28</span>)</span>
-<span id="cb774-3"><a href="global-spatial-autocorrelation-1.html#cb774-3" tabindex="-1"></a>  pairs[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">card</span>(nb)) <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb774-4"><a href="global-spatial-autocorrelation-1.html#cb774-4" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb595"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb595-1"><a href="global-spatial-autocorrelation-1.html#cb595-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>){</span>
+<span id="cb595-2"><a href="global-spatial-autocorrelation-1.html#cb595-2" tabindex="-1"></a>  nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, (i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fl">4823.28</span>, i <span class="sc">*</span> <span class="fl">4823.28</span>)</span>
+<span id="cb595-3"><a href="global-spatial-autocorrelation-1.html#cb595-3" tabindex="-1"></a>  pairs[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">card</span>(nb)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb595-4"><a href="global-spatial-autocorrelation-1.html#cb595-4" tabindex="-1"></a>}</span></code></pre></div>
 <p>Now we create a data frame from the two vectors we create with the lag order values and
 associated euclidean distance values.</p>
-<div class="sourceCode" id="cb775"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb775-1"><a href="global-spatial-autocorrelation-1.html#cb775-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lag_order =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">auto_corr =</span> morans, <span class="at">num_pairs =</span> pairs)</span>
-<span id="cb775-2"><a href="global-spatial-autocorrelation-1.html#cb775-2" tabindex="-1"></a>df<span class="sc">$</span>euclidean_distance <span class="ot">&lt;-</span> df<span class="sc">$</span>lag_order <span class="sc">*</span> <span class="dv">4823</span></span></code></pre></div>
+<div class="sourceCode" id="cb596"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb596-1"><a href="global-spatial-autocorrelation-1.html#cb596-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lag_order =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">auto_corr =</span> morans, <span class="at">num_pairs =</span> pairs)</span>
+<span id="cb596-2"><a href="global-spatial-autocorrelation-1.html#cb596-2" tabindex="-1"></a>df<span class="sc">$</span>euclidean_distance <span class="ot">&lt;-</span> df<span class="sc">$</span>lag_order <span class="sc">*</span> <span class="dv">4823</span></span></code></pre></div>
 <p>Here we create two different plots, one is a histogram with the number of pairs in each bin, the other
 is the spatial correlogram</p>
-<div class="sourceCode" id="cb776"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb776-1"><a href="global-spatial-autocorrelation-1.html#cb776-1" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x =</span> euclidean_distance,<span class="at">y =</span> auto_corr)) <span class="sc">+</span></span>
-<span id="cb776-2"><a href="global-spatial-autocorrelation-1.html#cb776-2" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb776-3"><a href="global-spatial-autocorrelation-1.html#cb776-3" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb776-4"><a href="global-spatial-autocorrelation-1.html#cb776-4" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb776-5"><a href="global-spatial-autocorrelation-1.html#cb776-5" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb776-6"><a href="global-spatial-autocorrelation-1.html#cb776-6" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span>
-<span id="cb776-7"><a href="global-spatial-autocorrelation-1.html#cb776-7" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>euclidean_distance,<span class="at">y =</span> num_pairs, <span class="at">fill =</span> <span class="fu">as.factor</span>(euclidean_distance))) <span class="sc">+</span></span>
-<span id="cb776-8"><a href="global-spatial-autocorrelation-1.html#cb776-8" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
-<span id="cb776-9"><a href="global-spatial-autocorrelation-1.html#cb776-9" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Paired&quot;</span>) <span class="sc">+</span></span>
-<span id="cb776-10"><a href="global-spatial-autocorrelation-1.html#cb776-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
-<span id="cb776-11"><a href="global-spatial-autocorrelation-1.html#cb776-11" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>num_pairs), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> .<span class="dv">9</span>), <span class="at">vjust=</span><span class="sc">-</span>.<span class="dv">25</span>) <span class="sc">+</span></span>
-<span id="cb776-12"><a href="global-spatial-autocorrelation-1.html#cb776-12" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">1.2</span> <span class="sc">*</span> <span class="fu">max</span>(pairs)) <span class="sc">+</span></span>
-<span id="cb776-13"><a href="global-spatial-autocorrelation-1.html#cb776-13" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span>
-<span id="cb776-14"><a href="global-spatial-autocorrelation-1.html#cb776-14" tabindex="-1"></a>p1</span></code></pre></div>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb597"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb597-1"><a href="global-spatial-autocorrelation-1.html#cb597-1" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x =</span> euclidean_distance,<span class="at">y =</span> auto_corr)) <span class="sc">+</span></span>
+<span id="cb597-2"><a href="global-spatial-autocorrelation-1.html#cb597-2" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb597-3"><a href="global-spatial-autocorrelation-1.html#cb597-3" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb597-4"><a href="global-spatial-autocorrelation-1.html#cb597-4" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb597-5"><a href="global-spatial-autocorrelation-1.html#cb597-5" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb597-6"><a href="global-spatial-autocorrelation-1.html#cb597-6" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span>
+<span id="cb597-7"><a href="global-spatial-autocorrelation-1.html#cb597-7" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>euclidean_distance,<span class="at">y =</span> num_pairs, <span class="at">fill =</span> <span class="fu">as.factor</span>(euclidean_distance))) <span class="sc">+</span></span>
+<span id="cb597-8"><a href="global-spatial-autocorrelation-1.html#cb597-8" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb597-9"><a href="global-spatial-autocorrelation-1.html#cb597-9" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Paired&quot;</span>) <span class="sc">+</span></span>
+<span id="cb597-10"><a href="global-spatial-autocorrelation-1.html#cb597-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb597-11"><a href="global-spatial-autocorrelation-1.html#cb597-11" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>num_pairs), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> .<span class="dv">9</span>), <span class="at">vjust=</span><span class="sc">-</span>.<span class="dv">25</span>) <span class="sc">+</span></span>
+<span id="cb597-12"><a href="global-spatial-autocorrelation-1.html#cb597-12" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">1.2</span> <span class="sc">*</span> <span class="fu">max</span>(pairs)) <span class="sc">+</span></span>
+<span id="cb597-13"><a href="global-spatial-autocorrelation-1.html#cb597-13" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span>
+<span id="cb597-14"><a href="global-spatial-autocorrelation-1.html#cb597-14" tabindex="-1"></a>p1</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-437-1.png" width="672" /></p>
-<div class="sourceCode" id="cb778"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb778-1"><a href="global-spatial-autocorrelation-1.html#cb778-1" tabindex="-1"></a>p2</span></code></pre></div>
+<div class="sourceCode" id="cb598"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb598-1"><a href="global-spatial-autocorrelation-1.html#cb598-1" tabindex="-1"></a>p2</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-437-2.png" width="672" /></p>
 <p>Using <code>grid.arrange</code> from the <strong>gridExtra</strong> package, we can combine the two plots into one
 image.</p>
-<div class="sourceCode" id="cb779"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb779-1"><a href="global-spatial-autocorrelation-1.html#cb779-1" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1,p2,<span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb599"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb599-1"><a href="global-spatial-autocorrelation-1.html#cb599-1" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1,p2,<span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-438-1.png" width="672" /></p>
 <p>Following the same process outlined above, we can make a function that constructs the correlogram
 based on the desired lag order, distance band, variable, and coordinates.</p>
-<div class="sourceCode" id="cb781"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb781-1"><a href="global-spatial-autocorrelation-1.html#cb781-1" tabindex="-1"></a>geoda_correlogram <span class="ot">&lt;-</span> <span class="cf">function</span>(lag.order, distance, var,coords){</span>
-<span id="cb781-2"><a href="global-spatial-autocorrelation-1.html#cb781-2" tabindex="-1"></a>  <span class="co"># Funtion that outputs a spatial correlogram with a bar plot of neighbor pairs</span></span>
-<span id="cb781-3"><a href="global-spatial-autocorrelation-1.html#cb781-3" tabindex="-1"></a>  <span class="co"># Inputs:</span></span>
-<span id="cb781-4"><a href="global-spatial-autocorrelation-1.html#cb781-4" tabindex="-1"></a>  <span class="co">#        lag.order: The desired number of lag orders to be included in the plot</span></span>
-<span id="cb781-5"><a href="global-spatial-autocorrelation-1.html#cb781-5" tabindex="-1"></a>  <span class="co">#        distance: The desired distance band for the lags</span></span>
-<span id="cb781-6"><a href="global-spatial-autocorrelation-1.html#cb781-6" tabindex="-1"></a>  <span class="co">#        var: A variable to analyze the spatial autocorelation</span></span>
-<span id="cb781-7"><a href="global-spatial-autocorrelation-1.html#cb781-7" tabindex="-1"></a>  <span class="co">#        coords: A matrix of coordinates of the same length as var</span></span>
-<span id="cb781-8"><a href="global-spatial-autocorrelation-1.html#cb781-8" tabindex="-1"></a>  <span class="co"># creating vectors to store autocorrelation values and number of pairs</span></span>
-<span id="cb781-9"><a href="global-spatial-autocorrelation-1.html#cb781-9" tabindex="-1"></a>  pairs <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, lag.order)</span>
-<span id="cb781-10"><a href="global-spatial-autocorrelation-1.html#cb781-10" tabindex="-1"></a></span>
-<span id="cb781-11"><a href="global-spatial-autocorrelation-1.html#cb781-11" tabindex="-1"></a>  <span class="co">#loop to calculate number of pairs for each lag order</span></span>
-<span id="cb781-12"><a href="global-spatial-autocorrelation-1.html#cb781-12" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>lag.order) {</span>
-<span id="cb781-13"><a href="global-spatial-autocorrelation-1.html#cb781-13" tabindex="-1"></a>    nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, (i<span class="dv">-1</span>) <span class="sc">*</span> distance, i <span class="sc">*</span> distance)</span>
-<span id="cb781-14"><a href="global-spatial-autocorrelation-1.html#cb781-14" tabindex="-1"></a>    pairs[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">card</span>(nb)) <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb781-15"><a href="global-spatial-autocorrelation-1.html#cb781-15" tabindex="-1"></a>  }</span>
-<span id="cb781-16"><a href="global-spatial-autocorrelation-1.html#cb781-16" tabindex="-1"></a>  </span>
-<span id="cb781-17"><a href="global-spatial-autocorrelation-1.html#cb781-17" tabindex="-1"></a>  <span class="co"># Computing spatial autocorrelation</span></span>
-<span id="cb781-18"><a href="global-spatial-autocorrelation-1.html#cb781-18" tabindex="-1"></a>  nb1 <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, <span class="dv">0</span> , distance)</span>
-<span id="cb781-19"><a href="global-spatial-autocorrelation-1.html#cb781-19" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> <span class="fu">sp.correlogram</span>(nb1, var, <span class="at">order =</span> lag.order, <span class="at">method =</span> <span class="st">&quot;I&quot;</span>, <span class="at">style =</span> <span class="st">&quot;W&quot;</span>, <span class="at">randomisation =</span> <span class="cn">FALSE</span>, <span class="at">spChk =</span> <span class="cn">NULL</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb781-20"><a href="global-spatial-autocorrelation-1.html#cb781-20" tabindex="-1"></a>  </span>
-<span id="cb781-21"><a href="global-spatial-autocorrelation-1.html#cb781-21" tabindex="-1"></a>  <span class="co"># Putting the lag orders, autocorrelation, pairs and distance into a dataframe</span></span>
-<span id="cb781-22"><a href="global-spatial-autocorrelation-1.html#cb781-22" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lag =</span> <span class="dv">1</span><span class="sc">:</span>lag.order, <span class="at">num_pairs =</span> pairs, <span class="at">auto_corr =</span> sp<span class="sc">$</span>res[,<span class="dv">1</span>])</span>
-<span id="cb781-23"><a href="global-spatial-autocorrelation-1.html#cb781-23" tabindex="-1"></a>  df<span class="sc">$</span>euclidean_distance <span class="ot">&lt;-</span> df<span class="sc">$</span>lag <span class="sc">*</span> <span class="fu">round</span>(distance, <span class="at">digits =</span> <span class="dv">0</span>)</span>
-<span id="cb781-24"><a href="global-spatial-autocorrelation-1.html#cb781-24" tabindex="-1"></a>  </span>
-<span id="cb781-25"><a href="global-spatial-autocorrelation-1.html#cb781-25" tabindex="-1"></a>  <span class="co"># Making plots</span></span>
-<span id="cb781-26"><a href="global-spatial-autocorrelation-1.html#cb781-26" tabindex="-1"></a>  p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x =</span> euclidean_distance,<span class="at">y =</span> auto_corr)) <span class="sc">+</span></span>
-<span id="cb781-27"><a href="global-spatial-autocorrelation-1.html#cb781-27" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb781-28"><a href="global-spatial-autocorrelation-1.html#cb781-28" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb781-29"><a href="global-spatial-autocorrelation-1.html#cb781-29" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb781-30"><a href="global-spatial-autocorrelation-1.html#cb781-30" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)  <span class="sc">+</span></span>
-<span id="cb781-31"><a href="global-spatial-autocorrelation-1.html#cb781-31" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span>
-<span id="cb781-32"><a href="global-spatial-autocorrelation-1.html#cb781-32" tabindex="-1"></a>  p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>euclidean_distance,<span class="at">y=</span>num_pairs, <span class="at">fill =</span> <span class="fu">as.factor</span>(euclidean_distance))) <span class="sc">+</span></span>
-<span id="cb781-33"><a href="global-spatial-autocorrelation-1.html#cb781-33" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat=</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
-<span id="cb781-34"><a href="global-spatial-autocorrelation-1.html#cb781-34" tabindex="-1"></a>    <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Paired&quot;</span>) <span class="sc">+</span></span>
-<span id="cb781-35"><a href="global-spatial-autocorrelation-1.html#cb781-35" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
-<span id="cb781-36"><a href="global-spatial-autocorrelation-1.html#cb781-36" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>num_pairs), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> .<span class="dv">9</span>), <span class="at">vjust=</span><span class="sc">-</span>.<span class="dv">25</span>) <span class="sc">+</span></span>
-<span id="cb781-37"><a href="global-spatial-autocorrelation-1.html#cb781-37" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">1.2</span> <span class="sc">*</span> <span class="fu">max</span>(pairs)) <span class="sc">+</span></span>
-<span id="cb781-38"><a href="global-spatial-autocorrelation-1.html#cb781-38" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span>
-<span id="cb781-39"><a href="global-spatial-autocorrelation-1.html#cb781-39" tabindex="-1"></a>  <span class="fu">grid.arrange</span>(p1,p2,<span class="at">ncol =</span><span class="dv">1</span>)</span>
-<span id="cb781-40"><a href="global-spatial-autocorrelation-1.html#cb781-40" tabindex="-1"></a>}</span>
-<span id="cb781-41"><a href="global-spatial-autocorrelation-1.html#cb781-41" tabindex="-1"></a><span class="fu">geoda_correlogram</span>(<span class="dv">10</span>, <span class="fl">4823.3</span>, clev.points<span class="sc">$</span>sale_price, coords)</span></code></pre></div>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula = &#39;y ~ x&#39;</code></pre>
+<div class="sourceCode" id="cb600"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb600-1"><a href="global-spatial-autocorrelation-1.html#cb600-1" tabindex="-1"></a>geoda_correlogram <span class="ot">&lt;-</span> <span class="cf">function</span>(lag.order, distance, var,coords){</span>
+<span id="cb600-2"><a href="global-spatial-autocorrelation-1.html#cb600-2" tabindex="-1"></a>  <span class="co"># Funtion that outputs a spatial correlogram with a bar plot of neighbor pairs</span></span>
+<span id="cb600-3"><a href="global-spatial-autocorrelation-1.html#cb600-3" tabindex="-1"></a>  <span class="co"># Inputs:</span></span>
+<span id="cb600-4"><a href="global-spatial-autocorrelation-1.html#cb600-4" tabindex="-1"></a>  <span class="co">#        lag.order: The desired number of lag orders to be included in the plot</span></span>
+<span id="cb600-5"><a href="global-spatial-autocorrelation-1.html#cb600-5" tabindex="-1"></a>  <span class="co">#        distance: The desired distance band for the lags</span></span>
+<span id="cb600-6"><a href="global-spatial-autocorrelation-1.html#cb600-6" tabindex="-1"></a>  <span class="co">#        var: A variable to analyze the spatial autocorelation</span></span>
+<span id="cb600-7"><a href="global-spatial-autocorrelation-1.html#cb600-7" tabindex="-1"></a>  <span class="co">#        coords: A matrix of coordinates of the same length as var</span></span>
+<span id="cb600-8"><a href="global-spatial-autocorrelation-1.html#cb600-8" tabindex="-1"></a>  <span class="co"># creating vectors to store autocorrelation values and number of pairs</span></span>
+<span id="cb600-9"><a href="global-spatial-autocorrelation-1.html#cb600-9" tabindex="-1"></a>  pairs <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, lag.order)</span>
+<span id="cb600-10"><a href="global-spatial-autocorrelation-1.html#cb600-10" tabindex="-1"></a></span>
+<span id="cb600-11"><a href="global-spatial-autocorrelation-1.html#cb600-11" tabindex="-1"></a>  <span class="co">#loop to calculate number of pairs for each lag order</span></span>
+<span id="cb600-12"><a href="global-spatial-autocorrelation-1.html#cb600-12" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>lag.order) {</span>
+<span id="cb600-13"><a href="global-spatial-autocorrelation-1.html#cb600-13" tabindex="-1"></a>    nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, (i<span class="dv">-1</span>) <span class="sc">*</span> distance, i <span class="sc">*</span> distance)</span>
+<span id="cb600-14"><a href="global-spatial-autocorrelation-1.html#cb600-14" tabindex="-1"></a>    pairs[i] <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">card</span>(nb)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb600-15"><a href="global-spatial-autocorrelation-1.html#cb600-15" tabindex="-1"></a>  }</span>
+<span id="cb600-16"><a href="global-spatial-autocorrelation-1.html#cb600-16" tabindex="-1"></a>  </span>
+<span id="cb600-17"><a href="global-spatial-autocorrelation-1.html#cb600-17" tabindex="-1"></a>  <span class="co"># Computing spatial autocorrelation</span></span>
+<span id="cb600-18"><a href="global-spatial-autocorrelation-1.html#cb600-18" tabindex="-1"></a>  nb1 <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, <span class="dv">0</span> , distance)</span>
+<span id="cb600-19"><a href="global-spatial-autocorrelation-1.html#cb600-19" tabindex="-1"></a>  sp <span class="ot">&lt;-</span> <span class="fu">sp.correlogram</span>(nb1, var, <span class="at">order =</span> lag.order, <span class="at">method =</span> <span class="st">&quot;I&quot;</span>, <span class="at">style =</span> <span class="st">&quot;W&quot;</span>, <span class="at">randomisation =</span> <span class="cn">FALSE</span>, <span class="at">spChk =</span> <span class="cn">NULL</span>, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb600-20"><a href="global-spatial-autocorrelation-1.html#cb600-20" tabindex="-1"></a>  </span>
+<span id="cb600-21"><a href="global-spatial-autocorrelation-1.html#cb600-21" tabindex="-1"></a>  <span class="co"># Putting the lag orders, autocorrelation, pairs and distance into a dataframe</span></span>
+<span id="cb600-22"><a href="global-spatial-autocorrelation-1.html#cb600-22" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lag =</span> <span class="dv">1</span><span class="sc">:</span>lag.order, <span class="at">num_pairs =</span> pairs, <span class="at">auto_corr =</span> sp<span class="sc">$</span>res[,<span class="dv">1</span>])</span>
+<span id="cb600-23"><a href="global-spatial-autocorrelation-1.html#cb600-23" tabindex="-1"></a>  df<span class="sc">$</span>euclidean_distance <span class="ot">&lt;-</span> df<span class="sc">$</span>lag <span class="sc">*</span> <span class="fu">round</span>(distance, <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb600-24"><a href="global-spatial-autocorrelation-1.html#cb600-24" tabindex="-1"></a>  </span>
+<span id="cb600-25"><a href="global-spatial-autocorrelation-1.html#cb600-25" tabindex="-1"></a>  <span class="co"># Making plots</span></span>
+<span id="cb600-26"><a href="global-spatial-autocorrelation-1.html#cb600-26" tabindex="-1"></a>  p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x =</span> euclidean_distance,<span class="at">y =</span> auto_corr)) <span class="sc">+</span></span>
+<span id="cb600-27"><a href="global-spatial-autocorrelation-1.html#cb600-27" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb600-28"><a href="global-spatial-autocorrelation-1.html#cb600-28" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb600-29"><a href="global-spatial-autocorrelation-1.html#cb600-29" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb600-30"><a href="global-spatial-autocorrelation-1.html#cb600-30" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)  <span class="sc">+</span></span>
+<span id="cb600-31"><a href="global-spatial-autocorrelation-1.html#cb600-31" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span>
+<span id="cb600-32"><a href="global-spatial-autocorrelation-1.html#cb600-32" tabindex="-1"></a>  p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>euclidean_distance,<span class="at">y=</span>num_pairs, <span class="at">fill =</span> <span class="fu">as.factor</span>(euclidean_distance))) <span class="sc">+</span></span>
+<span id="cb600-33"><a href="global-spatial-autocorrelation-1.html#cb600-33" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat=</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb600-34"><a href="global-spatial-autocorrelation-1.html#cb600-34" tabindex="-1"></a>    <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Paired&quot;</span>) <span class="sc">+</span></span>
+<span id="cb600-35"><a href="global-spatial-autocorrelation-1.html#cb600-35" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb600-36"><a href="global-spatial-autocorrelation-1.html#cb600-36" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>num_pairs), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> .<span class="dv">9</span>), <span class="at">vjust=</span><span class="sc">-</span>.<span class="dv">25</span>) <span class="sc">+</span></span>
+<span id="cb600-37"><a href="global-spatial-autocorrelation-1.html#cb600-37" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">1.2</span> <span class="sc">*</span> <span class="fu">max</span>(pairs)) <span class="sc">+</span></span>
+<span id="cb600-38"><a href="global-spatial-autocorrelation-1.html#cb600-38" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> df<span class="sc">$</span>euclidean_distance)</span>
+<span id="cb600-39"><a href="global-spatial-autocorrelation-1.html#cb600-39" tabindex="-1"></a>  <span class="fu">grid.arrange</span>(p1,p2,<span class="at">ncol =</span><span class="dv">1</span>)</span>
+<span id="cb600-40"><a href="global-spatial-autocorrelation-1.html#cb600-40" tabindex="-1"></a>}</span>
+<span id="cb600-41"><a href="global-spatial-autocorrelation-1.html#cb600-41" tabindex="-1"></a><span class="fu">geoda_correlogram</span>(<span class="dv">10</span>, <span class="fl">4823.3</span>, clev.points<span class="sc">$</span>sale_price, coords)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-439-1.png" width="672" /></p>
 </div>
 <div id="interpretation-1" class="section level3 hasAnchor" number="10.3.3">
