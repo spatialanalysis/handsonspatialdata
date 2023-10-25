@@ -102,7 +102,7 @@ out the Spatial Data Handling notebook.
 
 ```{r}
 st_crs(counties)
-counties <- st_transform(counties, 102003)
+counties <- st_transform(counties, crs = "ESRI:102003")
 ```
 
 

@@ -59,6 +59,7 @@ their dependencies.^[Use
 library(sf)
 library(spdep)
 library(geodaData)
+library(spatialreg)
 ```
 
 
@@ -571,10 +572,10 @@ diag(B) <- 1
 With this, we can now convert back to class **listw** with the **spdep** function `mat2listw`.
 The function is pretty self explanatory, as it converts from a matrix the **listw**. We
 need one extra step to accomplish the conversion. We first need to convert **B** to class
-**dgTMatrix** before we can use the `mat2listw` function.
+**dgRMatrix** before we can use the `mat2listw` function.
 
 ```{r quiet = TRUE}
-var.band.w2 <- mat2listw(as(B, "dgTMatrix"))
+var.band.w2 <- mat2listw(as(B, "dgRMatrix"))
 ```
 
 #### Properties of kernal weights {-}

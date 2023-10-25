@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Contiguity-Based Spatial Weights | Hands-On Spatial Data Science with R</title>
   <meta name="description" content="Chapter 6 Contiguity-Based Spatial Weights | Hands-On Spatial Data Science with R" />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Contiguity-Based Spatial Weights | Hands-On Spatial Data Science with R" />
   <meta property="og:type" content="book" />
-  
   
   
   <meta name="github-repo" content="spatialanalysis/handsonspatialdata" />
@@ -24,7 +23,7 @@
 <meta name="author" content="Luc Anselin, Grant Morrison, Angela Li, Karina Acosta" />
 
 
-<meta name="date" content="2020-07-02" />
+<meta name="date" content="2023-10-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,8 @@
   
 <link rel="prev" href="rate-mapping.html"/>
 <link rel="next" href="distance-based-spatial-weights.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,61 +49,117 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.3/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-binding-2.2.0/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.0/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -119,95 +175,120 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#disclaimer"><i class="fa fa-check"></i>Disclaimer</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#using-this-book"><i class="fa fa-check"></i>Using This Book</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#who-this-book-is-for"><i class="fa fa-check"></i>Who This Book Is For</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html"><i class="fa fa-check"></i><b>1</b> Spatial Data Handling</a><ul>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction-1"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html"><i class="fa fa-check"></i><b>1</b> Spatial Data Handling</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction-1"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#objectives"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#preliminaries"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#preliminaries"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#obtaining-data-from-the-chicago-open-data-portal"><i class="fa fa-check"></i>Obtaining data from the Chicago Open Data portal</a></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#selecting-observations-for-a-given-time-period"><i class="fa fa-check"></i>Selecting Observations for a Given Time Period</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#selecting-observations-for-a-given-time-period"><i class="fa fa-check"></i>Selecting Observations for a Given Time Period</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#extracting-observations-for-the-desired-time-period"><i class="fa fa-check"></i>Extracting observations for the desired time period</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#selecting-the-variables-for-the-final-table"><i class="fa fa-check"></i>Selecting the variables for the final table</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-point-layer"><i class="fa fa-check"></i>Creating a Point Layer</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-point-layer"><i class="fa fa-check"></i>Creating a Point Layer</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-point-layer-from-coordinates-in-a-table---principle"><i class="fa fa-check"></i>Creating a point layer from coordinates in a table - principle</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-spatial-points-object"><i class="fa fa-check"></i>Creating a spatial points object</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#abandoned-vehicles-by-community-area"><i class="fa fa-check"></i>Abandoned Vehicles by Community Area</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#abandoned-vehicles-by-community-area"><i class="fa fa-check"></i>Abandoned Vehicles by Community Area</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#community-area-boundary-file"><i class="fa fa-check"></i>Community Area boundary file</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#spatial-join"><i class="fa fa-check"></i>Spatial join</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#counts-by-community-area"><i class="fa fa-check"></i>Counts by community area</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#mapping-the-vehicle-counts"><i class="fa fa-check"></i>Mapping the vehicle counts</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#community-area-population-data"><i class="fa fa-check"></i>Community Area Population Data</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#community-area-population-data"><i class="fa fa-check"></i>Community Area Population Data</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#extracting-a-pdf-file"><i class="fa fa-check"></i>Extracting a pdf file</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#parsing-the-pdf-file"><i class="fa fa-check"></i>Parsing the pdf file</a></li>
 <li class="chapter" data-level="1.0.1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#extracting-the-population-values"><i class="fa fa-check"></i><b>1.0.1</b> Extracting the population values</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-data-frame-with-population-values"><i class="fa fa-check"></i>Creating a data frame with population values</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#mapping-community-area-abandoned-vehicles-per-capita"><i class="fa fa-check"></i>Mapping Community Area Abandoned Vehicles Per Capita</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#mapping-community-area-abandoned-vehicles-per-capita"><i class="fa fa-check"></i>Mapping Community Area Abandoned Vehicles Per Capita</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#computing-abandoned-vehicles-per-capita"><i class="fa fa-check"></i>Computing abandoned vehicles per capita</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#final-choropleth-map"><i class="fa fa-check"></i>Final choropleth map</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html"><i class="fa fa-check"></i><b>2</b> Exploratory Data Analysis 1</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-2"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="2" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html"><i class="fa fa-check"></i><b>2</b> Exploratory Data Analysis 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-2"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#objectives-1"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#preliminaries-1"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#preliminaries-1"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#load-packages"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#obtaining-the-data"><i class="fa fa-check"></i>Obtaining the data</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#analyzing-the-distribution-of-a-single-variable"><i class="fa fa-check"></i>Analyzing the Distribution of a Single Variable</a><ul>
-<li><a href="exploratory-data-analysis-1.html#a-quick-introduction-to-ggplot">A quick introduction to <strong>ggplot</strong></a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#analyzing-the-distribution-of-a-single-variable"><i class="fa fa-check"></i>Analyzing the Distribution of a Single Variable</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#a-quick-introduction-to-ggplot"><i class="fa fa-check"></i>A quick introduction to <strong>ggplot</strong></a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#histogram"><i class="fa fa-check"></i>Histogram</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#box-plot"><i class="fa fa-check"></i>Box plot</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#bivariate-analysis-the-scatter-plot"><i class="fa fa-check"></i>Bivariate Analysis: The Scatter Plot</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#bivariate-analysis-the-scatter-plot"><i class="fa fa-check"></i>Bivariate Analysis: The Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#smoothing-the-scatter-plot"><i class="fa fa-check"></i>Smoothing the scatter plot</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#spatial-heterogeneity"><i class="fa fa-check"></i>Spatial heterogeneity</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#spatial-heterogeneity"><i class="fa fa-check"></i>Spatial heterogeneity</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#structural-breaks-in-the-scatter-plot"><i class="fa fa-check"></i>Structural breaks in the scatter plot</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#chow-test"><i class="fa fa-check"></i>Chow test</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html"><i class="fa fa-check"></i><b>3</b> Exploratory Data Analysis 2</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-3"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="3" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html"><i class="fa fa-check"></i><b>3</b> Exploratory Data Analysis 2</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-3"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#objectives-2"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#preliminaries-2"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#preliminaries-2"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#load-packages-1"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#obtaining-the-data-1"><i class="fa fa-check"></i>Obtaining the data</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#scatter-plot-matrix"><i class="fa fa-check"></i>Scatter Plot Matrix</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#scatter-plot-matrix"><i class="fa fa-check"></i>Scatter Plot Matrix</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#basic-scatter-plot-matrix"><i class="fa fa-check"></i>Basic scatter plot matrix</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#scatter-plot-matrix-with-smoothing"><i class="fa fa-check"></i>Scatter plot matrix with smoothing</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#three-variables-bubble-chart-and-3d-scatter-plot"><i class="fa fa-check"></i>Three Variables: Bubble Chart and 3D Scatter Plot</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#three-variables-bubble-chart-and-3d-scatter-plot"><i class="fa fa-check"></i>Three Variables: Bubble Chart and 3D Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#bubble-chart"><i class="fa fa-check"></i>Bubble chart</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#d-scatter-plot"><i class="fa fa-check"></i>3D Scatter Plot</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#true-multivariate-eda-parallel-coordinate-plot-and-conditional-plots"><i class="fa fa-check"></i>True Multivariate EDA: Parallel Coordinate Plot and Conditional Plots</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#true-multivariate-eda-parallel-coordinate-plot-and-conditional-plots"><i class="fa fa-check"></i>True Multivariate EDA: Parallel Coordinate Plot and Conditional Plots</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#parallel-coordinate-plot-pcp"><i class="fa fa-check"></i>Parallel Coordinate Plot (PCP)</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#conditional-plots"><i class="fa fa-check"></i>Conditional Plots</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="basic-mapping.html"><a href="basic-mapping.html"><i class="fa fa-check"></i><b>4</b> Basic Mapping</a><ul>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-4"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="4" data-path="basic-mapping.html"><a href="basic-mapping.html"><i class="fa fa-check"></i><b>4</b> Basic Mapping</a>
+<ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-4"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#objectives-3"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#preliminaries-3"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#preliminaries-3"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#load-packages-2"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#obtaining-the-data-2"><i class="fa fa-check"></i>Obtaining the data</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#basic-choropleth-mapping"><i class="fa fa-check"></i>Basic Choropleth Mapping</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#basic-choropleth-mapping"><i class="fa fa-check"></i>Basic Choropleth Mapping</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#default-settings-1"><i class="fa fa-check"></i>Default settings</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#color-palette"><i class="fa fa-check"></i>Color palette</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#legend"><i class="fa fa-check"></i>Legend</a></li>
@@ -217,41 +298,50 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#saving-a-map-as-a-file"><i class="fa fa-check"></i>Saving a map as a file</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#shape-centers"><i class="fa fa-check"></i>Shape centers</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#common-map-classifications"><i class="fa fa-check"></i>Common Map Classifications</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#common-map-classifications"><i class="fa fa-check"></i>Common Map Classifications</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#quantile-map"><i class="fa fa-check"></i>Quantile map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#natural-breaks-map"><i class="fa fa-check"></i>Natural breaks map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#equal-intervals-map"><i class="fa fa-check"></i>Equal intervals map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#custom-breaks"><i class="fa fa-check"></i>Custom breaks</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#extreme-value-maps"><i class="fa fa-check"></i>Extreme Value Maps</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#extreme-value-maps"><i class="fa fa-check"></i>Extreme Value Maps</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#percentile-map"><i class="fa fa-check"></i>Percentile map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#box-map"><i class="fa fa-check"></i>Box map</a></li>
 <li class="chapter" data-level="4.0.1" data-path="basic-mapping.html"><a href="basic-mapping.html#standard-deviation-map"><i class="fa fa-check"></i><b>4.0.1</b> Standard deviation map</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#mapping-categorical-variables"><i class="fa fa-check"></i>Mapping Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#mapping-categorical-variables"><i class="fa fa-check"></i>Mapping Categorical Variables</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#unique-value-map"><i class="fa fa-check"></i>Unique value map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#co-location-map"><i class="fa fa-check"></i>Co-location map</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#conditional-map"><i class="fa fa-check"></i>Conditional Map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#cartogram"><i class="fa fa-check"></i>Cartogram</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="rate-mapping.html"><a href="rate-mapping.html"><i class="fa fa-check"></i><b>5</b> Rate Mapping</a><ul>
-<li class="chapter" data-level="" data-path="rate-mapping.html"><a href="rate-mapping.html#introduction-5"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="5" data-path="rate-mapping.html"><a href="rate-mapping.html"><i class="fa fa-check"></i><b>5</b> Rate Mapping</a>
+<ul>
+<li class="chapter" data-level="" data-path="rate-mapping.html"><a href="rate-mapping.html#introduction-5"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="5.0.1" data-path="rate-mapping.html"><a href="rate-mapping.html#objectives-4"><i class="fa fa-check"></i><b>5.0.1</b> Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="5.1" data-path="rate-mapping.html"><a href="rate-mapping.html#preliminaries-4"><i class="fa fa-check"></i><b>5.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="5.1" data-path="rate-mapping.html"><a href="rate-mapping.html#preliminaries-4"><i class="fa fa-check"></i><b>5.1</b> Preliminaries</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="rate-mapping.html"><a href="rate-mapping.html#load-packages-3"><i class="fa fa-check"></i><b>5.1.1</b> Load packages</a></li>
 <li class="chapter" data-level="5.1.2" data-path="rate-mapping.html"><a href="rate-mapping.html#geodadata"><i class="fa fa-check"></i><b>5.1.2</b> geodaData</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="rate-mapping.html"><a href="rate-mapping.html#choropleth-map-for-rates"><i class="fa fa-check"></i><b>5.2</b> Choropleth Map for Rates</a><ul>
+<li class="chapter" data-level="5.2" data-path="rate-mapping.html"><a href="rate-mapping.html#choropleth-map-for-rates"><i class="fa fa-check"></i><b>5.2</b> Choropleth Map for Rates</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="rate-mapping.html"><a href="rate-mapping.html#spatially-extensive-and-intensive-variables"><i class="fa fa-check"></i><b>5.2.1</b> Spatially extensive and intensive variables</a></li>
 <li class="chapter" data-level="5.2.2" data-path="rate-mapping.html"><a href="rate-mapping.html#raw-rate-map"><i class="fa fa-check"></i><b>5.2.2</b> Raw rate map</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk"><i class="fa fa-check"></i><b>5.3</b> Excess risk</a><ul>
+<li class="chapter" data-level="5.3" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk"><i class="fa fa-check"></i><b>5.3</b> Excess risk</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="rate-mapping.html"><a href="rate-mapping.html#relative-risk"><i class="fa fa-check"></i><b>5.3.1</b> Relative risk</a></li>
 <li class="chapter" data-level="5.3.2" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk-map"><i class="fa fa-check"></i><b>5.3.2</b> Excess risk map</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="rate-mapping.html"><a href="rate-mapping.html#empirical-bayes-smoothed-rate-map"><i class="fa fa-check"></i><b>5.4</b> Empirical Bayes Smoothed Rate Map</a><ul>
+<li class="chapter" data-level="5.4" data-path="rate-mapping.html"><a href="rate-mapping.html#empirical-bayes-smoothed-rate-map"><i class="fa fa-check"></i><b>5.4</b> Empirical Bayes Smoothed Rate Map</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="rate-mapping.html"><a href="rate-mapping.html#borrowing-strength"><i class="fa fa-check"></i><b>5.4.1</b> Borrowing strength</a></li>
 <li class="chapter" data-level="5.4.2" data-path="rate-mapping.html"><a href="rate-mapping.html#bayes-law"><i class="fa fa-check"></i><b>5.4.2</b> Bayes law</a></li>
 <li class="chapter" data-level="5.4.3" data-path="rate-mapping.html"><a href="rate-mapping.html#the-poisson-gamma-model"><i class="fa fa-check"></i><b>5.4.3</b> The Poisson-Gamma model</a></li>
@@ -259,161 +349,200 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="rate-mapping.html"><a href="rate-mapping.html#eb-rate-map"><i class="fa fa-check"></i><b>5.5</b> EB rate map</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html"><i class="fa fa-check"></i><b>6</b> Contiguity-Based Spatial Weights</a><ul>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#introduction-6"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="6" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html"><i class="fa fa-check"></i><b>6</b> Contiguity-Based Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#introduction-6"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#objectives-5"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#preliminaries-5"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#preliminaries-5"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#load-packages-4"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#geodadata-1"><i class="fa fa-check"></i>geodaData</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#contiguity-weights"><i class="fa fa-check"></i>Contiguity Weights</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#contiguity-weights"><i class="fa fa-check"></i>Contiguity Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#rook-contiguity"><i class="fa fa-check"></i>Rook Contiguity</a></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#queen-contiguity"><i class="fa fa-check"></i>Queen Contiguity</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#higher-order-contiguity"><i class="fa fa-check"></i>Higher Order Contiguity</a></li>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#visualizing-contiguity-neighbors"><i class="fa fa-check"></i>Visualizing Contiguity Neighbors</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#visualizing-contiguity-neighbors"><i class="fa fa-check"></i>Visualizing Contiguity Neighbors</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#connectivity-graph"><i class="fa fa-check"></i>Connectivity Graph</a></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#connectivity-histogram"><i class="fa fa-check"></i>Connectivity Histogram</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#saving-neighbors"><i class="fa fa-check"></i>Saving Neighbors</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#saving-neighbors"><i class="fa fa-check"></i>Saving Neighbors</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#oldstyle"><i class="fa fa-check"></i>Oldstyle</a></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#geoda-header-format"><i class="fa fa-check"></i>GeoDA Header Format</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html"><i class="fa fa-check"></i><b>7</b> Distance-Based Spatial Weights</a><ul>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#introduction-7"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="7" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html"><i class="fa fa-check"></i><b>7</b> Distance-Based Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#introduction-7"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#objectives-6"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#preliminaries-6"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#preliminaries-6"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#load-packages-5"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#geodadata-2"><i class="fa fa-check"></i>geodaData</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#visualizing-point-data"><i class="fa fa-check"></i>Visualizing point data</a></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-band-weights"><i class="fa fa-check"></i>Distance-Band Weights</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-band-weights"><i class="fa fa-check"></i>Distance-Band Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#concepts"><i class="fa fa-check"></i>Concepts</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#creating-distance-band-weights"><i class="fa fa-check"></i>Creating distance-band weights</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#weights-characteristics"><i class="fa fa-check"></i>Weights characteristics</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#isolates"><i class="fa fa-check"></i>Isolates</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#k-nearest-neighbor-weights"><i class="fa fa-check"></i>K-Nearest Neighbor Weights</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#k-nearest-neighbor-weights"><i class="fa fa-check"></i>K-Nearest Neighbor Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#concept"><i class="fa fa-check"></i>Concept</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#creating-knn-weights"><i class="fa fa-check"></i>Creating KNN Weights</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#properties-of-knn-weights"><i class="fa fa-check"></i>Properties of KNN weights</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#generalizing-the-concept-of-contiguity"><i class="fa fa-check"></i>Generalizing the Concept of Contiguity</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#generalizing-the-concept-of-contiguity"><i class="fa fa-check"></i>Generalizing the Concept of Contiguity</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#contiguity-based-weights-for-points"><i class="fa fa-check"></i>Contiguity-based weights for points</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#contiguity-weights-for-thiessen-polygons"><i class="fa fa-check"></i>Contiguity weights for Thiessen polygons</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-based-weights-for-polygons"><i class="fa fa-check"></i>Distance-based weights for polygons</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-based-weights-for-polygons"><i class="fa fa-check"></i>Distance-based weights for polygons</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#getting-the-data"><i class="fa fa-check"></i>Getting the data</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-the-centroids"><i class="fa fa-check"></i>Computing the centroids</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-the-critical-threshold"><i class="fa fa-check"></i>Computing the critical threshold</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-distance-band-neighbors"><i class="fa fa-check"></i>Computing distance-band neighbors</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html"><i class="fa fa-check"></i><b>8</b> Spatial Weights as Distance Functions</a><ul>
-<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#introduction-8"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="8" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html"><i class="fa fa-check"></i><b>8</b> Spatial Weights as Distance Functions</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#introduction-8"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#objectives-7"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#preliminaries-7"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#preliminaries-7"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#load-packages-6"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#obtaining-the-data-from-the-geoda-website"><i class="fa fa-check"></i>Obtaining the Data from the GeoDa website</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#inverse-distance-weights"><i class="fa fa-check"></i>Inverse Distance Weights</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#inverse-distance-weights"><i class="fa fa-check"></i>Inverse Distance Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#concepts-1"><i class="fa fa-check"></i>Concepts</a></li>
 <li class="chapter" data-level="8.0.1" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-distance-bands"><i class="fa fa-check"></i><b>8.0.1</b> Creating inverse distance functions for distance bands</a></li>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-k-nearest-neighbors"><i class="fa fa-check"></i>Creating inverse distance functions for k-nearest neighbors</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#kernal-weights"><i class="fa fa-check"></i>Kernal Weights</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#kernal-weights"><i class="fa fa-check"></i>Kernal Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#concepts-2"><i class="fa fa-check"></i>Concepts</a></li>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-kernal-weights"><i class="fa fa-check"></i>Creating Kernal weights</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html"><i class="fa fa-check"></i><b>9</b> Applications of Spatial Weights</a><ul>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#introduction-9"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="9" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html"><i class="fa fa-check"></i><b>9</b> Applications of Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#introduction-9"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#objectives-8"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-8"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-8"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#load-packages-7"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#geodadata-3"><i class="fa fa-check"></i>geodaData</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables"><i class="fa fa-check"></i>Spatially lagged variables</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables"><i class="fa fa-check"></i>Spatially lagged variables</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#creating-a-spatially-lagged-variable"><i class="fa fa-check"></i>Creating a spatially lagged variable</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-inverse-distance-weights"><i class="fa fa-check"></i>Spatially lagged variables from inverse distance weights</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-inverse-distance-weights"><i class="fa fa-check"></i>Spatially lagged variables from inverse distance weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle"><i class="fa fa-check"></i>Principle</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#default-approach"><i class="fa fa-check"></i>Default approach</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-lags-with-row-standardized-inverse-distance-weights"><i class="fa fa-check"></i>Spatial lags with row-standardized inverse distance weights</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-kernel-weights"><i class="fa fa-check"></i>Spatially lagged variables from kernel weights</a></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-rate-smoothing"><i class="fa fa-check"></i>Spatial rate smoothing</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-rate-smoothing"><i class="fa fa-check"></i>Spatial rate smoothing</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle-1"><i class="fa fa-check"></i>Principle</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-9"><i class="fa fa-check"></i>Preliminaries</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#simple-window-average-of-rates"><i class="fa fa-check"></i>Simple window average of rates</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-smoothed-rates"><i class="fa fa-check"></i>Spatially Smoothed Rates</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-empirical-bayes-smoothing"><i class="fa fa-check"></i>Spatial Empirical Bayes smoothing</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-empirical-bayes-smoothing"><i class="fa fa-check"></i>Spatial Empirical Bayes smoothing</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle-2"><i class="fa fa-check"></i>Principle</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-eb-rate-smoother"><i class="fa fa-check"></i>Spatial EB rate smoother</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>10</b> Global Spatial Autocorrelation 1</a><ul>
-<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#introduction-10"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="10" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>10</b> Global Spatial Autocorrelation 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#introduction-10"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="10.0.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#objectives-9"><i class="fa fa-check"></i><b>10.0.1</b> Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="10.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#preliminaries-10"><i class="fa fa-check"></i><b>10.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="10.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#preliminaries-10"><i class="fa fa-check"></i><b>10.1</b> Preliminaries</a>
+<ul>
 <li class="chapter" data-level="10.1.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#load-packages-8"><i class="fa fa-check"></i><b>10.1.1</b> Load packages</a></li>
 <li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#geodadata-website"><i class="fa fa-check"></i>geodaData website</a></li>
 <li class="chapter" data-level="10.1.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#making-the-weights"><i class="fa fa-check"></i><b>10.1.2</b> Making the weights</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#the-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2</b> The Moran Scatter Plot</a><ul>
+<li class="chapter" data-level="10.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#the-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2</b> The Moran Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#concept-1"><i class="fa fa-check"></i><b>10.2.1</b> Concept</a></li>
 <li class="chapter" data-level="10.2.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#creating-a-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2.2</b> Creating a Moran scatter plot</a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#spatial-correlogram"><i class="fa fa-check"></i><b>10.3</b> Spatial Correlogram</a><ul>
+<li class="chapter" data-level="10.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#spatial-correlogram"><i class="fa fa-check"></i><b>10.3</b> Spatial Correlogram</a>
+<ul>
 <li class="chapter" data-level="10.3.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#concept-2"><i class="fa fa-check"></i><b>10.3.1</b> Concept</a></li>
 <li class="chapter" data-level="10.3.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#creating-a-spatial-correlogram"><i class="fa fa-check"></i><b>10.3.2</b> Creating a spatial correlogram</a></li>
 <li class="chapter" data-level="10.3.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#interpretation-1"><i class="fa fa-check"></i><b>10.3.3</b> Interpretation</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html"><i class="fa fa-check"></i><b>11</b> Global Spatial Autocorrelation 2</a><ul>
-<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#introduction-11"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="11" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html"><i class="fa fa-check"></i><b>11</b> Global Spatial Autocorrelation 2</a>
+<ul>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#introduction-11"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="11.0.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#objectives-10"><i class="fa fa-check"></i><b>11.0.1</b> Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="11.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#preliminaries-11"><i class="fa fa-check"></i><b>11.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="11.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#preliminaries-11"><i class="fa fa-check"></i><b>11.1</b> Preliminaries</a>
+<ul>
 <li class="chapter" data-level="11.1.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#load-packages-9"><i class="fa fa-check"></i><b>11.1.1</b> Load packages</a></li>
 <li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#obtaining-the-data-from-the-geoda-website-1"><i class="fa fa-check"></i>Obtaining the Data from the GeoDa website</a></li>
 <li class="chapter" data-level="11.1.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#creating-the-weights-2"><i class="fa fa-check"></i><b>11.1.2</b> Creating the weights</a></li>
 </ul></li>
 <li class="chapter" data-level="11.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-spatial-correlation---a-word-of-caution"><i class="fa fa-check"></i><b>11.2</b> Bivariate spatial correlation - a Word of Caution</a></li>
-<li class="chapter" data-level="11.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3</b> Bivariate Moran Scatter Plot</a><ul>
+<li class="chapter" data-level="11.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3</b> Bivariate Moran Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="11.3.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-3"><i class="fa fa-check"></i><b>11.3.1</b> Concept</a></li>
 <li class="chapter" data-level="11.3.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#creating-a-bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3.2</b> Creating a bivariate Moran scatter plot</a></li>
 <li class="chapter" data-level="11.3.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#a-closer-look-at-bivariate-spatial-correlation"><i class="fa fa-check"></i><b>11.3.3</b> A closer look at bivariate spatial correlation</a></li>
 </ul></li>
-<li class="chapter" data-level="11.4" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#differential-moran-scatter-plot"><i class="fa fa-check"></i><b>11.4</b> Differential Moran Scatter Plot</a><ul>
+<li class="chapter" data-level="11.4" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#differential-moran-scatter-plot"><i class="fa fa-check"></i><b>11.4</b> Differential Moran Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="11.4.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-4"><i class="fa fa-check"></i><b>11.4.1</b> Concept</a></li>
 <li class="chapter" data-level="11.4.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#implementation"><i class="fa fa-check"></i><b>11.4.2</b> Implementation</a></li>
 <li class="chapter" data-level="11.4.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#options"><i class="fa fa-check"></i><b>11.4.3</b> Options</a></li>
 </ul></li>
-<li class="chapter" data-level="11.5" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#moran-scatter-plot-for-eb-rates"><i class="fa fa-check"></i><b>11.5</b> Moran Scatter Plot for EB Rates</a><ul>
+<li class="chapter" data-level="11.5" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#moran-scatter-plot-for-eb-rates"><i class="fa fa-check"></i><b>11.5</b> Moran Scatter Plot for EB Rates</a>
+<ul>
 <li class="chapter" data-level="11.5.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-5"><i class="fa fa-check"></i><b>11.5.1</b> Concept</a></li>
 <li class="chapter" data-level="11.5.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#implementation-1"><i class="fa fa-check"></i><b>11.5.2</b> Implementation</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>12</b> Local Spatial Autocorrelation 1</a><ul>
-<li class="chapter" data-level="" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#introduction-12"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="12" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>12</b> Local Spatial Autocorrelation 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#introduction-12"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="12.0.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#objectives-11"><i class="fa fa-check"></i><b>12.0.1</b> Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="12.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#preliminaries-12"><i class="fa fa-check"></i><b>12.1</b> Preliminaries</a><ul>
-<li class="chapter" data-level="12.1.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#installing-spatmap-and-geodadata"><i class="fa fa-check"></i><b>12.1.1</b> Installing spatmap and geodaData</a></li>
-<li class="chapter" data-level="12.1.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#load-packages-10"><i class="fa fa-check"></i><b>12.1.2</b> Load packages</a></li>
-<li class="chapter" data-level="12.1.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#spatmap"><i class="fa fa-check"></i><b>12.1.3</b> spatmap</a></li>
-<li class="chapter" data-level="12.1.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#geodadata-5"><i class="fa fa-check"></i><b>12.1.4</b> geodaData</a></li>
-<li class="chapter" data-level="12.1.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#univariate-analysis"><i class="fa fa-check"></i><b>12.1.5</b> Univariate analysis</a></li>
+<li class="chapter" data-level="12.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#preliminaries-12"><i class="fa fa-check"></i><b>12.1</b> Preliminaries</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#load-packages-10"><i class="fa fa-check"></i><b>12.1.1</b> Load packages</a></li>
+<li class="chapter" data-level="12.1.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#spatmap"><i class="fa fa-check"></i><b>12.1.2</b> spatmap</a></li>
+<li class="chapter" data-level="12.1.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#geodadata-5"><i class="fa fa-check"></i><b>12.1.3</b> geodaData</a></li>
+<li class="chapter" data-level="12.1.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#univariate-analysis"><i class="fa fa-check"></i><b>12.1.4</b> Univariate analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="12.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-moran"><i class="fa fa-check"></i><b>12.2</b> Local Moran</a><ul>
+<li class="chapter" data-level="12.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-moran"><i class="fa fa-check"></i><b>12.2</b> Local Moran</a>
+<ul>
 <li class="chapter" data-level="12.2.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-3"><i class="fa fa-check"></i><b>12.2.1</b> Principle</a></li>
 <li class="chapter" data-level="12.2.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-2"><i class="fa fa-check"></i><b>12.2.2</b> Implementation</a></li>
 <li class="chapter" data-level="12.2.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#randomization-options"><i class="fa fa-check"></i><b>12.2.3</b> Randomization Options</a></li>
@@ -421,16 +550,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.2.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#interpretation-of-clusters"><i class="fa fa-check"></i><b>12.2.5</b> Interpretation of clusters</a></li>
 <li class="chapter" data-level="12.2.6" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#conditional-local-cluster-maps"><i class="fa fa-check"></i><b>12.2.6</b> Conditional local cluster maps</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-geary"><i class="fa fa-check"></i><b>12.3</b> Local Geary</a><ul>
+<li class="chapter" data-level="12.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-geary"><i class="fa fa-check"></i><b>12.3</b> Local Geary</a>
+<ul>
 <li class="chapter" data-level="12.3.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-4"><i class="fa fa-check"></i><b>12.3.1</b> Principle</a></li>
 <li class="chapter" data-level="12.3.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-3"><i class="fa fa-check"></i><b>12.3.2</b> Implementation</a></li>
 </ul></li>
-<li class="chapter" data-level="12.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#getis-ord-statistics"><i class="fa fa-check"></i><b>12.4</b> Getis-Ord Statistics</a><ul>
+<li class="chapter" data-level="12.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#getis-ord-statistics"><i class="fa fa-check"></i><b>12.4</b> Getis-Ord Statistics</a>
+<ul>
 <li class="chapter" data-level="12.4.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-5"><i class="fa fa-check"></i><b>12.4.1</b> Principle</a></li>
 <li class="chapter" data-level="12.4.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-4"><i class="fa fa-check"></i><b>12.4.2</b> Implementation</a></li>
 <li class="chapter" data-level="12.4.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#interpretation-and-significance-1"><i class="fa fa-check"></i><b>12.4.3</b> Interpretation and significance</a></li>
 </ul></li>
-<li class="chapter" data-level="12.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-join-count-statistic"><i class="fa fa-check"></i><b>12.5</b> Local Join Count Statistic</a><ul>
+<li class="chapter" data-level="12.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-join-count-statistic"><i class="fa fa-check"></i><b>12.5</b> Local Join Count Statistic</a>
+<ul>
 <li class="chapter" data-level="12.5.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-6"><i class="fa fa-check"></i><b>12.5.1</b> Principle</a></li>
 <li class="chapter" data-level="12.5.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-5"><i class="fa fa-check"></i><b>12.5.2</b> Implementation</a></li>
 </ul></li>
@@ -453,15 +585,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="contiguity-based-spatial-weights" class="section level1">
-<h1><span class="header-section-number">Chapter 6</span> Contiguity-Based Spatial Weights</h1>
-<div id="introduction-6" class="section level2 unnumbered">
-<h2>Introduction</h2>
+<div id="contiguity-based-spatial-weights" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Contiguity-Based Spatial Weights<a href="contiguity-based-spatial-weights.html#contiguity-based-spatial-weights" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-6" class="section level2 unnumbered hasAnchor">
+<h2>Introduction<a href="contiguity-based-spatial-weights.html#introduction-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This notebook covers the functionality of the <a href="https://geodacenter.github.io/workbook/4a_contig_weights/lab4a.html">Contiguity-Based Spatial Weights</a> section of the GeoDa workbook. We refer to that document for details on the methodology, references, etc. The goal of these notes is to approximate as closely as possible the operations carried out using GeoDa by means of a range of R packages.</p>
-<p>The notes are written with R beginners in mind, more seasoned R users can probably skip most of the comments on data structures and other R particulars. Also, as always in R, there are typically several ways to achieve a specific objective, so what is shown here is just one way that works, but there often are others (that may even be more elegant, work faster, or scale better).</p>
+<p>The notes are written with R beginners in mind, more seasoned R users can probably skip most of the comments
+on data structures and other R particulars. Also, as always in R, there are typically several ways to achieve a specific objective, so what is shown here is just one way that works, but there often are others (that may even be more elegant, work faster, or scale better).</p>
 <p>For this notebook, we use U.S. Homicide data. Our goal in this lab is show how to implement contiguity based spatial weights</p>
-<div id="objectives-5" class="section level3 unnumbered">
-<h3>Objectives</h3>
+<div id="objectives-5" class="section level3 unnumbered hasAnchor">
+<h3>Objectives<a href="contiguity-based-spatial-weights.html#objectives-5" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>After completing the notebook, you should know how to carry out the following tasks:</p>
 <ul>
 <li><p>Construct rook and queen contiguity-based spatial weights</p></li>
@@ -471,8 +604,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>Visualize the graph structure of spatial weights</p></li>
 <li><p>Identify the neighbors of selected observations</p></li>
 </ul>
-<div id="r-packages-used-5" class="section level4 unnumbered">
-<h4>R Packages used</h4>
+<div id="r-packages-used-5" class="section level4 unnumbered hasAnchor">
+<h4>R Packages used<a href="contiguity-based-spatial-weights.html#r-packages-used-5" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p><strong>sf</strong>: To read in the shapefile, add centroids, and create the neighbors lists</p></li>
 <li><p><strong>purrr</strong>: Used to map a function over each element of a vector</p></li>
@@ -481,9 +614,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>**geodaData: Load the data for the notebook.</p></li>
 </ul>
 </div>
-<div id="r-commands-used-5" class="section level4 unnumbered">
-<h4>R Commands used</h4>
-<p>Below follows a list of the commands used in this notebook. For further details and a comprehensive list of options, please consult the <a href="https://www.rdocumentation.org">R documentation</a>.</p>
+<div id="r-commands-used-5" class="section level4 unnumbered hasAnchor">
+<h4>R Commands used<a href="contiguity-based-spatial-weights.html#r-commands-used-5" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Below follows a list of the commands used in this notebook. For further details
+and a comprehensive list of options, please consult the
+<a href="https://www.rdocumentation.org">R documentation</a>.</p>
 <ul>
 <li><p><strong>Base R</strong>: <code>install.packages</code>, <code>library</code>, <code>setwd</code>, <code>class</code>, <code>str</code>, <code>lapply</code>, <code>attributes</code>, <code>summary</code>, <code>head</code>, <code>seq</code></p></li>
 <li><p><strong>sf</strong>: <code>plot</code>, <code>st_centroid</code>, <code>st_relate</code></p></li>
@@ -494,54 +629,120 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 </div>
-<div id="preliminaries-5" class="section level2 unnumbered">
-<h2>Preliminaries</h2>
-<p>Before starting, make sure to have the latest version of R and of packages that are compiled for the matching version of R (this document was created using R 3.5.1 of 2018-07-02). Also, optionally, set a working directory, even though we will not actually be saving any files.<a href="#fn19" class="footnoteRef" id="fnref19"><sup>19</sup></a></p>
-<div id="load-packages-4" class="section level3 unnumbered">
-<h3>Load packages</h3>
-<p>First, we load all the required packages using the <code>library</code> command. If you don't have some of these in your system, make sure to install them first as well as their dependencies.<a href="#fn20" class="footnoteRef" id="fnref20"><sup>20</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
-<span class="kw">library</span>(spdep)
-<span class="kw">library</span>(purrr)
-<span class="kw">library</span>(ggplot2)
-<span class="kw">library</span>(geodaData)</code></pre></div>
+<div id="preliminaries-5" class="section level2 unnumbered hasAnchor">
+<h2>Preliminaries<a href="contiguity-based-spatial-weights.html#preliminaries-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before starting, make sure to have the latest version of R and of packages that are compiled for the matching version of R (this document was created using R 3.5.1 of 2018-07-02). Also, optionally, set a working directory, even though we will not
+actually be saving any files.<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a></p>
+<div id="load-packages-4" class="section level3 unnumbered hasAnchor">
+<h3>Load packages<a href="contiguity-based-spatial-weights.html#load-packages-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First, we load all the required packages using the <code>library</code> command. If you don’t have some of these in your system, make sure to install them first as well as
+their dependencies.<a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="contiguity-based-spatial-weights.html#cb433-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb433-2"><a href="contiguity-based-spatial-weights.html#cb433-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb433-3"><a href="contiguity-based-spatial-weights.html#cb433-3" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb433-4"><a href="contiguity-based-spatial-weights.html#cb433-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb433-5"><a href="contiguity-based-spatial-weights.html#cb433-5" tabindex="-1"></a><span class="fu">library</span>(geodaData)</span></code></pre></div>
 </div>
-<div id="geodadata-1" class="section level3 unnumbered">
-<h3>geodaData</h3>
-<p>All of the data for the R notebooks is available in the <strong>geodaData</strong> package. We loaded the library earlier, now to access the individual data sets, we use the double colon notation. This works similar to to accessing a variable with <code>$</code>, in that a drop down menu will appear with a list of the datasets included in the package. For this notebook, we use <code>ncovr</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us.bound  &lt;-<span class="st"> </span>geodaData<span class="op">::</span>ncovr</code></pre></div>
+<div id="geodadata-1" class="section level3 unnumbered hasAnchor">
+<h3>geodaData<a href="contiguity-based-spatial-weights.html#geodadata-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>All of the data for the R notebooks is available in the <strong>geodaData</strong>
+package. We loaded the library earlier, now to access the individual
+data sets, we use the double colon notation. This works similar to
+to accessing a variable with <code>$</code>, in that a drop down menu will
+appear with a list of the datasets included in the package. For this
+notebook, we use <code>ncovr</code>.</p>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="contiguity-based-spatial-weights.html#cb434-1" tabindex="-1"></a>us.bound  <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>ncovr</span></code></pre></div>
 </div>
 </div>
-<div id="contiguity-weights" class="section level2 unnumbered">
-<h2>Contiguity Weights</h2>
-<p>Contiguity means that two spatial units share a common border of non-zero length. Operationally, we can further distinguish between a rook and a queen criterion of contiguity, in analogy to the moves allowed for the such-named pieces on a chess board.</p>
-<p>The rook criterion defines neighbors by the existence of a common edge between two spatial units. The queen criterion is somewhat more encompassing and defines neighbors as spatial units sharing a common edge or a common vertex.4 Therefore, the number of neighbors according to the queen criterion will always be at least as large as for the rook criterion.</p>
-<p>In practice, the construction of the spatial weights from the geometry of the data cannot be done by visual inspection or manual calculation, except in the most trivial of situations. To assess whether two polygons are contiguous requires the use of explicit spatial data structures to deal with the location and arrangement of the polygons. This is implemented through the spatial weights functionality in GeoDa. We will do this with <strong>sf</strong> and <strong>spdep</strong> libraries.</p>
-<p>We will create our neighbors using <strong>sf</strong> first, as the <strong>spdep</strong> library doesn't allow us to create neighbors lists directly as with the older <strong>sp</strong> library. When we create neighbors in <strong>sf</strong> we will get a class of <strong>sgbp</strong>(sparse geometry binary predicate), which is similar to the standard <strong>nb</strong> class used in <strong>spdep</strong>, but is not quite compatible. We will have to convert from <strong>sgbp</strong> to <strong>nb</strong>, which is not too difficult, as the classes are very similar.</p>
-<p>It is important to keep in mind that the spatial weights are critically dependent on the quality of the spatial data source (GIS) from which they are constructed. Problems with the topology in the GIS (e.g., slivers) will result in inaccuracies for the neighbor relations included in the spatial weights. In practice, it is essential to check the characteristics of the weights for any evidence of problems. When problems are detected, the solution is to go back to the GIS and fix or clean the topology of the data set. Editing of spatial layers is not implemented in GeoDa, but this is a routine operation in most GIS software.</p>
-<div id="rook-contiguity" class="section level3 unnumbered">
-<h3>Rook Contiguity</h3>
-<p>We first start with rook contiguity, which are neighbors that are connected by a common side. To create our neighbors list we start by making a function that will do the rook contiguity. To do this we start with the <code>function</code> command and use <code>a, a = b</code> for our inputs. We do this reduce unnecessary typing, as the two parameters are both going to be our <strong>sf</strong> object. From here we just need <code>st_relate</code>. <code>st_relate</code> computes relationships between pairs of geometries, or matches it to a given pattern. This function also has a parameter for a specified pattern. This pattern will refer to a DE9-IM relationship between x[i] and y[j]. We don't need to go into detail on this to utilize rook contiguity, but you can check out the basics of DE9-IM at <a href="https://en.wikipedia.org/wiki/DE-9IM">DE9-IM</a>. All we need for rook contiguity is the pattern input <code>&quot;F***1****&quot;</code>. This gives us the correct DE9-IM relationship for rook contiguity. For more documentation on <code>st_relate</code> check out <a href="https://www.rdocumentation.org/packages/sf/versions/0.6-3/topics/st_relate">st_relate documentation</a></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">st_rook =<span class="st"> </span><span class="cf">function</span>(a, <span class="dt">b =</span> a) <span class="kw">st_relate</span>(a, b, <span class="dt">pattern =</span> <span class="st">&quot;F***1****&quot;</span>)
-sf.sgbp.rook &lt;-<span class="st"> </span><span class="kw">st_rook</span>(us.bound)</code></pre></div>
-<pre><code>## although coordinates are longitude/latitude, st_relate_pattern assumes that they are planar</code></pre>
-<p>We now check the class of our resulting object from the the <code>st_rook</code> function with the base R function <code>class</code>. It is <strong>sgbp</strong>, which we will have to convert in order to work with <strong>spdep</strong> and the <code>plot</code> function later on.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(sf.sgbp.rook)</code></pre></div>
-<pre><code>## [1] &quot;sgbp&quot;</code></pre>
-<p>Now we will start our conversion from class <strong>sgbp</strong> to <strong>nb</strong>. To do this, we need to change the class explicitly, and take the precaution to represent observations with no neighbors with the integer 0. Our data set doesn't have any observations without neighbors, but in ones with these, it will mess everything up, if not dealt with.</p>
-<p>We start with the <code>function</code> operator. The input for our function will be an object of class <strong>sgbp</strong>, denoted by <strong>x</strong>. We store the attributes in <strong>attrs</strong>, as we will need to reapply them later. Now we deal we observation with no neighbors. We will use <code>lapply</code>, which applies a function to each element of a list or vector. As for the input function, we make one that checks the length of an element of our list for 0(meaning no neighbors) and returns 0 if the element is empty and the element otherwise. This can be a bit confusing, for more information on <code>lapply</code>, check out <a href="https://www.rdocumentation.org/packages/base/versions/3.5.1/topics/lapply">lapply documentation</a></p>
-<p>From here we will have dealt with observation with no neighbors, but will need to reapply our attributes to the resulting structure from the <code>lapply</code> function. This is done by calling the <code>attributes</code> function and assigning our stored attributes. The final step is to explicitly change the class to <strong>nb</strong> by using the <code>class</code> function and assigning <code>&quot;nb&quot;</code>. We then return our object <strong>x</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">as.nb.sgbp &lt;-<span class="st"> </span><span class="cf">function</span>(x, ...) {
-  attrs &lt;-<span class="st"> </span><span class="kw">attributes</span>(x)
-  x &lt;-<span class="st"> </span><span class="kw">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="kw">length</span>(i) <span class="op">==</span><span class="st"> </span>0L) 0L <span class="cf">else</span> i } )
-  <span class="kw">attributes</span>(x) &lt;-<span class="st"> </span>attrs
-  <span class="kw">class</span>(x) &lt;-<span class="st"> &quot;nb&quot;</span>
-  x
-}</code></pre></div>
+<div id="contiguity-weights" class="section level2 unnumbered hasAnchor">
+<h2>Contiguity Weights<a href="contiguity-based-spatial-weights.html#contiguity-weights" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Contiguity means that two spatial units share a common border of non-zero length.
+Operationally, we can further distinguish between a rook and a queen criterion of
+contiguity, in analogy to the moves allowed for the such-named pieces on a chess
+board.</p>
+<p>The rook criterion defines neighbors by the existence of a common edge between two
+spatial units. The queen criterion is somewhat more encompassing and defines
+neighbors as spatial units sharing a common edge or a common vertex.4 Therefore, the
+number of neighbors according to the queen criterion will always be at least as
+large as for the rook criterion.</p>
+<p>In practice, the construction of the spatial weights from the geometry of the data
+cannot be done by visual inspection or manual calculation, except in the most
+trivial of situations. To assess whether two polygons are contiguous requires the
+use of explicit spatial data structures to deal with the location and arrangement of
+the polygons. This is implemented through the spatial weights functionality in
+GeoDa. We will do this with <strong>sf</strong> and <strong>spdep</strong> libraries.</p>
+<p>We will create our neighbors using <strong>sf</strong> first, as the <strong>spdep</strong> library doesn’t
+allow us to create neighbors lists directly as with the older <strong>sp</strong> library.
+When we create neighbors in <strong>sf</strong> we will get a class of <strong>sgbp</strong>(sparse geometry binary predicate), which is similar
+to the standard <strong>nb</strong> class used in <strong>spdep</strong>, but is not quite compatible. We will
+have to convert from <strong>sgbp</strong> to <strong>nb</strong>, which is not too difficult, as the classes are
+very similar.</p>
+<p>It is important to keep in mind that the spatial weights are critically dependent on
+the quality of the spatial data source (GIS) from which they are constructed.
+Problems with the topology in the GIS (e.g., slivers) will result in inaccuracies
+for the neighbor relations included in the spatial weights. In practice, it is
+essential to check the characteristics of the weights for any evidence of problems.
+When problems are detected, the solution is to go back to the GIS and fix or clean
+the topology of the data set. Editing of spatial layers is not implemented in GeoDa,
+but this is a routine operation in most GIS software.</p>
+<div id="rook-contiguity" class="section level3 unnumbered hasAnchor">
+<h3>Rook Contiguity<a href="contiguity-based-spatial-weights.html#rook-contiguity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We first start with rook contiguity, which are neighbors that are connected by a
+common side. To create our neighbors list we start by making a
+function that will do the rook contiguity. To do this we start with the <code>function</code>
+command and use <code>a, a = b</code> for our inputs. We do this reduce unnecessary typing,
+as the two parameters are both going to be our <strong>sf</strong> object. From here we just
+need <code>st_relate</code>. <code>st_relate</code> computes relationships between pairs of geometries,
+or matches it to a given pattern. This function also has a parameter for a specified
+pattern. This pattern will refer to a DE9-IM relationship between x[i] and y[j]. We
+don’t need to go into detail on this to utilize rook contiguity, but you can check
+out the basics of DE9-IM at <a href="https://en.wikipedia.org/wiki/DE-9IM">DE9-IM</a>. All we
+need for rook contiguity is the pattern input <code>"F***1****"</code>. This gives us the
+correct DE9-IM relationship for rook contiguity. For more documentation on
+<code>st_relate</code> check out <a href="https://www.rdocumentation.org/packages/sf/versions/0.6-3/topics/st_relate">st_relate documentation</a></p>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="contiguity-based-spatial-weights.html#cb435-1" tabindex="-1"></a>st_rook <span class="ot">=</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***1****&quot;</span>)</span>
+<span id="cb435-2"><a href="contiguity-based-spatial-weights.html#cb435-2" tabindex="-1"></a>sf.sgbp.rook <span class="ot">&lt;-</span> <span class="fu">st_rook</span>(us.bound)</span></code></pre></div>
+<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
+## old-style crs object detected; please recreate object with a recent sf::st_crs()
+## old-style crs object detected; please recreate object with a recent sf::st_crs()
+## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<pre><code>## although coordinates are longitude/latitude, st_relate_pattern assumes that
+## they are planar</code></pre>
+<p>We now check the class of our resulting object from the the <code>st_rook</code> function
+with the base R function <code>class</code>. It is <strong>sgbp</strong>, which we will have to convert in order to
+work with <strong>spdep</strong> and the <code>plot</code> function later on.</p>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="contiguity-based-spatial-weights.html#cb438-1" tabindex="-1"></a><span class="fu">class</span>(sf.sgbp.rook)</span></code></pre></div>
+<pre><code>## [1] &quot;sgbp&quot; &quot;list&quot;</code></pre>
+<p>Now we will start our conversion from class <strong>sgbp</strong> to <strong>nb</strong>. To do this,
+we need to change the class explicitly, and take the precaution to represent
+observations with no neighbors with the integer 0. Our data set doesn’t have
+any observations without neighbors, but in ones with these, it will mess everything
+up, if not dealt with.</p>
+<p>We start with the <code>function</code> operator. The input for our function will be an object
+of class <strong>sgbp</strong>, denoted by <strong>x</strong>. We store the attributes in <strong>attrs</strong>, as we will
+need to reapply them later. Now we deal we observation with no neighbors. We will
+use <code>lapply</code>, which applies a function to each element of a list or vector. As for the
+input function, we make one that checks the length of an element of our list for
+0(meaning no neighbors) and returns 0 if the element is empty and the element
+otherwise. This can be a bit confusing, for more information on <code>lapply</code>, check out
+<a href="https://www.rdocumentation.org/packages/base/versions/3.5.1/topics/lapply">lapply documentation</a></p>
+<p>From here we will have dealt with observation with no neighbors, but will need to
+reapply our attributes to the resulting structure from the <code>lapply</code> function. This
+is done by calling the <code>attributes</code> function and assigning our stored attributes.
+The final step is to explicitly change the class to <strong>nb</strong> by using the <code>class</code> function
+and assigning <code>"nb"</code>. We then return our object <strong>x</strong>.</p>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="contiguity-based-spatial-weights.html#cb440-1" tabindex="-1"></a>as.nb.sgbp <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb440-2"><a href="contiguity-based-spatial-weights.html#cb440-2" tabindex="-1"></a>  attrs <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)</span>
+<span id="cb440-3"><a href="contiguity-based-spatial-weights.html#cb440-3" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(x, <span class="cf">function</span>(i) { <span class="cf">if</span>(<span class="fu">length</span>(i) <span class="sc">==</span> 0L) 0L <span class="cf">else</span> i } )</span>
+<span id="cb440-4"><a href="contiguity-based-spatial-weights.html#cb440-4" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="ot">&lt;-</span> attrs</span>
+<span id="cb440-5"><a href="contiguity-based-spatial-weights.html#cb440-5" tabindex="-1"></a>  <span class="fu">class</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;nb&quot;</span></span>
+<span id="cb440-6"><a href="contiguity-based-spatial-weights.html#cb440-6" tabindex="-1"></a>  x</span>
+<span id="cb440-7"><a href="contiguity-based-spatial-weights.html#cb440-7" tabindex="-1"></a>}</span></code></pre></div>
 <p>Now we use the function we created to convert our <strong>sgbp</strong> object to <strong>nb</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sf.nb.rook &lt;-<span class="st"> </span><span class="kw">as.nb.sgbp</span>(sf.sgbp.rook)</code></pre></div>
-<p>Now that we are converted to <strong>nb</strong>, we can use the <code>summary</code> command to give us more useful information about the neighbors list.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(sf.nb.rook)</code></pre></div>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="contiguity-based-spatial-weights.html#cb441-1" tabindex="-1"></a>sf.nb.rook <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(sf.sgbp.rook)</span></code></pre></div>
+<p>Now that we are converted to <strong>nb</strong>, we can use the <code>summary</code> command to give us more
+useful information about the neighbors list.</p>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="contiguity-based-spatial-weights.html#cb442-1" tabindex="-1"></a><span class="fu">summary</span>(sf.nb.rook)</span></code></pre></div>
 <pre><code>## Neighbour list object:
 ## Number of regions: 3085 
 ## Number of nonzero links: 17188 
@@ -556,31 +757,57 @@ sf.sgbp.rook &lt;-<span class="st"> </span><span class="kw">st_rook</span>(us.bo
 ## 1 most connected region:
 ## 606 with 13 links</code></pre>
 <p>We use the <code>class</code> command to check and make sure we have <strong>nb</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(sf.nb.rook)</code></pre></div>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="contiguity-based-spatial-weights.html#cb444-1" tabindex="-1"></a><span class="fu">class</span>(sf.nb.rook)</span></code></pre></div>
 <pre><code>## [1] &quot;nb&quot;</code></pre>
 <p>We check the length to make sure it corresponds with the GeoDa tutorial example.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(sf.nb.rook)</code></pre></div>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="contiguity-based-spatial-weights.html#cb446-1" tabindex="-1"></a><span class="fu">length</span>(sf.nb.rook)</span></code></pre></div>
 <pre><code>## [1] 3085</code></pre>
 </div>
-<div id="queen-contiguity" class="section level3 unnumbered">
-<h3>Queen Contiguity</h3>
-<p>We proceed in the same fashion to construct queen contiguity weights. The difference between the rook and queen criterion to determine neighbors is that the latter also includes common vertices. This makes the greatest difference for regular grids (square polygons), where the rook criterion will result in four neighbors (except for edge cases) and the queen criterion will yield eight. For irregular polygons (like most areal units encountered in practice), the differences will be slight. In order to deal with potential inaccuracies in the polygon file (such as rounding errors), using the queen criterion is recommended in practice. Hence it is also the default for contiguity weights.</p>
-<p>To make our queen contiguity weights, we make a function using <code>st_relate</code> and specifying a DE9-IM pattern. For queen contiguity, our pattern is <code>&quot;F***T****&quot;</code>. We we don't really need to go into why the pattern is what it is for our purposes, but <a href="https://en.wikipedia.org/wiki/DE-9IM">DE9-IM</a> and <a href="https://www.rdocumentation.org/packages/sf/versions/0.6-3/topics/st_relate">st_relate documentation</a> can help explain this to a degree.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">st_queen &lt;-<span class="st"> </span><span class="cf">function</span>(a, <span class="dt">b =</span> a) <span class="kw">st_relate</span>(a, b, <span class="dt">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</code></pre></div>
+<div id="queen-contiguity" class="section level3 unnumbered hasAnchor">
+<h3>Queen Contiguity<a href="contiguity-based-spatial-weights.html#queen-contiguity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We proceed in the same fashion to construct queen contiguity weights. The difference
+between the rook and queen criterion to determine neighbors is that the latter also
+includes common vertices. This makes the greatest difference for regular grids (square
+polygons), where the rook criterion will result in four neighbors (except for edge
+cases) and the queen criterion will yield eight. For irregular polygons (like most
+areal units encountered in practice), the differences will be slight. In order to deal
+with potential inaccuracies in the polygon file (such as rounding errors), using the
+queen criterion is recommended in practice. Hence it is also the default for
+contiguity weights.</p>
+<p>To make our queen contiguity weights, we make a function using <code>st_relate</code> and
+specifying a DE9-IM pattern. For queen contiguity, our pattern is <code>"F***T****"</code>. We
+we don’t really need to go into why the pattern is what it is for our purposes, but
+<a href="https://en.wikipedia.org/wiki/DE-9IM">DE9-IM</a> and <a href="https://www.rdocumentation.org/packages/sf/versions/0.6-3/topics/st_relate">st_relate documentation</a> can help explain this to a degree.</p>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="contiguity-based-spatial-weights.html#cb448-1" tabindex="-1"></a>st_queen <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> a) <span class="fu">st_relate</span>(a, b, <span class="at">pattern =</span> <span class="st">&quot;F***T****&quot;</span>)</span></code></pre></div>
 <p>Now we use our <code>st_queen</code> function to get another <strong>sgbp</strong> neighbor list</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sf.sgbp.queen &lt;-<span class="st"> </span><span class="kw">st_queen</span>(us.bound)</code></pre></div>
-<pre><code>## although coordinates are longitude/latitude, st_relate_pattern assumes that they are planar</code></pre>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="contiguity-based-spatial-weights.html#cb449-1" tabindex="-1"></a>sf.sgbp.queen <span class="ot">&lt;-</span> <span class="fu">st_queen</span>(us.bound)</span></code></pre></div>
+<pre><code>## old-style crs object detected; please recreate object with a recent sf::st_crs()
+## old-style crs object detected; please recreate object with a recent sf::st_crs()
+## old-style crs object detected; please recreate object with a recent sf::st_crs()
+## old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+<pre><code>## although coordinates are longitude/latitude, st_relate_pattern assumes that
+## they are planar</code></pre>
 <p>To convert to type <strong>nb</strong> we use <code>as.nb.sgbp</code>, which we created earlier.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sf.nb.queen &lt;-<span class="st"> </span><span class="kw">as.nb.sgbp</span>(sf.sgbp.queen)</code></pre></div>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="contiguity-based-spatial-weights.html#cb452-1" tabindex="-1"></a>sf.nb.queen <span class="ot">&lt;-</span> <span class="fu">as.nb.sgbp</span>(sf.sgbp.queen)</span></code></pre></div>
 </div>
 </div>
-<div id="higher-order-contiguity" class="section level2 unnumbered">
-<h2>Higher Order Contiguity</h2>
-<p>Now we move on to higher order contiguity weights. To make these we will need the <strong>spdep</strong> package. We will use the <code>nblag</code> and <code>nblag_cumul</code> functions to compute the higher order weights.</p>
-<p>The <code>nblag</code> function takes a neighbor list of class <strong>nb</strong> and an order as parameters. It will give us a list of neighbors lists. One for 1st order neighbors and one for second order neighbors. We can select from this data structure by double bracket notation, for instance <code>[[1]]</code> will give the <strong>nb</strong> object for first order neighbors. Using a <code>2</code> instead of a <code>1</code> will give us the second order neighbors.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">second.order.queen &lt;-<span class="st"> </span><span class="kw">nblag</span>(sf.nb.queen, <span class="dv">2</span>)</code></pre></div>
-<p>We first take a comprehensive look at <strong>second.order.queen</strong> to see the resulting data structure from <code>nblag</code>. As said earlier, it is a list of 2 <strong>nb</strong> objects. One for 1st order neighbors and one for 2nd order. It is important to examine this, so we can make use of specific elements of the data structure in our visualizations of the neighbors.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(second.order.queen)</code></pre></div>
+<div id="higher-order-contiguity" class="section level2 unnumbered hasAnchor">
+<h2>Higher Order Contiguity<a href="contiguity-based-spatial-weights.html#higher-order-contiguity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now we move on to higher order contiguity weights. To make these we will need the
+<strong>spdep</strong> package. We will use the <code>nblag</code> and <code>nblag_cumul</code> functions to compute
+the higher order weights.</p>
+<p>The <code>nblag</code> function takes a neighbor list of class <strong>nb</strong> and an order as parameters.
+It will give us a list of neighbors lists. One for 1st order neighbors and one for
+second order neighbors. We can select from this data structure by double bracket
+notation, for instance <code>[[1]]</code> will give the <strong>nb</strong> object for first order neighbors.
+Using a <code>2</code> instead of a <code>1</code> will give us the second order neighbors.</p>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="contiguity-based-spatial-weights.html#cb453-1" tabindex="-1"></a>second.order.queen <span class="ot">&lt;-</span> <span class="fu">nblag</span>(sf.nb.queen, <span class="dv">2</span>)</span></code></pre></div>
+<p>We first take a comprehensive look at <strong>second.order.queen</strong> to see the resulting
+data structure from <code>nblag</code>. As said earlier, it is a list of 2 <strong>nb</strong> objects. One
+for 1st order neighbors and one for 2nd order. It is important to examine this, so
+we can make use of specific elements of the data structure in our visualizations
+of the neighbors.</p>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="contiguity-based-spatial-weights.html#cb454-1" tabindex="-1"></a><span class="fu">str</span>(second.order.queen)</span></code></pre></div>
 <pre><code>## List of 2
 ##  $ :List of 3085
 ##   ..$ : int [1:3] 23 31 41
@@ -685,6 +912,8 @@ sf.sgbp.rook &lt;-<span class="st"> </span><span class="kw">st_rook</span>(us.bo
 ##   .. [list output truncated]
 ##   ..- attr(*, &quot;predicate&quot;)= chr &quot;relate_pattern&quot;
 ##   ..- attr(*, &quot;region.id&quot;)= chr [1:3085] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
+##   ..- attr(*, &quot;remove_self&quot;)= logi FALSE
+##   ..- attr(*, &quot;retain_unique&quot;)= logi FALSE
 ##   ..- attr(*, &quot;ncol&quot;)= int 3085
 ##   ..- attr(*, &quot;class&quot;)= chr &quot;nb&quot;
 ##   ..- attr(*, &quot;sym&quot;)= logi TRUE
@@ -793,8 +1022,9 @@ sf.sgbp.rook &lt;-<span class="st"> </span><span class="kw">st_rook</span>(us.bo
 ##   ..- attr(*, &quot;region.id&quot;)= chr [1:3085] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
 ##   ..- attr(*, &quot;sym&quot;)= logi TRUE
 ##  - attr(*, &quot;call&quot;)= language nblag(neighbours = sf.nb.queen, maxlag = 2)</code></pre>
-<p>Now we can look at, specifically, the 2nd order neighbors by using the double bracket selection.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(second.order.queen[[<span class="dv">2</span>]])</code></pre></div>
+<p>Now we can look at, specifically, the 2nd order neighbors by using the double bracket
+selection.</p>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="contiguity-based-spatial-weights.html#cb456-1" tabindex="-1"></a><span class="fu">str</span>(second.order.queen[[<span class="dv">2</span>]])</span></code></pre></div>
 <pre><code>## List of 3085
 ##  $ : int [1:8] 22 35 38 55 65 73 97 100
 ##  $ : int [1:9] 5 28 32 43 56 63 69 110 111
@@ -899,12 +1129,16 @@ sf.sgbp.rook &lt;-<span class="st"> </span><span class="kw">st_rook</span>(us.bo
 ##  - attr(*, &quot;class&quot;)= chr &quot;nb&quot;
 ##  - attr(*, &quot;region.id&quot;)= chr [1:3085] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
 ##  - attr(*, &quot;sym&quot;)= logi TRUE</code></pre>
-<p>We store the second order neighbors in <strong>sf.nb.queen2</strong> to make things simpler for our visuals.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sf.nb.queen2 &lt;-<span class="st"> </span>second.order.queen[[<span class="dv">2</span>]]</code></pre></div>
-<p>Now if we want to include both 1st and 2nd order neighbors in our visualizations, we need the <code>nblag_cumul</code> function. This will give us an <strong>nb</strong> object with both 1st and 2nd order neighbors, instead of separating them as in the result of <code>nblag</code>. To use this function, we need the resulting object from the <code>nblag</code> function. <code>nblag_cumul</code> combines the two separate <strong>nb</strong> objects from the <code>nblag</code> function into one.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">second.order.queen.cumul &lt;-<span class="st"> </span><span class="kw">nblag_cumul</span>(second.order.queen)</code></pre></div>
-<p>Here we take another in depth look at result. We can see that, we now have one <strong>nb</strong> object with both 1st and 2nd order neighbors.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(second.order.queen.cumul)</code></pre></div>
+<p>We store the second order neighbors in <strong>sf.nb.queen2</strong> to make things simpler
+for our visuals.</p>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="contiguity-based-spatial-weights.html#cb458-1" tabindex="-1"></a>sf.nb.queen2 <span class="ot">&lt;-</span> second.order.queen[[<span class="dv">2</span>]]</span></code></pre></div>
+<p>Now if we want to include both 1st and 2nd order neighbors in our visualizations, we
+need the <code>nblag_cumul</code> function. This will give us an <strong>nb</strong> object with both 1st and 2nd order neighbors, instead of separating them as in the result of <code>nblag</code>. To use this
+function, we need the resulting object from the <code>nblag</code> function. <code>nblag_cumul</code> combines the two separate <strong>nb</strong> objects from the <code>nblag</code> function into one.</p>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="contiguity-based-spatial-weights.html#cb459-1" tabindex="-1"></a>second.order.queen.cumul <span class="ot">&lt;-</span> <span class="fu">nblag_cumul</span>(second.order.queen)</span></code></pre></div>
+<p>Here we take another in depth look at result. We can see that, we now have one <strong>nb</strong>
+object with both 1st and 2nd order neighbors.</p>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="contiguity-based-spatial-weights.html#cb460-1" tabindex="-1"></a><span class="fu">str</span>(second.order.queen.cumul)</span></code></pre></div>
 <pre><code>## List of 3085
 ##  $ : int [1:11] 22 23 31 35 38 41 55 65 73 97 ...
 ##  $ : int [1:12] 3 4 5 28 32 43 56 63 69 70 ...
@@ -1010,22 +1244,37 @@ sf.sgbp.rook &lt;-<span class="st"> </span><span class="kw">st_rook</span>(us.bo
 ##  - attr(*, &quot;call&quot;)= language nblag_cumul(nblags = second.order.queen)
 ##  - attr(*, &quot;class&quot;)= chr &quot;nb&quot;</code></pre>
 </div>
-<div id="visualizing-contiguity-neighbors" class="section level2 unnumbered">
-<h2>Visualizing Contiguity Neighbors</h2>
-<div id="connectivity-graph" class="section level3 unnumbered">
-<h3>Connectivity Graph</h3>
-<p>A connectivity graph takes a point and displays a line to each neighboring point. We are working with polygons at the moment, so we will need to get points in order to make our connectivity graphs. The most typically method for this will be polygon centroids. We will calculate these in the <strong>sf</strong> package before moving onto the graphs.</p>
-<div id="getting-latitude-and-longitude-of-polygon-centroids" class="section level4 unnumbered">
-<h4>Getting Latitude and Longitude of Polygon Centroids</h4>
-<p>We will need points to associate with each polygon before we can make our connectivity graph. It will be a little more complicated than just running <code>st_centroid</code> on the <strong>sf</strong> object: <strong>us.bound</strong>. We need the coordinates in a separate data frame for this to work. To do this we will use a mapping function. The mapping function applies a given function to each element of a vector and returns a vector of the same length. Our input vector will be the geometry column of <strong>us.bound</strong>. Our function will be <code>st_centroid</code>. We will be using <code>map_dbl</code> variation of <code>map</code> from the <strong>purrr</strong> package. For more documentation, check out <a href="https://www.rdocumentation.org/packages/purrr/versions/0.2.5/topics/map">map documentation</a></p>
-<p>To get our longitude values we map the <code>st_centroid</code> function over the geometry column of <strong>us.bound</strong> and access the longitude value through double bracket notation [[]] and 1. This allows us to get only the longitude, which is the first value in each centroid.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">longitude &lt;-<span class="st"> </span><span class="kw">map_dbl</span>(us.bound<span class="op">$</span>geometry, <span class="op">~</span><span class="kw">st_centroid</span>(.x)[[<span class="dv">1</span>]])</code></pre></div>
-<p>We do the same for latitude with one key difference. We access the second value per each centroid with <code>[[2]]</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">latitude &lt;-<span class="st"> </span><span class="kw">map_dbl</span>(us.bound<span class="op">$</span>geometry, <span class="op">~</span><span class="kw">st_centroid</span>(.x)[[<span class="dv">2</span>]])</code></pre></div>
-<p>Now that we have latitude and longitude, we use <code>cbind</code> to put longitude and latitude into the same object.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">cbind</span>(longitude, latitude)</code></pre></div>
+<div id="visualizing-contiguity-neighbors" class="section level2 unnumbered hasAnchor">
+<h2>Visualizing Contiguity Neighbors<a href="contiguity-based-spatial-weights.html#visualizing-contiguity-neighbors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="connectivity-graph" class="section level3 unnumbered hasAnchor">
+<h3>Connectivity Graph<a href="contiguity-based-spatial-weights.html#connectivity-graph" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A connectivity graph takes a point and displays a line to each neighboring point. We are
+working with polygons at the moment, so we will need to get points in order to make
+our connectivity graphs. The most typically method for this will be polygon centroids.
+We will calculate these in the <strong>sf</strong> package before moving onto the graphs.</p>
+<div id="getting-latitude-and-longitude-of-polygon-centroids" class="section level4 unnumbered hasAnchor">
+<h4>Getting Latitude and Longitude of Polygon Centroids<a href="contiguity-based-spatial-weights.html#getting-latitude-and-longitude-of-polygon-centroids" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We will need points to associate with each polygon before we can make our connectivity
+graph. It will be a little more complicated than just running <code>st_centroid</code> on
+the <strong>sf</strong> object: <strong>us.bound</strong>. We need the coordinates in a separate data frame
+for this to work. To do this we will use a mapping function. The mapping function
+applies a given function to each element of a vector and returns a vector of the
+same length. Our input vector will be the geometry column of <strong>us.bound</strong>. Our
+function will be <code>st_centroid</code>. We will be using <code>map_dbl</code> variation of <code>map</code> from
+the <strong>purrr</strong> package. For more documentation, check out <a href="https://www.rdocumentation.org/packages/purrr/versions/0.2.5/topics/map">map documentation</a></p>
+<p>To get our longitude values we map the <code>st_centroid</code> function over the geometry
+column of <strong>us.bound</strong> and access the longitude value through double bracket notation
+[[]] and 1. This allows us to get only the longitude, which is the first value in each
+centroid.</p>
+<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="contiguity-based-spatial-weights.html#cb462-1" tabindex="-1"></a>longitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(us.bound<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">1</span>]])</span></code></pre></div>
+<p>We do the same for latitude with one key difference. We access the second value per
+each centroid with <code>[[2]]</code>.</p>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="contiguity-based-spatial-weights.html#cb463-1" tabindex="-1"></a>latitude <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(us.bound<span class="sc">$</span>geometry, <span class="sc">~</span><span class="fu">st_centroid</span>(.x)[[<span class="dv">2</span>]])</span></code></pre></div>
+<p>Now that we have latitude and longitude, we use <code>cbind</code> to put longitude and latitude
+into the same object.</p>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="contiguity-based-spatial-weights.html#cb464-1" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(longitude, latitude)</span></code></pre></div>
 <p>We check the first few observations to see if things are formatted correctly.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(coords)</code></pre></div>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="contiguity-based-spatial-weights.html#cb465-1" tabindex="-1"></a><span class="fu">head</span>(coords)</span></code></pre></div>
 <pre><code>##       longitude latitude
 ## [1,]  -94.90337 48.77173
 ## [2,] -118.51718 48.46959
@@ -1034,73 +1283,111 @@ sf.sgbp.rook &lt;-<span class="st"> </span><span class="kw">st_rook</span>(us.bo
 ## [5,] -117.27400 48.53280
 ## [6,] -116.47029 48.76502</code></pre>
 </div>
-<div id="rook-connectivity-graphs" class="section level4 unnumbered">
-<h4>Rook Connectivity Graphs</h4>
-<p>Now that we have coordinates for each of our observations, we can plot the neighbors through a connectivity graph. We just need the basic <code>plot</code> function and to enter our neighbor list as the first parameter, then our coordinates as the second. We add extra customizations, so we can actually see what is going on in the graph. We use <code>lwd = .2</code> to make the line length less thick, we set the <code>col =&quot;blue&quot;</code>, and finally <code>cex = .5</code> to make the point symbols smaller. The default options make the graph near indecipherable, so it is important to add these extra parameters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(sf.nb.rook, coords, <span class="dt">lwd=</span>.<span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">cex =</span> .<span class="dv">5</span>)</code></pre></div>
+<div id="rook-connectivity-graphs" class="section level4 unnumbered hasAnchor">
+<h4>Rook Connectivity Graphs<a href="contiguity-based-spatial-weights.html#rook-connectivity-graphs" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Now that we have coordinates for each of our observations, we can plot the neighbors
+through a connectivity graph. We just need the basic <code>plot</code> function and to enter
+our neighbor list as the first parameter, then our coordinates as the second. We
+add extra customizations, so we can actually see what is going on in the graph.
+We use <code>lwd = .2</code> to make the line length less thick, we set the <code>col ="blue"</code>, and
+finally <code>cex = .5</code> to make the point symbols smaller. The default options make the
+graph near indecipherable, so it is important to add these extra parameters.</p>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="contiguity-based-spatial-weights.html#cb467-1" tabindex="-1"></a><span class="fu">plot</span>(sf.nb.rook, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-232-1.png" width="672" /></p>
 </div>
-<div id="queen-connectivity-graphs" class="section level4 unnumbered">
-<h4>Queen Connectivity Graphs</h4>
-<p>Now we will do the same for queen contiguity. The queen variation will have more lines, as there are more neighbors due to shared vertices counting in the neighbors relationship. It is hard to spot the differences between the two plots, as they are both visually busy</p>
-<div id="first-order" class="section level5 unnumbered">
-<h5>First Order</h5>
-<p>The same form is followed for queen contiguity as we are working with the same class: a <strong>nb</strong> object and a corresponding list of coordinates.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(sf.nb.queen, coords, <span class="dt">lwd=</span>.<span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">cex =</span> .<span class="dv">5</span>)</code></pre></div>
+<div id="queen-connectivity-graphs" class="section level4 unnumbered hasAnchor">
+<h4>Queen Connectivity Graphs<a href="contiguity-based-spatial-weights.html#queen-connectivity-graphs" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Now we will do the same for queen contiguity. The queen variation will have more lines,
+as there are more neighbors due to shared vertices counting in the neighbors
+relationship. It is hard to spot the differences between the two plots, as they are
+both visually busy</p>
+<div id="first-order" class="section level5 unnumbered hasAnchor">
+<h5>First Order<a href="contiguity-based-spatial-weights.html#first-order" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>The same form is followed for queen contiguity as we are working with the same class:
+a <strong>nb</strong> object and a corresponding list of coordinates.</p>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="contiguity-based-spatial-weights.html#cb468-1" tabindex="-1"></a><span class="fu">plot</span>(sf.nb.queen, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
 </div>
-<div id="second-order" class="section level5 unnumbered">
-<h5>Second Order</h5>
-<p>Here we take a look at a connectivity graph for second order neighbors. All we need is the second order <strong>nb</strong> object that we created earlier and our coordinates. This graph will look significantly different from the ones we've made so far, as second order tends to have more neighbors than first order.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(sf.nb.queen2, coords, <span class="dt">lwd=</span>.<span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">cex =</span> .<span class="dv">5</span>)</code></pre></div>
+<div id="second-order" class="section level5 unnumbered hasAnchor">
+<h5>Second Order<a href="contiguity-based-spatial-weights.html#second-order" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Here we take a look at a connectivity graph for second order neighbors. All we need
+is the second order <strong>nb</strong> object that we created earlier and our coordinates. This
+graph will look significantly different from the ones we’ve made so far, as second
+order tends to have more neighbors than first order.</p>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="contiguity-based-spatial-weights.html#cb469-1" tabindex="-1"></a><span class="fu">plot</span>(sf.nb.queen2, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-234-1.png" width="672" /></p>
 </div>
-<div id="cumulative" class="section level5 unnumbered">
-<h5>Cumulative</h5>
-<p>We will take a look a plot with both second and first order neighbors here. It will be a very busy graph.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(second.order.queen.cumul, coords, <span class="dt">lwd=</span>.<span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">cex =</span> .<span class="dv">5</span>)</code></pre></div>
+<div id="cumulative" class="section level5 unnumbered hasAnchor">
+<h5>Cumulative<a href="contiguity-based-spatial-weights.html#cumulative" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>We will take a look a plot with both second and first order neighbors here. It will
+be a very busy graph.</p>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="contiguity-based-spatial-weights.html#cb470-1" tabindex="-1"></a><span class="fu">plot</span>(second.order.queen.cumul, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-235-1.png" width="672" /></p>
 </div>
 </div>
 </div>
-<div id="connectivity-histogram" class="section level3 unnumbered">
-<h3>Connectivity Histogram</h3>
-<p>A connectivity histogram shows the number of observations for each cardinality of neighbors(how many observations have the same number of neighbors). We first have to get the cardinality before we can make the histograms. We can do this by using the <code>card</code> function from the <strong>spdep</strong> package. This will give us a vector of 3085 observations with each one containing the corresponding number of neighbors from the input neighbors list.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rook.card &lt;-<span class="st"> </span><span class="kw">card</span>(sf.nb.rook)</code></pre></div>
-<p>We take a look at the first few observation with the <code>head</code> function and as we can see, it is a vector with number of neighbors for each observation of the <strong>nb</strong> object.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(rook.card)</code></pre></div>
+<div id="connectivity-histogram" class="section level3 unnumbered hasAnchor">
+<h3>Connectivity Histogram<a href="contiguity-based-spatial-weights.html#connectivity-histogram" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A connectivity histogram shows the number of observations for each
+cardinality of neighbors(how many observations have the same number of neighbors).
+We first have to get the cardinality before we can make the histograms. We can
+do this by using the <code>card</code> function from the <strong>spdep</strong> package. This will give
+us a vector of 3085 observations with each one containing the corresponding
+number of neighbors from the input neighbors list.</p>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="contiguity-based-spatial-weights.html#cb471-1" tabindex="-1"></a>rook.card <span class="ot">&lt;-</span> <span class="fu">card</span>(sf.nb.rook)</span></code></pre></div>
+<p>We take a look at the first few observation with the <code>head</code> function and as we can see,
+it is a vector with number of neighbors for each observation of the <strong>nb</strong> object.</p>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="contiguity-based-spatial-weights.html#cb472-1" tabindex="-1"></a><span class="fu">head</span>(rook.card)</span></code></pre></div>
 <pre><code>## [1] 3 3 4 7 4 3</code></pre>
 <p>Now we check the length and it is what we expected.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(rook.card)</code></pre></div>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="contiguity-based-spatial-weights.html#cb474-1" tabindex="-1"></a><span class="fu">length</span>(rook.card)</span></code></pre></div>
 <pre><code>## [1] 3085</code></pre>
-<p>We can visualize the cardinality through a <strong>ggplot2</strong> histogram. For this we just need to call the <code>ggplot</code> function and add <code>geom_histogram</code> as a layer. We specify the <code>aes()</code> in <code>geom_histogram</code> to be our rook cardinality. This will give us a basic plot, which we will customize further a little later.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x=</span>rook.card))</code></pre></div>
+<p>We can visualize the cardinality through a <strong>ggplot2</strong> histogram. For this we just
+need to call the <code>ggplot</code> function and add <code>geom_histogram</code> as a layer. We specify the
+<code>aes()</code> in <code>geom_histogram</code> to be our rook cardinality. This will give us a basic plot, which
+we will customize further a little later.</p>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="contiguity-based-spatial-weights.html#cb476-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb476-2"><a href="contiguity-based-spatial-weights.html#cb476-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>rook.card))</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-239-1.png" width="672" /></p>
-<p>Here we will add a few customizations to make the plot nicer. The most important is with the <code>breaks =</code> parameter, as the bars are spaced out kind of weirdly in our opening plot. We can avoid manually typing in the breaks by using the <code>seq</code> function, which will give us a list of numbers 0 to 13, incrementing by 1 each time. We specify the range in the first two arguments and then use <code>by =</code> to pick the number to increment by. In our case, 1 makes the most sense as you cannot have half of a neighbor.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x=</span>rook.card), <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">13</span>, <span class="dt">by =</span> <span class="dv">1</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;number of neighbors&quot;</span>)</code></pre></div>
+<p>Here we will add a few customizations to make the plot nicer. The most important is with
+the <code>breaks =</code> parameter, as the bars are spaced out kind of weirdly in our opening plot.
+We can avoid manually typing in the breaks by using the <code>seq</code> function, which will give us
+a list of numbers 0 to 13, incrementing by 1 each time. We specify the range in the first
+two arguments and then use <code>by =</code> to pick the number to increment by. In our case, 1 makes
+the most sense as you cannot have half of a neighbor.</p>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="contiguity-based-spatial-weights.html#cb478-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb478-2"><a href="contiguity-based-spatial-weights.html#cb478-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>rook.card), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">13</span>, <span class="at">by =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb478-3"><a href="contiguity-based-spatial-weights.html#cb478-3" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;number of neighbors&quot;</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-240-1.png" width="672" /></p>
-<p>With the <code>summary</code> command we can get a look at the summary statistics for the cardinality of the neighbors list.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(rook.card)</code></pre></div>
+<p>With the <code>summary</code> command we can get a look at the summary
+statistics for the cardinality of the neighbors list.</p>
+<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="contiguity-based-spatial-weights.html#cb479-1" tabindex="-1"></a><span class="fu">summary</span>(rook.card)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.000   5.000   6.000   5.571   6.000  13.000</code></pre>
 </div>
 </div>
-<div id="saving-neighbors" class="section level2 unnumbered">
-<h2>Saving Neighbors</h2>
-<p>To save our neighbors list, we use the <code>write.nb.gal</code> function from the <strong>spdep</strong> package. The file format is a GAL Lattice file. We input our neighbors list, and the the filename second. We have two options from this point. We can save the file with the old style or the new GeoDa header style.</p>
-<div id="oldstyle" class="section level3 unnumbered">
-<h3>Oldstyle</h3>
-<p>The oldstyle just saves the neighbor list with then number of observations at the top of the file. We can save in this format by setting <code>oldstyle =</code> to <code>TRUE</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.nb.gal</span>(sf.nb.rook, <span class="st">&quot;rook_contiguity_old.gal&quot;</span>, <span class="dt">oldstyle =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div id="saving-neighbors" class="section level2 unnumbered hasAnchor">
+<h2>Saving Neighbors<a href="contiguity-based-spatial-weights.html#saving-neighbors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To save our neighbors list, we use the <code>write.nb.gal</code> function from
+the <strong>spdep</strong> package. The file format is a GAL Lattice file. We
+input our neighbors list, and the the filename second. We have two
+options from this point. We can save the file with the old style
+or the new GeoDa header style.</p>
+<div id="oldstyle" class="section level3 unnumbered hasAnchor">
+<h3>Oldstyle<a href="contiguity-based-spatial-weights.html#oldstyle" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The oldstyle just saves the neighbor list with then number of observations
+at the top of the file. We can save in this format by setting <code>oldstyle =</code>
+to <code>TRUE</code>.</p>
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="contiguity-based-spatial-weights.html#cb481-1" tabindex="-1"></a><span class="fu">write.nb.gal</span>(sf.nb.rook, <span class="st">&quot;rook_contiguity_old.gal&quot;</span>, <span class="at">oldstyle =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
-<div id="geoda-header-format" class="section level3 unnumbered">
-<h3>GeoDA Header Format</h3>
-<p>The new GeoDA header style, also takes the shapefile name taken from GAL file for the dataset and the region id indicator variable name. It puts this information in a header for the file. All we have to do is set <code>oldstyle =</code> to FALSE and enter names for <code>shpfile</code> and <code>ind</code> parameters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.nb.gal</span>(sf.nb.rook, <span class="st">&quot;rook_contiguity_new.gal&quot;</span>, <span class="dt">oldstyle =</span> <span class="ot">FALSE</span>, <span class="dt">shpfile =</span><span class="st">&quot;NAT.shp&quot;</span>, <span class="dt">ind =</span><span class="st">&quot;region id&quot;</span>)</code></pre></div>
+<div id="geoda-header-format" class="section level3 unnumbered hasAnchor">
+<h3>GeoDA Header Format<a href="contiguity-based-spatial-weights.html#geoda-header-format" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The new GeoDA header style, also takes the shapefile name taken from GAL file for
+the dataset and the region id indicator variable name. It puts this information
+in a header for the file. All we have to do is set <code>oldstyle =</code> to FALSE and
+enter names for <code>shpfile</code> and <code>ind</code> parameters.</p>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="contiguity-based-spatial-weights.html#cb482-1" tabindex="-1"></a><span class="fu">write.nb.gal</span>(sf.nb.rook, <span class="st">&quot;rook_contiguity_new.gal&quot;</span>, <span class="at">oldstyle =</span> <span class="cn">FALSE</span>, <span class="at">shpfile =</span><span class="st">&quot;NAT.shp&quot;</span>, <span class="at">ind =</span><span class="st">&quot;region id&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>
@@ -1108,8 +1395,9 @@ sf.sgbp.rook &lt;-<span class="st"> </span><span class="kw">st_rook</span>(us.bo
 <div class="footnotes">
 <hr />
 <ol start="19">
-<li id="fn19"><p>Use <code>setwd(directorypath)</code> to specify the working directory.<a href="contiguity-based-spatial-weights.html#fnref19">↩</a></p></li>
-<li id="fn20"><p>Use <code>install.packages(packagename)</code>.<a href="contiguity-based-spatial-weights.html#fnref20">↩</a></p></li>
+<li id="fn19"><p>Use <code>setwd(directorypath)</code> to specify the working directory.<a href="contiguity-based-spatial-weights.html#fnref19" class="footnote-back">↩︎</a></p></li>
+<li id="fn20"><p>Use
+<code>install.packages(packagename)</code>.<a href="contiguity-based-spatial-weights.html#fnref20" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -1122,7 +1410,6 @@ sf.sgbp.rook &lt;-<span class="st"> </span><span class="kw">st_rook</span>(us.bo
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1141,6 +1428,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -1161,6 +1449,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "section"
 }
@@ -1173,8 +1465,8 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
