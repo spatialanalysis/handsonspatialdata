@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Rate Mapping | Hands-On Spatial Data Science with R</title>
+  <meta name="description" content="Chapter 5 Rate Mapping | Hands-On Spatial Data Science with R" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Rate Mapping | Hands-On Spatial Data Science with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="spatialanalysis/handsonspatialdata" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Rate Mapping | Hands-On Spatial Data Science with R" />
+  
+  
+  
+
+<meta name="author" content="Luc Anselin, Grant Morrison, Angela Li, Karina Acosta" />
+
+
+<meta name="date" content="2023-10-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="basic-mapping.html"/>
+<link rel="next" href="contiguity-based-spatial-weights.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.3/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.0/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.0/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#disclaimer"><i class="fa fa-check"></i>Disclaimer</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#using-this-book"><i class="fa fa-check"></i>Using This Book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#who-this-book-is-for"><i class="fa fa-check"></i>Who This Book Is For</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html"><i class="fa fa-check"></i><b>1</b> Spatial Data Handling</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction-1"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#objectives"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#preliminaries"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#obtaining-data-from-the-chicago-open-data-portal"><i class="fa fa-check"></i>Obtaining data from the Chicago Open Data portal</a></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#selecting-observations-for-a-given-time-period"><i class="fa fa-check"></i>Selecting Observations for a Given Time Period</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#extracting-observations-for-the-desired-time-period"><i class="fa fa-check"></i>Extracting observations for the desired time period</a></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#selecting-the-variables-for-the-final-table"><i class="fa fa-check"></i>Selecting the variables for the final table</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-point-layer"><i class="fa fa-check"></i>Creating a Point Layer</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-point-layer-from-coordinates-in-a-table---principle"><i class="fa fa-check"></i>Creating a point layer from coordinates in a table - principle</a></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-spatial-points-object"><i class="fa fa-check"></i>Creating a spatial points object</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#abandoned-vehicles-by-community-area"><i class="fa fa-check"></i>Abandoned Vehicles by Community Area</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#community-area-boundary-file"><i class="fa fa-check"></i>Community Area boundary file</a></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#spatial-join"><i class="fa fa-check"></i>Spatial join</a></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#counts-by-community-area"><i class="fa fa-check"></i>Counts by community area</a></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#mapping-the-vehicle-counts"><i class="fa fa-check"></i>Mapping the vehicle counts</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#community-area-population-data"><i class="fa fa-check"></i>Community Area Population Data</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#extracting-a-pdf-file"><i class="fa fa-check"></i>Extracting a pdf file</a></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#parsing-the-pdf-file"><i class="fa fa-check"></i>Parsing the pdf file</a></li>
+<li class="chapter" data-level="1.0.1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#extracting-the-population-values"><i class="fa fa-check"></i><b>1.0.1</b> Extracting the population values</a></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-data-frame-with-population-values"><i class="fa fa-check"></i>Creating a data frame with population values</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#mapping-community-area-abandoned-vehicles-per-capita"><i class="fa fa-check"></i>Mapping Community Area Abandoned Vehicles Per Capita</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#computing-abandoned-vehicles-per-capita"><i class="fa fa-check"></i>Computing abandoned vehicles per capita</a></li>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#final-choropleth-map"><i class="fa fa-check"></i>Final choropleth map</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html"><i class="fa fa-check"></i><b>2</b> Exploratory Data Analysis 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-2"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#objectives-1"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#preliminaries-1"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#load-packages"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#obtaining-the-data"><i class="fa fa-check"></i>Obtaining the data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#analyzing-the-distribution-of-a-single-variable"><i class="fa fa-check"></i>Analyzing the Distribution of a Single Variable</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#a-quick-introduction-to-ggplot"><i class="fa fa-check"></i>A quick introduction to <strong>ggplot</strong></a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#histogram"><i class="fa fa-check"></i>Histogram</a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#box-plot"><i class="fa fa-check"></i>Box plot</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#bivariate-analysis-the-scatter-plot"><i class="fa fa-check"></i>Bivariate Analysis: The Scatter Plot</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#smoothing-the-scatter-plot"><i class="fa fa-check"></i>Smoothing the scatter plot</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#spatial-heterogeneity"><i class="fa fa-check"></i>Spatial heterogeneity</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#structural-breaks-in-the-scatter-plot"><i class="fa fa-check"></i>Structural breaks in the scatter plot</a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#chow-test"><i class="fa fa-check"></i>Chow test</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html"><i class="fa fa-check"></i><b>3</b> Exploratory Data Analysis 2</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-3"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#objectives-2"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#preliminaries-2"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#load-packages-1"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#obtaining-the-data-1"><i class="fa fa-check"></i>Obtaining the data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#scatter-plot-matrix"><i class="fa fa-check"></i>Scatter Plot Matrix</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#basic-scatter-plot-matrix"><i class="fa fa-check"></i>Basic scatter plot matrix</a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#scatter-plot-matrix-with-smoothing"><i class="fa fa-check"></i>Scatter plot matrix with smoothing</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#three-variables-bubble-chart-and-3d-scatter-plot"><i class="fa fa-check"></i>Three Variables: Bubble Chart and 3D Scatter Plot</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#bubble-chart"><i class="fa fa-check"></i>Bubble chart</a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#d-scatter-plot"><i class="fa fa-check"></i>3D Scatter Plot</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#true-multivariate-eda-parallel-coordinate-plot-and-conditional-plots"><i class="fa fa-check"></i>True Multivariate EDA: Parallel Coordinate Plot and Conditional Plots</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#parallel-coordinate-plot-pcp"><i class="fa fa-check"></i>Parallel Coordinate Plot (PCP)</a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#conditional-plots"><i class="fa fa-check"></i>Conditional Plots</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="basic-mapping.html"><a href="basic-mapping.html"><i class="fa fa-check"></i><b>4</b> Basic Mapping</a>
+<ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-4"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#objectives-3"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#preliminaries-3"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#load-packages-2"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#obtaining-the-data-2"><i class="fa fa-check"></i>Obtaining the data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#basic-choropleth-mapping"><i class="fa fa-check"></i>Basic Choropleth Mapping</a>
+<ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#default-settings-1"><i class="fa fa-check"></i>Default settings</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#color-palette"><i class="fa fa-check"></i>Color palette</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#legend"><i class="fa fa-check"></i>Legend</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#title"><i class="fa fa-check"></i>Title</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#border-options"><i class="fa fa-check"></i>Border options</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#interactive-base-map"><i class="fa fa-check"></i>Interactive base map</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#saving-a-map-as-a-file"><i class="fa fa-check"></i>Saving a map as a file</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#shape-centers"><i class="fa fa-check"></i>Shape centers</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#common-map-classifications"><i class="fa fa-check"></i>Common Map Classifications</a>
+<ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#quantile-map"><i class="fa fa-check"></i>Quantile map</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#natural-breaks-map"><i class="fa fa-check"></i>Natural breaks map</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#equal-intervals-map"><i class="fa fa-check"></i>Equal intervals map</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#custom-breaks"><i class="fa fa-check"></i>Custom breaks</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#extreme-value-maps"><i class="fa fa-check"></i>Extreme Value Maps</a>
+<ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#percentile-map"><i class="fa fa-check"></i>Percentile map</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#box-map"><i class="fa fa-check"></i>Box map</a></li>
+<li class="chapter" data-level="4.0.1" data-path="basic-mapping.html"><a href="basic-mapping.html#standard-deviation-map"><i class="fa fa-check"></i><b>4.0.1</b> Standard deviation map</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#mapping-categorical-variables"><i class="fa fa-check"></i>Mapping Categorical Variables</a>
+<ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#unique-value-map"><i class="fa fa-check"></i>Unique value map</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#co-location-map"><i class="fa fa-check"></i>Co-location map</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#conditional-map"><i class="fa fa-check"></i>Conditional Map</a></li>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#cartogram"><i class="fa fa-check"></i>Cartogram</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="rate-mapping.html"><a href="rate-mapping.html"><i class="fa fa-check"></i><b>5</b> Rate Mapping</a>
+<ul>
+<li class="chapter" data-level="" data-path="rate-mapping.html"><a href="rate-mapping.html#introduction-5"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="5.0.1" data-path="rate-mapping.html"><a href="rate-mapping.html#objectives-4"><i class="fa fa-check"></i><b>5.0.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="5.1" data-path="rate-mapping.html"><a href="rate-mapping.html#preliminaries-4"><i class="fa fa-check"></i><b>5.1</b> Preliminaries</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="rate-mapping.html"><a href="rate-mapping.html#load-packages-3"><i class="fa fa-check"></i><b>5.1.1</b> Load packages</a></li>
+<li class="chapter" data-level="5.1.2" data-path="rate-mapping.html"><a href="rate-mapping.html#geodadata"><i class="fa fa-check"></i><b>5.1.2</b> geodaData</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="rate-mapping.html"><a href="rate-mapping.html#choropleth-map-for-rates"><i class="fa fa-check"></i><b>5.2</b> Choropleth Map for Rates</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="rate-mapping.html"><a href="rate-mapping.html#spatially-extensive-and-intensive-variables"><i class="fa fa-check"></i><b>5.2.1</b> Spatially extensive and intensive variables</a></li>
+<li class="chapter" data-level="5.2.2" data-path="rate-mapping.html"><a href="rate-mapping.html#raw-rate-map"><i class="fa fa-check"></i><b>5.2.2</b> Raw rate map</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk"><i class="fa fa-check"></i><b>5.3</b> Excess risk</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="rate-mapping.html"><a href="rate-mapping.html#relative-risk"><i class="fa fa-check"></i><b>5.3.1</b> Relative risk</a></li>
+<li class="chapter" data-level="5.3.2" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk-map"><i class="fa fa-check"></i><b>5.3.2</b> Excess risk map</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="rate-mapping.html"><a href="rate-mapping.html#empirical-bayes-smoothed-rate-map"><i class="fa fa-check"></i><b>5.4</b> Empirical Bayes Smoothed Rate Map</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="rate-mapping.html"><a href="rate-mapping.html#borrowing-strength"><i class="fa fa-check"></i><b>5.4.1</b> Borrowing strength</a></li>
+<li class="chapter" data-level="5.4.2" data-path="rate-mapping.html"><a href="rate-mapping.html#bayes-law"><i class="fa fa-check"></i><b>5.4.2</b> Bayes law</a></li>
+<li class="chapter" data-level="5.4.3" data-path="rate-mapping.html"><a href="rate-mapping.html#the-poisson-gamma-model"><i class="fa fa-check"></i><b>5.4.3</b> The Poisson-Gamma model</a></li>
+<li class="chapter" data-level="5.4.4" data-path="rate-mapping.html"><a href="rate-mapping.html#the-empirical-bayes-approach"><i class="fa fa-check"></i><b>5.4.4</b> The Empirical Bayes approach</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="rate-mapping.html"><a href="rate-mapping.html#eb-rate-map"><i class="fa fa-check"></i><b>5.5</b> EB rate map</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html"><i class="fa fa-check"></i><b>6</b> Contiguity-Based Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#introduction-6"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#objectives-5"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#preliminaries-5"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#load-packages-4"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#geodadata-1"><i class="fa fa-check"></i>geodaData</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#contiguity-weights"><i class="fa fa-check"></i>Contiguity Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#rook-contiguity"><i class="fa fa-check"></i>Rook Contiguity</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#queen-contiguity"><i class="fa fa-check"></i>Queen Contiguity</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#higher-order-contiguity"><i class="fa fa-check"></i>Higher Order Contiguity</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#visualizing-contiguity-neighbors"><i class="fa fa-check"></i>Visualizing Contiguity Neighbors</a>
+<ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#connectivity-graph"><i class="fa fa-check"></i>Connectivity Graph</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#connectivity-histogram"><i class="fa fa-check"></i>Connectivity Histogram</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#saving-neighbors"><i class="fa fa-check"></i>Saving Neighbors</a>
+<ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#oldstyle"><i class="fa fa-check"></i>Oldstyle</a></li>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#geoda-header-format"><i class="fa fa-check"></i>GeoDA Header Format</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html"><i class="fa fa-check"></i><b>7</b> Distance-Based Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#introduction-7"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#objectives-6"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#preliminaries-6"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#load-packages-5"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#geodadata-2"><i class="fa fa-check"></i>geodaData</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#visualizing-point-data"><i class="fa fa-check"></i>Visualizing point data</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-band-weights"><i class="fa fa-check"></i>Distance-Band Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#concepts"><i class="fa fa-check"></i>Concepts</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#creating-distance-band-weights"><i class="fa fa-check"></i>Creating distance-band weights</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#weights-characteristics"><i class="fa fa-check"></i>Weights characteristics</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#isolates"><i class="fa fa-check"></i>Isolates</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#k-nearest-neighbor-weights"><i class="fa fa-check"></i>K-Nearest Neighbor Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#concept"><i class="fa fa-check"></i>Concept</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#creating-knn-weights"><i class="fa fa-check"></i>Creating KNN Weights</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#properties-of-knn-weights"><i class="fa fa-check"></i>Properties of KNN weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#generalizing-the-concept-of-contiguity"><i class="fa fa-check"></i>Generalizing the Concept of Contiguity</a>
+<ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#contiguity-based-weights-for-points"><i class="fa fa-check"></i>Contiguity-based weights for points</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#contiguity-weights-for-thiessen-polygons"><i class="fa fa-check"></i>Contiguity weights for Thiessen polygons</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-based-weights-for-polygons"><i class="fa fa-check"></i>Distance-based weights for polygons</a>
+<ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#getting-the-data"><i class="fa fa-check"></i>Getting the data</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-the-centroids"><i class="fa fa-check"></i>Computing the centroids</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-the-critical-threshold"><i class="fa fa-check"></i>Computing the critical threshold</a></li>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-distance-band-neighbors"><i class="fa fa-check"></i>Computing distance-band neighbors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html"><i class="fa fa-check"></i><b>8</b> Spatial Weights as Distance Functions</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#introduction-8"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#objectives-7"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#preliminaries-7"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#load-packages-6"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#obtaining-the-data-from-the-geoda-website"><i class="fa fa-check"></i>Obtaining the Data from the GeoDa website</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#inverse-distance-weights"><i class="fa fa-check"></i>Inverse Distance Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#concepts-1"><i class="fa fa-check"></i>Concepts</a></li>
+<li class="chapter" data-level="8.0.1" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-distance-bands"><i class="fa fa-check"></i><b>8.0.1</b> Creating inverse distance functions for distance bands</a></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-k-nearest-neighbors"><i class="fa fa-check"></i>Creating inverse distance functions for k-nearest neighbors</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#kernal-weights"><i class="fa fa-check"></i>Kernal Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#concepts-2"><i class="fa fa-check"></i>Concepts</a></li>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-kernal-weights"><i class="fa fa-check"></i>Creating Kernal weights</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html"><i class="fa fa-check"></i><b>9</b> Applications of Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#introduction-9"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#objectives-8"><i class="fa fa-check"></i>Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-8"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#load-packages-7"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#geodadata-3"><i class="fa fa-check"></i>geodaData</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables"><i class="fa fa-check"></i>Spatially lagged variables</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#creating-a-spatially-lagged-variable"><i class="fa fa-check"></i>Creating a spatially lagged variable</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-inverse-distance-weights"><i class="fa fa-check"></i>Spatially lagged variables from inverse distance weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle"><i class="fa fa-check"></i>Principle</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#default-approach"><i class="fa fa-check"></i>Default approach</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-lags-with-row-standardized-inverse-distance-weights"><i class="fa fa-check"></i>Spatial lags with row-standardized inverse distance weights</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-kernel-weights"><i class="fa fa-check"></i>Spatially lagged variables from kernel weights</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-rate-smoothing"><i class="fa fa-check"></i>Spatial rate smoothing</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle-1"><i class="fa fa-check"></i>Principle</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-9"><i class="fa fa-check"></i>Preliminaries</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#simple-window-average-of-rates"><i class="fa fa-check"></i>Simple window average of rates</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-smoothed-rates"><i class="fa fa-check"></i>Spatially Smoothed Rates</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-empirical-bayes-smoothing"><i class="fa fa-check"></i>Spatial Empirical Bayes smoothing</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle-2"><i class="fa fa-check"></i>Principle</a></li>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-eb-rate-smoother"><i class="fa fa-check"></i>Spatial EB rate smoother</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>10</b> Global Spatial Autocorrelation 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#introduction-10"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="10.0.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#objectives-9"><i class="fa fa-check"></i><b>10.0.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="10.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#preliminaries-10"><i class="fa fa-check"></i><b>10.1</b> Preliminaries</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#load-packages-8"><i class="fa fa-check"></i><b>10.1.1</b> Load packages</a></li>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#geodadata-website"><i class="fa fa-check"></i>geodaData website</a></li>
+<li class="chapter" data-level="10.1.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#making-the-weights"><i class="fa fa-check"></i><b>10.1.2</b> Making the weights</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#the-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2</b> The Moran Scatter Plot</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#concept-1"><i class="fa fa-check"></i><b>10.2.1</b> Concept</a></li>
+<li class="chapter" data-level="10.2.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#creating-a-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2.2</b> Creating a Moran scatter plot</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#spatial-correlogram"><i class="fa fa-check"></i><b>10.3</b> Spatial Correlogram</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#concept-2"><i class="fa fa-check"></i><b>10.3.1</b> Concept</a></li>
+<li class="chapter" data-level="10.3.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#creating-a-spatial-correlogram"><i class="fa fa-check"></i><b>10.3.2</b> Creating a spatial correlogram</a></li>
+<li class="chapter" data-level="10.3.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#interpretation-1"><i class="fa fa-check"></i><b>10.3.3</b> Interpretation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html"><i class="fa fa-check"></i><b>11</b> Global Spatial Autocorrelation 2</a>
+<ul>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#introduction-11"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="11.0.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#objectives-10"><i class="fa fa-check"></i><b>11.0.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="11.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#preliminaries-11"><i class="fa fa-check"></i><b>11.1</b> Preliminaries</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#load-packages-9"><i class="fa fa-check"></i><b>11.1.1</b> Load packages</a></li>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#obtaining-the-data-from-the-geoda-website-1"><i class="fa fa-check"></i>Obtaining the Data from the GeoDa website</a></li>
+<li class="chapter" data-level="11.1.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#creating-the-weights-2"><i class="fa fa-check"></i><b>11.1.2</b> Creating the weights</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-spatial-correlation---a-word-of-caution"><i class="fa fa-check"></i><b>11.2</b> Bivariate spatial correlation - a Word of Caution</a></li>
+<li class="chapter" data-level="11.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3</b> Bivariate Moran Scatter Plot</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-3"><i class="fa fa-check"></i><b>11.3.1</b> Concept</a></li>
+<li class="chapter" data-level="11.3.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#creating-a-bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3.2</b> Creating a bivariate Moran scatter plot</a></li>
+<li class="chapter" data-level="11.3.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#a-closer-look-at-bivariate-spatial-correlation"><i class="fa fa-check"></i><b>11.3.3</b> A closer look at bivariate spatial correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#differential-moran-scatter-plot"><i class="fa fa-check"></i><b>11.4</b> Differential Moran Scatter Plot</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-4"><i class="fa fa-check"></i><b>11.4.1</b> Concept</a></li>
+<li class="chapter" data-level="11.4.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#implementation"><i class="fa fa-check"></i><b>11.4.2</b> Implementation</a></li>
+<li class="chapter" data-level="11.4.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#options"><i class="fa fa-check"></i><b>11.4.3</b> Options</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#moran-scatter-plot-for-eb-rates"><i class="fa fa-check"></i><b>11.5</b> Moran Scatter Plot for EB Rates</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-5"><i class="fa fa-check"></i><b>11.5.1</b> Concept</a></li>
+<li class="chapter" data-level="11.5.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#implementation-1"><i class="fa fa-check"></i><b>11.5.2</b> Implementation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>12</b> Local Spatial Autocorrelation 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#introduction-12"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="12.0.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#objectives-11"><i class="fa fa-check"></i><b>12.0.1</b> Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="12.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#preliminaries-12"><i class="fa fa-check"></i><b>12.1</b> Preliminaries</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#load-packages-10"><i class="fa fa-check"></i><b>12.1.1</b> Load packages</a></li>
+<li class="chapter" data-level="12.1.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#spatmap"><i class="fa fa-check"></i><b>12.1.2</b> spatmap</a></li>
+<li class="chapter" data-level="12.1.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#geodadata-5"><i class="fa fa-check"></i><b>12.1.3</b> geodaData</a></li>
+<li class="chapter" data-level="12.1.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#univariate-analysis"><i class="fa fa-check"></i><b>12.1.4</b> Univariate analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-moran"><i class="fa fa-check"></i><b>12.2</b> Local Moran</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-3"><i class="fa fa-check"></i><b>12.2.1</b> Principle</a></li>
+<li class="chapter" data-level="12.2.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-2"><i class="fa fa-check"></i><b>12.2.2</b> Implementation</a></li>
+<li class="chapter" data-level="12.2.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#randomization-options"><i class="fa fa-check"></i><b>12.2.3</b> Randomization Options</a></li>
+<li class="chapter" data-level="12.2.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#significance"><i class="fa fa-check"></i><b>12.2.4</b> Significance</a></li>
+<li class="chapter" data-level="12.2.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#interpretation-of-clusters"><i class="fa fa-check"></i><b>12.2.5</b> Interpretation of clusters</a></li>
+<li class="chapter" data-level="12.2.6" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#conditional-local-cluster-maps"><i class="fa fa-check"></i><b>12.2.6</b> Conditional local cluster maps</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-geary"><i class="fa fa-check"></i><b>12.3</b> Local Geary</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-4"><i class="fa fa-check"></i><b>12.3.1</b> Principle</a></li>
+<li class="chapter" data-level="12.3.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-3"><i class="fa fa-check"></i><b>12.3.2</b> Implementation</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#getis-ord-statistics"><i class="fa fa-check"></i><b>12.4</b> Getis-Ord Statistics</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-5"><i class="fa fa-check"></i><b>12.4.1</b> Principle</a></li>
+<li class="chapter" data-level="12.4.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-4"><i class="fa fa-check"></i><b>12.4.2</b> Implementation</a></li>
+<li class="chapter" data-level="12.4.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#interpretation-and-significance-1"><i class="fa fa-check"></i><b>12.4.3</b> Interpretation and significance</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-join-count-statistic"><i class="fa fa-check"></i><b>12.5</b> Local Join Count Statistic</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-6"><i class="fa fa-check"></i><b>12.5.1</b> Principle</a></li>
+<li class="chapter" data-level="12.5.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-5"><i class="fa fa-check"></i><b>12.5.2</b> Implementation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>13</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hands-On Spatial Data Science with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="rate-mapping" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Rate Mapping<a href="rate-mapping.html#rate-mapping" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-5" class="section level2 unnumbered hasAnchor">
+<h2>Introduction<a href="rate-mapping.html#introduction-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This notebook covers the functionality of the <a href="https://geodacenter.github.io/workbook/3b_rates/lab3b.html">Rate Mapping</a> section of the GeoDa workbook. We refer to that document for details on the methodology, references, etc. The goal of these notes is to approximate as closely as possible the operations carried out using GeoDa by means of a range of R packages.</p>
+<p>The notes are written with R beginners in mind, more seasoned R users can probably skip most of the comments
+on data structures and other R particulars. Also, as always in R, there are typically several ways to achieve a specific objective, so what is shown here is just one way that works, but there often are others (that may even be more elegant, work faster, or scale better).</p>
+<p>For this notebook, we use Cleveland house price data. Our goal in this lab is show how to assign spatial weights based on different distance functions.</p>
+<div id="objectives-4" class="section level3 hasAnchor" number="5.0.1">
+<h3><span class="header-section-number">5.0.1</span> Objectives<a href="rate-mapping.html#objectives-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>After completing the notebook, you should know how to carry out the following tasks:</p>
+<ul>
+<li><p>Obtain a coordinate reference system</p></li>
+<li><p>Create thematic maps for rates</p></li>
+<li><p>Assess extreme value rate values by means of an excess risk map</p></li>
+<li><p>Understand the principle behind shrinkage estimation or smoothing rates</p></li>
+<li><p>Use base R to compute rates with bivariate operations</p></li>
+</ul>
+<div id="r-packages-used-4" class="section level4 hasAnchor" number="5.0.1.1">
+<h4><span class="header-section-number">5.0.1.1</span> R Packages used<a href="rate-mapping.html#r-packages-used-4" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p><strong>sf</strong>: To read in the shapefile.</p></li>
+<li><p><strong>tmap</strong>: To create various rate maps and build up the necessary custom specifications for the box map classification</p></li>
+<li><p><strong>geodaData</strong>: To load the dataset for the notebook.</p></li>
+</ul>
+</div>
+<div id="r-commands-used-4" class="section level4 hasAnchor" number="5.0.1.2">
+<h4><span class="header-section-number">5.0.1.2</span> R Commands used<a href="rate-mapping.html#r-commands-used-4" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Below follows a list of the commands used in this notebook. For further details
+and a comprehensive list of options, please consult the
+<a href="https://www.rdocumentation.org">R documentation</a>.</p>
+<ul>
+<li><p><strong>Base R</strong>: <code>install.packages</code>, <code>library</code>, <code>setwd</code>, <code>class</code>, <code>str</code>,</p></li>
+<li><p><strong>sf</strong>: <code>plot</code>, <code>st_crs</code>, <code>st_set_geometry</code></p></li>
+<li><p><strong>tmap</strong>: <code>tm_shape</code>, <code>tm_fill</code>, <code>tm_borders</code>, <code>tm_layout</code>, <code>tmap_mode</code>, <code>tm_basemap</code></p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="preliminaries-4" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Preliminaries<a href="rate-mapping.html#preliminaries-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="load-packages-3" class="section level3 hasAnchor" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Load packages<a href="rate-mapping.html#load-packages-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First, we load all the required packages using the <code>library</code> command. If you don’t have some of these in your system, make sure to install them first as well as
+their dependencies.<a href="#fn18" class="footnote-ref" id="fnref18"><sup>18</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="rate-mapping.html#cb277-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb277-2"><a href="rate-mapping.html#cb277-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb277-3"><a href="rate-mapping.html#cb277-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geodaData)</span></code></pre></div>
+</div>
+<div id="geodadata" class="section level3 hasAnchor" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> geodaData<a href="rate-mapping.html#geodadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>All of the data for the R notebooks is available in the <strong>geodaData</strong>
+package. We loaded the library earlier, now to access the individual
+data sets, we use the double colon notation. This works similar to
+to accessing a variable with <code>$</code>, in that a drop down menu will
+appear with a list of the datasets included in the package. For this
+notebook, we use <code>ohio_lung</code>.</p>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="rate-mapping.html#cb278-1" aria-hidden="true" tabindex="-1"></a>ohio_lung <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>ohio_lung</span></code></pre></div>
+</div>
+</div>
+<div id="choropleth-map-for-rates" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Choropleth Map for Rates<a href="rate-mapping.html#choropleth-map-for-rates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spatially-extensive-and-intensive-variables" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Spatially extensive and intensive variables<a href="rate-mapping.html#spatially-extensive-and-intensive-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We start our discussion of rate maps by illustrating something we should not be
+doing. This pertains to the important difference between a spatially extensive and a
+spatially intensive variable. In many applications that use public health data, we
+typically have access to a count of events, such as the number of cancer cases (a
+spatially extensive variable), as well as to the relevant population at risk, which
+allows for the calculation of a rate (a spatially intensive variable).</p>
+<div id="setting-up-the-boxmap-option" class="section level4 hasAnchor" number="5.2.1.1">
+<h4><span class="header-section-number">5.2.1.1</span> Setting up the Boxmap option<a href="rate-mapping.html#setting-up-the-boxmap-option" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Throughout this notebook, we will be using the <code>boxmap</code> function, created in the
+previous notebook: Basic Mapping. We won’t go into depth on how the function was created,
+but for this information, check out the Basic Mapping notebook chapter.</p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="rate-mapping.html#cb279-1" aria-hidden="true" tabindex="-1"></a>get.var <span class="ot">&lt;-</span> <span class="cf">function</span>(vname,df) {</span>
+<span id="cb279-2"><a href="rate-mapping.html#cb279-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># function to extract a variable as a vector out of an sf data frame</span></span>
+<span id="cb279-3"><a href="rate-mapping.html#cb279-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arguments:</span></span>
+<span id="cb279-4"><a href="rate-mapping.html#cb279-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    vname: variable name (as character, in quotes)</span></span>
+<span id="cb279-5"><a href="rate-mapping.html#cb279-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    df: name of sf data frame</span></span>
+<span id="cb279-6"><a href="rate-mapping.html#cb279-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># returns:</span></span>
+<span id="cb279-7"><a href="rate-mapping.html#cb279-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    v: vector with values (without a column name)</span></span>
+<span id="cb279-8"><a href="rate-mapping.html#cb279-8" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> df[vname] <span class="sc">%&gt;%</span> <span class="fu">st_set_geometry</span>(<span class="cn">NULL</span>)</span>
+<span id="cb279-9"><a href="rate-mapping.html#cb279-9" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> <span class="fu">unname</span>(v[,<span class="dv">1</span>])</span>
+<span id="cb279-10"><a href="rate-mapping.html#cb279-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(v)</span>
+<span id="cb279-11"><a href="rate-mapping.html#cb279-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="rate-mapping.html#cb280-1" aria-hidden="true" tabindex="-1"></a>boxbreaks <span class="ot">&lt;-</span> <span class="cf">function</span>(v,<span class="at">mult=</span><span class="fl">1.5</span>) {</span>
+<span id="cb280-2"><a href="rate-mapping.html#cb280-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># break points for box map</span></span>
+<span id="cb280-3"><a href="rate-mapping.html#cb280-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arguments:</span></span>
+<span id="cb280-4"><a href="rate-mapping.html#cb280-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   v: vector with observations</span></span>
+<span id="cb280-5"><a href="rate-mapping.html#cb280-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   mult: multiplier for IQR (default 1.5)</span></span>
+<span id="cb280-6"><a href="rate-mapping.html#cb280-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># returns:</span></span>
+<span id="cb280-7"><a href="rate-mapping.html#cb280-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   bb: vector with 7 break points</span></span>
+<span id="cb280-8"><a href="rate-mapping.html#cb280-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute quartile and fences</span></span>
+<span id="cb280-9"><a href="rate-mapping.html#cb280-9" aria-hidden="true" tabindex="-1"></a>  qv <span class="ot">&lt;-</span> <span class="fu">unname</span>(<span class="fu">quantile</span>(v))</span>
+<span id="cb280-10"><a href="rate-mapping.html#cb280-10" aria-hidden="true" tabindex="-1"></a>  iqr <span class="ot">&lt;-</span> qv[<span class="dv">4</span>] <span class="sc">-</span> qv[<span class="dv">2</span>]</span>
+<span id="cb280-11"><a href="rate-mapping.html#cb280-11" aria-hidden="true" tabindex="-1"></a>  upfence <span class="ot">&lt;-</span> qv[<span class="dv">4</span>] <span class="sc">+</span> mult <span class="sc">*</span> iqr</span>
+<span id="cb280-12"><a href="rate-mapping.html#cb280-12" aria-hidden="true" tabindex="-1"></a>  lofence <span class="ot">&lt;-</span> qv[<span class="dv">2</span>] <span class="sc">-</span> mult <span class="sc">*</span> iqr</span>
+<span id="cb280-13"><a href="rate-mapping.html#cb280-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># initialize break points vector</span></span>
+<span id="cb280-14"><a href="rate-mapping.html#cb280-14" aria-hidden="true" tabindex="-1"></a>  bb <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">mode=</span><span class="st">&quot;numeric&quot;</span>,<span class="at">length=</span><span class="dv">7</span>)</span>
+<span id="cb280-15"><a href="rate-mapping.html#cb280-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># logic for lower and upper fences</span></span>
+<span id="cb280-16"><a href="rate-mapping.html#cb280-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (lofence <span class="sc">&lt;</span> qv[<span class="dv">1</span>]) {  <span class="co"># no lower outliers</span></span>
+<span id="cb280-17"><a href="rate-mapping.html#cb280-17" aria-hidden="true" tabindex="-1"></a>    bb[<span class="dv">1</span>] <span class="ot">&lt;-</span> lofence</span>
+<span id="cb280-18"><a href="rate-mapping.html#cb280-18" aria-hidden="true" tabindex="-1"></a>    bb[<span class="dv">2</span>] <span class="ot">&lt;-</span> qv[<span class="dv">1</span>]</span>
+<span id="cb280-19"><a href="rate-mapping.html#cb280-19" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb280-20"><a href="rate-mapping.html#cb280-20" aria-hidden="true" tabindex="-1"></a>    bb[<span class="dv">2</span>] <span class="ot">&lt;-</span> lofence</span>
+<span id="cb280-21"><a href="rate-mapping.html#cb280-21" aria-hidden="true" tabindex="-1"></a>    bb[<span class="dv">1</span>] <span class="ot">&lt;-</span> qv[<span class="dv">1</span>]</span>
+<span id="cb280-22"><a href="rate-mapping.html#cb280-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb280-23"><a href="rate-mapping.html#cb280-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (upfence <span class="sc">&gt;</span> qv[<span class="dv">5</span>]) { <span class="co"># no upper outliers</span></span>
+<span id="cb280-24"><a href="rate-mapping.html#cb280-24" aria-hidden="true" tabindex="-1"></a>    bb[<span class="dv">7</span>] <span class="ot">&lt;-</span> upfence</span>
+<span id="cb280-25"><a href="rate-mapping.html#cb280-25" aria-hidden="true" tabindex="-1"></a>    bb[<span class="dv">6</span>] <span class="ot">&lt;-</span> qv[<span class="dv">5</span>]</span>
+<span id="cb280-26"><a href="rate-mapping.html#cb280-26" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb280-27"><a href="rate-mapping.html#cb280-27" aria-hidden="true" tabindex="-1"></a>    bb[<span class="dv">6</span>] <span class="ot">&lt;-</span> upfence</span>
+<span id="cb280-28"><a href="rate-mapping.html#cb280-28" aria-hidden="true" tabindex="-1"></a>    bb[<span class="dv">7</span>] <span class="ot">&lt;-</span> qv[<span class="dv">5</span>]</span>
+<span id="cb280-29"><a href="rate-mapping.html#cb280-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb280-30"><a href="rate-mapping.html#cb280-30" aria-hidden="true" tabindex="-1"></a>  bb[<span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>] <span class="ot">&lt;-</span> qv[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb280-31"><a href="rate-mapping.html#cb280-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(bb)</span>
+<span id="cb280-32"><a href="rate-mapping.html#cb280-32" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="rate-mapping.html#cb281-1" aria-hidden="true" tabindex="-1"></a>boxmap <span class="ot">&lt;-</span> <span class="cf">function</span>(vnam,df,<span class="at">legtitle=</span><span class="cn">NA</span>,<span class="at">mtitle=</span><span class="st">&quot;Box Map&quot;</span>,<span class="at">mult=</span><span class="fl">1.5</span>){</span>
+<span id="cb281-2"><a href="rate-mapping.html#cb281-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># box map</span></span>
+<span id="cb281-3"><a href="rate-mapping.html#cb281-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arguments:</span></span>
+<span id="cb281-4"><a href="rate-mapping.html#cb281-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   vnam: variable name (as character, in quotes)</span></span>
+<span id="cb281-5"><a href="rate-mapping.html#cb281-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   df: simple features polygon layer</span></span>
+<span id="cb281-6"><a href="rate-mapping.html#cb281-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   legtitle: legend title</span></span>
+<span id="cb281-7"><a href="rate-mapping.html#cb281-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   mtitle: map title</span></span>
+<span id="cb281-8"><a href="rate-mapping.html#cb281-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   mult: multiplier for IQR</span></span>
+<span id="cb281-9"><a href="rate-mapping.html#cb281-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># returns:</span></span>
+<span id="cb281-10"><a href="rate-mapping.html#cb281-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   a tmap-element (plots a map)</span></span>
+<span id="cb281-11"><a href="rate-mapping.html#cb281-11" aria-hidden="true" tabindex="-1"></a>  var <span class="ot">&lt;-</span> <span class="fu">get.var</span>(vnam,df)</span>
+<span id="cb281-12"><a href="rate-mapping.html#cb281-12" aria-hidden="true" tabindex="-1"></a>  bb <span class="ot">&lt;-</span> <span class="fu">boxbreaks</span>(var)</span>
+<span id="cb281-13"><a href="rate-mapping.html#cb281-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(df) <span class="sc">+</span></span>
+<span id="cb281-14"><a href="rate-mapping.html#cb281-14" aria-hidden="true" tabindex="-1"></a>     <span class="fu">tm_fill</span>(vnam,<span class="at">title=</span>legtitle,<span class="at">breaks=</span>bb,<span class="at">palette=</span><span class="st">&quot;-RdBu&quot;</span>,</span>
+<span id="cb281-15"><a href="rate-mapping.html#cb281-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;lower outlier&quot;</span>, <span class="st">&quot;&lt; 25%&quot;</span>, <span class="st">&quot;25% - 50%&quot;</span>, <span class="st">&quot;50% - 75%&quot;</span>,<span class="st">&quot;&gt; 75%&quot;</span>, <span class="st">&quot;upper outlier&quot;</span>))  <span class="sc">+</span></span>
+<span id="cb281-16"><a href="rate-mapping.html#cb281-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb281-17"><a href="rate-mapping.html#cb281-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> mtitle, <span class="at">title.position =</span> <span class="fu">c</span>(<span class="st">&quot;right&quot;</span>,<span class="st">&quot;bottom&quot;</span>),<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span>
+<span id="cb281-18"><a href="rate-mapping.html#cb281-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="rate-mapping.html#cb282-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span>
+<span id="cb282-2"><a href="rate-mapping.html#cb282-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxmap</span>(<span class="st">&quot;LFW68&quot;</span>, ohio_lung) <span class="sc">+</span></span>
+<span id="cb282-3"><a href="rate-mapping.html#cb282-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_basemap</span>(<span class="at">server=</span><span class="st">&quot;OpenStreetMap&quot;</span>,<span class="at">alpha=</span><span class="fl">0.5</span>)</span></code></pre></div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-6748ba8e20ae5353a218" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-6748ba8e20ae5353a218">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":0.5,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addPolygons","args":[[[[{"lng":[-83.76395626198924,-83.48269764896857,-83.1537504672073,-83.4072829823568,-83.57119160999287,-83.6058344800569,-83.69152666569255,-83.71444621897038,-83.81574432356123,-83.87085747339823,-83.87245959373074,-83.86863975417553,-83.76395626198924],"lat":[41.71701940797211,41.72515578022863,41.62606018674133,41.6165248619476,41.61207296553567,41.57175524945168,41.53222418433386,41.48557336308797,41.43018010012945,41.41512759702189,41.48695637521928,41.71598281472792,41.71701940797211]}]],[[{"lng":[-84.35920652955434,-83.86863975417553,-83.87245959373074,-84.33186705761091,-84.33197501608372,-84.37457779777704,-84.38439503895923,-84.35920652955434],"lat":[41.70808014252223,41.71598281472792,41.48695637521928,41.48464057345232,41.51102379221657,41.51284212097095,41.70716014044908,41.70808014252223]}]],[[{"lng":[-81.00093761124167,-81.00427706926327,-81.0065261878795,-81.37706246520689,-81.37566266317906,-81.36155354833053,-81.36135776125336,-81.37545894398794,-81.37988606094571,-81.28530784641431,-81.28666438014544,-81.09370000619103,-81.09203047781561,-81.00093761124167],"lat":[41.71190344470261,41.49563830851119,41.34386047399939,41.3463056117898,41.42089321963106,41.42084834658684,41.43949457225744,41.4395394913222,41.56427781830801,41.56437124041743,41.63516511774661,41.63665530516019,41.71213681173459,41.71190344470261]}]],[[{"lng":[-84.79189405036219,-84.79136794312087,-84.79037724865493,-84.38439503895923,-84.37457779777704,-84.33197501608372,-84.33186705761091,-84.33413353177885,-84.79189405036219],"lat":[41.4278731785746,41.53045803566655,41.69753218425986,41.70716014044908,41.51284212097095,41.51102379221657,41.48464057345232,41.4258581693413,41.4278731785746]}]],[[{"lng":[-81.37706246520689,-81.58536112187736,-81.58617017928832,-81.54833816275539,-81.55649345892026,-81.67527279443291,-81.87050444177301,-81.86878266589959,-81.9675699042849,-81.96191223700333,-81.73850221452437,-81.4782604613992,-81.47643467748007,-81.37988606094571,-81.37545894398794,-81.36135776125336,-81.36155354833053,-81.37566266317906,-81.37706246520689],"lat":[41.3463056117898,41.34804689262446,41.33029771240981,41.27923031505499,41.2721651365487,41.27378164151011,41.27499308112733,41.34589603251133,41.34889103333646,41.50188429899358,41.49119579637328,41.63173541539454,41.56635028180063,41.56427781830801,41.4395394913222,41.43949457225744,41.42084834658684,41.42089321963106,41.3463056117898]}]],[[{"lng":[-83.40896407456266,-83.4072829823568,-83.1537504672073,-83.00343284348304,-82.79582840785764,-82.78471332652171,-83.0704039736309,-83.33414195399912,-83.33576115384184,-83.40896407456266],"lat":[41.49778532183622,41.6165248619476,41.62606018674133,41.53817236552936,41.5376399905977,41.5074598931223,41.4561051909069,41.45483655594835,41.49659411564771,41.49778532183622]}]],[[{"lng":[-83.41652166335918,-83.87078726799834,-83.87085747339823,-83.81574432356123,-83.71444621897038,-83.69152666569255,-83.6058344800569,-83.57119160999287,-83.4072829823568,-83.40896407456266,-83.41503038417346,-83.41652166335918],"lat":[41.16455957348107,41.16367326082127,41.41512759702189,41.43018010012945,41.48557336308797,41.53222418433386,41.57175524945168,41.61207296553567,41.6165248619476,41.49778532183622,41.24880486411019,41.16455957348107]}]],[[{"lng":[-82.16579631820667,-82.33005281308304,-82.33668780241447,-82.34138670055593,-82.01560729127792,-81.96191223700333,-81.9675699042849,-81.86878266589959,-81.87050444177301,-81.96701559024152,-81.96714528179247,-82.07043401855832,-82.06958189890749,-82.16477149191648,-82.16579631820667],"lat":[41.05880817914957,41.0608125078947,41.28277400549548,41.43152094064477,41.51529384377839,41.50188429899358,41.34889103333646,41.34589603251133,41.27499308112733,41.27260145498735,41.19720591841111,41.19719289990444,41.13675871734128,41.13556525516891,41.05880817914957]}]],[[{"lng":[-83.41503038417346,-83.40896407456266,-83.33576115384184,-83.33414195399912,-83.0704039736309,-82.90892865651195,-82.84281493668756,-82.83389594640119,-82.83524889527422,-83.41503038417346],"lat":[41.24880486411019,41.49778532183622,41.49659411564771,41.45483655594835,41.4561051909069,41.42944655331886,41.42674197233146,41.28484277708621,41.25428677659821,41.24880486411019]}]],[[{"lng":[-80.99965449084888,-81.0065261878795,-81.00427706926327,-80.52392006312003,-80.51999721727628,-80.52293778164872,-80.99965449084888],"lat":[41.13154525170987,41.34386047399939,41.49563830851119,41.49510347211948,41.48932241428165,41.12965667994832,41.13154525170987]}]],[[{"lng":[-83.87078726799834,-84.22097317722911,-84.22326043646436,-84.33413353177885,-84.33186705761091,-83.87245959373074,-83.87085747339823,-83.87078726799834],"lat":[41.16367326082127,41.16070893292124,41.42217685005912,41.4258581693413,41.48464057345232,41.48695637521928,41.41512759702189,41.16367326082127]}]],[[{"lng":[-82.33668780241447,-82.83389594640119,-82.84281493668756,-82.90892865651195,-82.71694768081073,-82.54883631489311,-82.34138670055593,-82.33668780241447],"lat":[41.28277400549548,41.28484277708621,41.42674197233146,41.42944655331886,41.45048683064573,41.39135475842994,41.43152094064477,41.28277400549548]}]],[[{"lng":[-84.33413353177885,-84.22326043646436,-84.22097317722911,-84.33226389760355,-84.33360481873467,-84.4432651271305,-84.44581355632467,-84.79158735481116,-84.7909803880835,-84.79189405036219,-84.33413353177885],"lat":[41.4258581693413,41.42217685005912,41.16070893292124,41.16024150905576,41.2056824896092,41.20659488380316,41.25100682755515,41.25309295029937,41.28382081542735,41.4278731785746,41.4258581693413]}]],[[{"lng":[-81.63816910359249,-81.63801559340725,-81.6795153154595,-81.67527279443291,-81.55649345892026,-81.54833816275539,-81.58617017928832,-81.58536112187736,-81.37706246520689,-81.38160224755215,-81.40590509468622,-81.41267075381259,-81.63816910359249],"lat":[40.91259171042915,40.98303700453206,40.98433124393479,41.27378164151011,41.2721651365487,41.27923031505499,41.33029771240981,41.34804689262446,41.3463056117898,40.98426102730947,40.98309703140055,40.907043028448,40.91259171042915]}]],[[{"lng":[-81.08068052122063,-81.38160224755215,-81.37706246520689,-81.0065261878795,-80.99965449084888,-81.00279363808151,-81.08068052122063],"lat":[40.98396354723122,40.98426102730947,41.3463056117898,41.34386047399939,41.13154525170987,40.98570331511188,40.98396354723122]}]],[[{"lng":[-82.71968584939204,-82.82847808760359,-82.83524889527422,-82.83389594640119,-82.33668780241447,-82.33005281308304,-82.42705496778032,-82.42757186664141,-82.71968584939204],"lat":[40.99098093355094,40.9946206499473,41.25428677659821,41.28484277708621,41.28277400549548,41.0608125078947,41.06073285080327,40.98938461267866,40.99098093355094]}]],[[{"lng":[-81.6795153154595,-82.12773714101577,-82.16803751390576,-82.16579631820667,-82.16477149191648,-82.06958189890749,-82.07043401855832,-81.96714528179247,-81.96701559024152,-81.87050444177301,-81.67527279443291,-81.6795153154595],"lat":[40.98433124393479,40.98973561300074,40.99104579406069,41.05880817914957,41.13556525516891,41.13675871734128,41.19719289990444,41.19720591841111,41.27260145498735,41.27499308112733,41.27378164151011,40.98433124393479]}]],[[{"lng":[-83.10476043909135,-83.4168723893893,-83.41652166335918,-83.41503038417346,-82.83524889527422,-82.82847808760359,-82.85065198121821,-83.10476043909135],"lat":[40.9877437412575,40.98639351002497,41.16455957348107,41.24880486411019,41.25428677659821,40.9946206499473,40.98958273987964,40.9877437412575]}]],[[{"lng":[-84.38750424263608,-84.79052712808209,-84.79158735481116,-84.44581355632467,-84.4432651271305,-84.33360481873467,-84.33226389760355,-84.33251031521928,-84.38750424263608],"lat":[40.98670474891438,40.98837015905104,41.25309295029937,41.25100682755515,41.20659488380316,41.2056824896092,41.16024150905576,40.98596786288896,40.98670474891438]}]],[[{"lng":[-83.50822593434719,-83.8733083081155,-83.87284964308552,-83.87078726799834,-83.41652166335918,-83.4168723893893,-83.45035737150762,-83.45068444981867,-83.47319789237388,-83.47517705542343,-83.5068449821253,-83.50822593434719],"lat":[40.81258446017653,40.81253080206708,40.91576021223199,41.16367326082127,41.16455957348107,40.98639351002497,40.98577628705041,40.94613799599768,40.94556693090468,40.90409154402846,40.90394753777244,40.81258446017653]}]],[[{"lng":[-83.87284964308552,-83.98605354927535,-83.98675953145326,-84.10621915074351,-84.10619389974423,-84.32960737428755,-84.33206259825589,-84.38499681840362,-84.38750424263608,-84.33251031521928,-84.33226389760355,-84.22097317722911,-83.87078726799834,-83.87284964308552],"lat":[40.91576021223199,40.91405292559593,40.90178562111368,40.90195947672729,40.85602695224982,40.8547416818413,40.90555586394051,40.90446287004615,40.98670474891438,40.98596786288896,41.16024150905576,41.16070893292124,41.16367326082127,40.91576021223199]}]],[[{"lng":[-80.52091932013225,-80.81237024995592,-80.81377037383641,-80.89408741711576,-80.89386221816048,-81.07833622474654,-81.08068052122063,-81.00279363808151,-80.99965449084888,-80.52293778164872,-80.52091932013225],"lat":[40.89723742255557,40.89907076225037,40.92898081017616,40.92872221540166,40.89872412905069,40.90144888180618,40.98396354723122,40.98570331511188,41.13154525170987,41.12965667994832,40.89723742255557]}]],[[{"lng":[-82.21737794751905,-82.33173556207061,-82.33213951716918,-82.38075508659604,-82.38300626521782,-82.40586090375952,-82.41110175420805,-82.42757186664141,-82.42705496778032,-82.33005281308304,-82.16579631820667,-82.16803751390576,-82.12773714101577,-82.12339898045869,-82.21839316419268,-82.21737794751905],"lat":[40.57002869451794,40.55885742803728,40.72550864294692,40.72592816386161,40.79400337335875,40.80814017511188,40.98913704057409,40.98938461267866,41.06073285080327,41.0608125078947,41.05880817914957,40.99104579406069,40.98973561300074,40.67151651182245,40.66758027958151,40.57002869451794]}]],[[{"lng":[-82.85710432495566,-83.10532274955588,-83.10476043909135,-82.85065198121821,-82.82847808760359,-82.71968584939204,-82.72595030330596,-82.85715522480025,-82.85710432495566],"lat":[40.70447258976393,40.70237297057452,40.9877437412575,40.98958273987964,40.9946206499473,40.99098093355094,40.71263407215489,40.713119431251,40.70447258976393]}]],[[{"lng":[-82.62212766320685,-82.62077111380218,-82.63971552970675,-82.6394565506356,-82.61820779471647,-82.62272339724564,-82.72595030330596,-82.71968584939204,-82.42757186664141,-82.41110175420805,-82.40586090375952,-82.38300626521782,-82.38075508659604,-82.33213951716918,-82.33173556207061,-82.38933868705156,-82.62212766320685],"lat":[40.5528922704233,40.63515723329813,40.63714179578773,40.66714284275761,40.66708234060386,40.71278048599032,40.71263407215489,40.99098093355094,40.98938461267866,40.98913704057409,40.80814017511188,40.79400337335875,40.72592816386161,40.72550864294692,40.55885742803728,40.55079196837884,40.5528922704233]}]],[[{"lng":[-81.64205525601947,-82.12339898045869,-82.12773714101577,-81.6795153154595,-81.63801559340725,-81.63816910359249,-81.64205525601947],"lat":[40.6668186785165,40.67151651182245,40.98973561300074,40.98433124393479,40.98303700453206,40.91259171042915,40.6668186785165]}]],[[{"lng":[-84.32960737428755,-84.33238687310171,-84.38854599101462,-84.38937714610543,-84.44525242261037,-84.44686262018625,-84.79305904638589,-84.79102374557671,-84.79052712808209,-84.38750424263608,-84.38499681840362,-84.33206259825589,-84.32960737428755],"lat":[40.8547416818413,40.8141331198824,40.81564777004785,40.68638324390609,40.68607838769313,40.72736891969722,40.72883561305744,40.93774287106991,40.98837015905104,40.98670474891438,40.90446287004615,40.90555586394051,40.8547416818413]}]],[[{"lng":[-83.10532274955588,-83.29776921377271,-83.29824675469104,-83.41726885540346,-83.43371600940391,-83.43480941793258,-83.48590733058359,-83.4881021318301,-83.50822593434719,-83.5068449821253,-83.47517705542343,-83.47319789237388,-83.45068444981867,-83.45035737150762,-83.4168723893893,-83.10476043909135,-83.10532274955588],"lat":[40.70237297057452,40.70149360429248,40.68509022369423,40.68500023530335,40.68564533286661,40.69877319816919,40.69957512021162,40.81211971896263,40.81258446017653,40.90394753777244,40.90409154402846,40.94556693090468,40.94613799599768,40.98577628705041,40.98639351002497,40.9877437412575,40.70237297057452]}]],[[{"lng":[-81.31470710772373,-81.43613618290367,-81.43736942020931,-81.45676954217605,-81.47261367984105,-81.64186654366959,-81.64205525601947,-81.63816910359249,-81.41267075381259,-81.40590509468622,-81.38160224755215,-81.08068052122063,-81.07833622474654,-81.08338612988543,-81.19806690252963,-81.19701149509501,-81.2315948146034,-81.23645304531891,-81.31470710772373],"lat":[40.64718452445796,40.65021307901885,40.661559424513,40.66139422385912,40.65187129377772,40.63231640156423,40.6668186785165,40.91259171042915,40.907043028448,40.98309703140055,40.98426102730947,40.98396354723122,40.90144888180618,40.72469796928672,40.72410772610016,40.71555129563831,40.71548709375733,40.64629021832698,40.64718452445796]}]],[[{"lng":[-80.85523360861157,-80.85297821150824,-80.91309874392471,-80.91159473239776,-81.08338612988543,-81.07833622474654,-80.89386221816048,-80.89408741711576,-80.81377037383641,-80.81237024995592,-80.52091932013225,-80.52030425677627,-80.52200291419571,-80.57441867862511,-80.61155203718607,-80.6373345857216,-80.6677318588403,-80.73957764476943,-80.73888359973026,-80.85523360861157],"lat":[40.59662273982905,40.63887131947751,40.64136458556777,40.72352310737365,40.72469796928672,40.90144888180618,40.89872412905069,40.92872221540166,40.92898081017616,40.89907076225037,40.89723742255557,40.85417477138278,40.63716487592449,40.61601911407791,40.62002376049965,40.6139816072266,40.58218174360258,40.58416783005566,40.5955174357579,40.59662273982905]}]],[[{"lng":[-83.87859752897708,-84.10286869039304,-84.1027981315336,-84.21390256666632,-84.21486749904371,-84.38937714610543,-84.38854599101462,-84.33238687310171,-84.32960737428755,-84.10619389974423,-84.10621915074351,-83.98675953145326,-83.98605354927535,-83.87284964308552,-83.8733083081155,-83.87859752897708],"lat":[40.64126663587405,40.6439196725745,40.65617077557255,40.65583083605518,40.68525552559644,40.68638324390609,40.81564777004785,40.8141331198824,40.8547416818413,40.85602695224982,40.90195947672729,40.90178562111368,40.91405292559593,40.91576021223199,40.81253080206708,40.64126663587405]}]],[[{"lng":[-83.42127558102433,-83.51496789752794,-83.51653556143636,-83.87758058005916,-83.87859752897708,-83.8733083081155,-83.50822593434719,-83.4881021318301,-83.48590733058359,-83.43480941793258,-83.43371600940391,-83.41726885540346,-83.41478246661487,-83.42127558102433],"lat":[40.49989950701483,40.49771721124606,40.50903269406139,40.52861285347103,40.64126663587405,40.81253080206708,40.81258446017653,40.81211971896263,40.69957512021162,40.69877319816919,40.68564533286661,40.68500023530335,40.52381587619467,40.49989950701483]}]],[[{"lng":[-84.44525242261037,-84.44024277226369,-84.42670831671447,-84.79455287160526,-84.79324595369508,-84.79305904638589,-84.44686262018625,-84.44525242261037],"lat":[40.68607838769313,40.36758040663454,40.35285157740388,40.3530615211687,40.58869969539948,40.72883561305744,40.72736891969722,40.68607838769313]}]],[[{"lng":[-80.94004669935821,-81.26812113636612,-81.26178317934708,-81.31808131938891,-81.31470710772373,-81.23645304531891,-81.2315948146034,-81.19701149509501,-81.19806690252963,-81.08338612988543,-80.91159473239776,-80.91309874392471,-80.85297821150824,-80.85523360861157,-80.85379193961583,-80.91616493778118,-80.92293674337466,-80.93751525214753,-80.94004669935821],"lat":[40.42138261781909,40.43162794641143,40.56344430260213,40.56312283873186,40.64718452445796,40.64629021832698,40.71548709375733,40.71555129563831,40.72410772610016,40.72469796928672,40.72352310737365,40.64136458556777,40.63887131947751,40.59662273982905,40.55310793491442,40.55371056619845,40.46767929239105,40.46912954378679,40.42138261781909]}]],[[{"lng":[-82.73786768977909,-82.92474333589183,-82.92037964683968,-83.01959521224968,-83.01996857099418,-83.01389962368717,-82.9564873805141,-82.95590599775132,-82.85562042148018,-82.85710432495566,-82.85715522480025,-82.72595030330596,-82.62272339724564,-82.61820779471647,-82.6394565506356,-82.63971552970675,-82.62077111380218,-82.62212766320685,-82.64131664703235,-82.64263863183638,-82.63002975302004,-82.64090040701144,-82.73786768977909],"lat":[40.3474379857405,40.35772064766117,40.41968074578585,40.41997142009328,40.44032349700899,40.48700176648082,40.49627583923072,40.64663073468174,40.64459306685094,40.70447258976393,40.713119431251,40.71263407215489,40.71278048599032,40.66708234060386,40.66714284275761,40.63714179578773,40.63515723329813,40.5528922704233,40.55036910071872,40.52665826870253,40.52809804743014,40.34326930420967,40.3474379857405]}]],[[{"lng":[-83.24613960337796,-83.24523600178645,-83.42127558102433,-83.41478246661487,-83.41726885540346,-83.29824675469104,-83.29776921377271,-83.10532274955588,-82.85710432495566,-82.85562042148018,-82.95590599775132,-82.9564873805141,-83.01389962368717,-83.01996857099418,-83.24613960337796],"lat":[40.44614742760118,40.50255482453966,40.49989950701483,40.52381587619467,40.68500023530335,40.68509022369423,40.70149360429248,40.70237297057452,40.70447258976393,40.64459306685094,40.64663073468174,40.49627583923072,40.48700176648082,40.44032349700899,40.44614742760118]}]],[[{"lng":[-83.87758058005916,-83.98737264179599,-83.98967030423894,-84.00285735532498,-84.32936655757564,-84.33177848180365,-84.42542579124965,-84.42670831671447,-84.44024277226369,-84.44525242261037,-84.38937714610543,-84.21486749904371,-84.21390256666632,-84.1027981315336,-84.10286869039304,-83.87859752897708,-83.87758058005916],"lat":[40.52861285347103,40.52942693665197,40.48153987714813,40.47993671699649,40.47954006726347,40.37850548946967,40.37702734393785,40.35285157740388,40.36758040663454,40.68607838769313,40.68638324390609,40.68525552559644,40.65583083605518,40.65617077557255,40.6439196725745,40.64126663587405,40.52861285347103]}]],[[{"lng":[-82.17763497925255,-82.17524355121449,-82.21737794751905,-82.21839316419268,-82.12339898045869,-81.64205525601947,-81.64186654366959,-81.65499250085323,-81.66292885004211,-81.70401815512238,-82.17763497925255],"lat":[40.45386811270014,40.57433877784334,40.57002869451794,40.66758027958151,40.67151651182245,40.6668186785165,40.63231640156423,40.62872929665473,40.44328144851758,40.44285833176348,40.45386811270014]}]],[[{"lng":[-81.61393860192869,-81.60735116893289,-81.70951076537236,-81.70401815512238,-81.66292885004211,-81.65499250085323,-81.64186654366959,-81.47261367984105,-81.45676954217605,-81.43736942020931,-81.43613618290367,-81.31470710772373,-81.31808131938891,-81.26178317934708,-81.26812113636612,-81.2683984531089,-81.32207655182941,-81.32927210170868,-81.61393860192869],"lat":[40.2124658812365,40.36025269304739,40.36183327510695,40.44285833176348,40.44328144851758,40.62872929665473,40.63231640156423,40.65187129377772,40.66139422385912,40.661559424513,40.65021307901885,40.64718452445796,40.56312283873186,40.56344430260213,40.43162794641143,40.29955219508551,40.29923503215236,40.20831011246006,40.2124658812365]}]],[[{"lng":[-80.70206985105533,-80.87779553456797,-80.8589517022854,-80.94004669935821,-80.93751525214753,-80.92293674337466,-80.91616493778118,-80.85379193961583,-80.85523360861157,-80.73888359973026,-80.73957764476943,-80.6677318588403,-80.66861561151977,-80.63343989827958,-80.62524921904,-80.60183322643311,-80.62785427968635,-80.62924998931751,-80.60925029375196,-80.60451790344955,-80.61468923970739,-80.65011285210986,-80.67856193639713,-80.70089235283388,-80.70206985105533],"lat":[40.15406773976574,40.15312519318582,40.41860938392082,40.42138261781909,40.46912954378679,40.46767929239105,40.55371056619845,40.55310793491442,40.59662273982905,40.5955174357579,40.58416783005566,40.58218174360258,40.56831060562163,40.53919566163046,40.50448489996755,40.48053274682132,40.39818631903692,40.38864109488143,40.37325964802343,40.30621483522211,40.27651842045097,40.24563873247244,40.1941872713738,40.16820966724828,40.15406773976574]}]],[[{"lng":[-82.74275172768779,-82.73786768977909,-82.64090040701144,-82.63002975302004,-82.64263863183638,-82.64131664703235,-82.62212766320685,-82.38933868705156,-82.33173556207061,-82.21737794751905,-82.17524355121449,-82.17763497925255,-82.19140376924466,-82.47613454823538,-82.473945495606,-82.74275172768779],"lat":[40.27412431498804,40.3474379857405,40.34326930420967,40.52809804743014,40.52665826870253,40.55036910071872,40.5528922704233,40.55079196837884,40.55885742803728,40.57002869451794,40.57433877784334,40.45386811270014,40.23138615184233,40.24134760653656,40.2618257422607,40.27412431498804]}]],[[{"lng":[-83.54467264367939,-83.78001797072362,-83.77984114762987,-84.00917993193525,-84.00285735532498,-83.98967030423894,-83.98737264179599,-83.87758058005916,-83.51653556143636,-83.51496789752794,-83.54467264367939],"lat":[40.2268328741737,40.24033180176775,40.25898187638987,40.27098524809676,40.47993671699649,40.48153987714813,40.52942693665197,40.52861285347103,40.50903269406139,40.49771721124606,40.2268328741737]}]],[[{"lng":[-83.49956786244339,-83.4899032707695,-83.54467264367939,-83.51496789752794,-83.42127558102433,-83.24523600178645,-83.24613960337796,-83.24984585362955,-83.16937390210852,-83.17016751252454,-83.17192906083004,-83.20569051379829,-83.49956786244339],"lat":[40.11359387373952,40.22126877690147,40.2268328741737,40.49771721124606,40.49989950701483,40.50255482453966,40.44614742760118,40.24474368493739,40.24204691905276,40.13798485479279,40.10705265189092,40.10731519042275,40.11359387373952]}]],[[{"lng":[-84.02016406505818,-84.24857081950981,-84.42431395832648,-84.42670831671447,-84.42542579124965,-84.33177848180365,-84.32936655757564,-84.00285735532498,-84.00917993193525,-84.02016406505818],"lat":[40.17954439604304,40.1961426709316,40.19116204188379,40.35285157740388,40.37702734393785,40.37850548946967,40.47954006726347,40.47993671699649,40.27098524809676,40.17954439604304]}]],[[{"lng":[-82.18247853416669,-82.17573625806403,-82.19140376924466,-82.17763497925255,-81.70401815512238,-81.70951076537236,-81.60735116893289,-81.61393860192869,-81.66276877008298,-81.6666251000007,-81.7111921438984,-82.18247853416669],"lat":[40.15949439735663,40.23145629721125,40.23138615184233,40.45386811270014,40.44285833176348,40.36183327510695,40.36025269304739,40.2124658812365,40.2127371502253,40.14451369016064,40.1447891132064,40.15949439735663]}]],[[{"lng":[-83.17016751252454,-83.16937390210852,-83.24984585362955,-83.24613960337796,-83.01996857099418,-83.01959521224968,-82.92037964683968,-82.92474333589183,-82.73786768977909,-82.74275172768779,-82.75639991815771,-83.17016751252454],"lat":[40.13798485479279,40.24204691905276,40.24474368493739,40.44614742760118,40.44032349700899,40.41997142009328,40.41968074578585,40.35772064766117,40.3474379857405,40.27412431498804,40.12320103520052,40.13798485479279]}]],[[{"lng":[-80.87779553456797,-81.10470307346527,-81.21959146676653,-81.33115161761565,-81.32927210170868,-81.32207655182941,-81.2683984531089,-81.26812113636612,-80.94004669935821,-80.8589517022854,-80.87779553456797],"lat":[40.15312519318582,40.1640438997524,40.1616306275994,40.16469883647978,40.20831011246006,40.29923503215236,40.29955219508551,40.43162794641143,40.42138261781909,40.41860938392082,40.15312519318582]}]],[[{"lng":[-84.48279465294095,-84.80615197882054,-84.80356757077017,-84.79539022620857,-84.79455287160526,-84.42670831671447,-84.42431395832648,-84.41973810335496,-84.48279465294095],"lat":[39.91875999584556,39.91713968982213,40.01395291270927,40.31953150406384,40.3530615211687,40.35285157740388,40.19116204188379,39.91955819906876,39.91875999584556]}]],[[{"lng":[-82.45974112158946,-82.78205452554191,-82.78039862017529,-82.76614273675001,-82.75639991815771,-82.74275172768779,-82.473945495606,-82.47613454823538,-82.19140376924466,-82.17573625806403,-82.18247853416669,-82.19909099371147,-82.22969599977297,-82.23040420511754,-82.4170042806609,-82.41828487800421,-82.45800380006506,-82.45974112158946],"lat":[39.91821638568926,39.93235878397331,39.9668891196212,39.96935953333835,40.12320103520052,40.27412431498804,40.2618257422607,40.24134760653656,40.23138615184233,40.23145629721125,40.15949439735663,39.94463004448173,39.94439952460802,39.90943497022768,39.91676453774993,39.92665925422933,39.92787830803754,39.91821638568926]}]],[[{"lng":[-84.03187654422129,-84.02016406505818,-84.00917993193525,-83.77984114762987,-83.78001797072362,-83.54467264367939,-83.4899032707695,-83.49956786244339,-83.5105525381574,-84.03187654422129],"lat":[40.03710011629661,40.17954439604304,40.27098524809676,40.25898187638987,40.24033180176775,40.2268328741737,40.22126877690147,40.11359387373952,40.00768985551416,40.03710011629661]}]],[[{"lng":[-81.2298578066934,-81.25303665981419,-81.3749127651725,-81.37674688569533,-81.45018494291983,-81.45310760041652,-81.57098658545628,-81.57371089447393,-81.69151873803484,-81.68458672732626,-81.72854059041954,-81.7111921438984,-81.6666251000007,-81.66276877008298,-81.61393860192869,-81.32927210170868,-81.33115161761565,-81.21959146676653,-81.2298578066934],"lat":[39.94267477439733,39.94965420387836,39.94959443570325,39.91688265346247,39.92094554051435,39.88678662689143,39.89212261963718,39.83444559418889,39.83956956005756,39.92646581598975,39.9286306099678,40.1447891132064,40.14451369016064,40.2127371502253,40.2124658812365,40.20831011246006,40.16469883647978,40.1616306275994,39.94267477439733]}]],[[{"lng":[-84.05001008613256,-84.15636015032885,-84.15835211031418,-84.41973810335496,-84.42431395832648,-84.24857081950981,-84.02016406505818,-84.03187654422129,-84.05001008613256],"lat":[39.87980126761535,39.88650110067426,39.92094557430269,39.91955819906876,40.19116204188379,40.1961426709316,40.17954439604304,40.03710011629661,39.87980126761535]}]],[[{"lng":[-81.23422817058803,-81.2298578066934,-81.21959146676653,-81.10470307346527,-80.87779553456797,-80.70206985105533,-80.73824158530938,-80.73888583144112,-80.76305730461127,-80.75888644902811,-80.7681226606488,-80.79602024932161,-80.80783803268963,-80.81213882608756,-80.79085220217783,-80.79852210079333,-80.82592127628526,-81.23422817058803],"lat":[39.86491025026025,39.94267477439733,40.1616306275994,40.1640438997524,40.15312519318582,40.15406773976574,40.03567840929795,39.98351328556048,39.94698525193402,39.92129846236996,39.91329847228883,39.91983804507144,39.91589386585182,39.90490879369906,39.87234638040208,39.85668254963745,39.83969794145715,39.86491025026025]}]],[[{"lng":[-82.07447202991862,-82.07410962123305,-82.16741781265887,-82.16040704755203,-82.23040420511754,-82.22969599977297,-82.19909099371147,-82.18247853416669,-81.7111921438984,-81.72854059041954,-81.68458672732626,-81.69151873803484,-81.69667780638478,-82.07447202991862],"lat":[39.77043249807362,39.81170091390047,39.81782716072232,39.90384989964914,39.90943497022768,39.94439952460802,39.94463004448173,40.15949439735663,40.1447891132064,39.9286306099678,39.92646581598975,39.83956956005756,39.75322290807144,39.77043249807362]}]],[[{"lng":[-83.2428156011749,-83.25084394500131,-83.23213821639628,-83.26342713020524,-83.25198070790574,-83.2611034913342,-83.21292248616732,-83.20569051379829,-83.17192906083004,-83.17016751252454,-82.75639991815771,-82.76614273675001,-82.78039862017529,-82.78205452554191,-82.80789985862137,-82.81044877070161,-82.79426184867022,-82.80362778094619,-82.82339906918172,-82.82666747237216,-83.2428156011749],"lat":[39.80445180838083,39.9122213308125,39.92627632428303,40.00152201546921,40.02390617265922,40.04751094104306,40.0470002612859,40.10731519042275,40.10705265189092,40.13798485479279,40.12320103520052,39.96935953333835,39.9668891196212,39.93235878397331,39.9325891839365,39.91029686607904,39.91045844073883,39.8178786124405,39.81756949202385,39.78877848261311,39.80445180838083]}]],[[{"lng":[-83.65538407834224,-83.6472384240779,-83.59225087077003,-83.5105525381574,-83.49956786244339,-83.20569051379829,-83.21292248616732,-83.2611034913342,-83.25198070790574,-83.26342713020524,-83.23213821639628,-83.25084394500131,-83.2428156011749,-83.25117687346361,-83.65538407834224],"lat":[39.71178084291236,39.77079204390654,39.76572813107438,40.00768985551416,40.11359387373952,40.10731519042275,40.0470002612859,40.04751094104306,40.02390617265922,40.00152201546921,39.92627632428303,39.9122213308125,39.80445180838083,39.69149821645062,39.71178084291236]}]],[[{"lng":[-83.6472384240779,-83.74246673481207,-83.74310638547651,-83.82320868705072,-83.82372807450787,-83.93598711879123,-83.93672879010921,-84.05022675457143,-84.05001008613256,-84.03187654422129,-83.5105525381574,-83.59225087077003,-83.6472384240779],"lat":[39.77079204390654,39.78326283150906,39.79054438317876,39.7942068810746,39.82058799892939,39.82761801521578,39.84255237043612,39.84934948511115,39.87980126761535,40.03710011629661,40.00768985551416,39.76572813107438,39.77079204390654]}]],[[{"lng":[-81.27778618132749,-81.27776233384814,-81.35360521614875,-81.3535512445432,-81.3947811831529,-81.39312327362897,-81.41156652660312,-81.41058374567429,-81.44946806128243,-81.44671029159829,-81.47478148584653,-81.4762439402846,-81.58821744561855,-81.58425989574404,-81.64175487480429,-81.64379227540053,-81.69667780638478,-81.69151873803484,-81.57371089447393,-81.57098658545628,-81.45310760041652,-81.45018494291983,-81.37674688569533,-81.3749127651725,-81.25303665981419,-81.2298578066934,-81.23422817058803,-81.31403245244985,-81.31732419628051,-81.27477776483461,-81.27778618132749],"lat":[39.59865277043997,39.58684918108476,39.58637282750596,39.59637454320227,39.59642198311831,39.61012338273018,39.60861785468073,39.62366862812821,39.62424552073445,39.63930340020537,39.63883164490375,39.57845628975188,39.58343976796417,39.66121864565551,39.6624469212604,39.75001435002338,39.75322290807144,39.83956956005756,39.83444559418889,39.89212261963718,39.88678662689143,39.92094554051435,39.91688265346247,39.94959443570325,39.94965420387836,39.94267477439733,39.86491025026025,39.86616324905987,39.70226031933677,39.70083705505766,39.59865277043997]}]],[[{"lng":[-82.73001997149944,-82.84846568606059,-82.83267951299815,-82.84166549281414,-82.82666747237216,-82.82339906918172,-82.80362778094619,-82.79426184867022,-82.81044877070161,-82.80789985862137,-82.78205452554191,-82.45974112158946,-82.46812156226062,-82.39283962366882,-82.39905744208686,-82.36111423290878,-82.37082470351778,-82.48706496025028,-82.49341844502754,-82.60848502292455,-82.61295144858052,-82.72690340654813,-82.73001997149944],"lat":[39.54817336951145,39.55815205273592,39.64372258033923,39.64376059967427,39.78877848261311,39.81756949202385,39.8178786124405,39.91045844073883,39.91029686607904,39.9325891839365,39.93235878397331,39.91821638568926,39.8311692207106,39.82642156544379,39.74174615429929,39.7386835293579,39.65207519706325,39.65478938958429,39.59956784086582,39.60352750658362,39.55706522004058,39.56281546435017,39.54817336951145]}]],[[{"lng":[-82.15275446376505,-82.26367528379993,-82.26142113740053,-82.37958142403504,-82.37082470351778,-82.36111423290878,-82.39905744208686,-82.39283962366882,-82.46812156226062,-82.45974112158946,-82.45800380006506,-82.41828487800421,-82.4170042806609,-82.23040420511754,-82.16040704755203,-82.16741781265887,-82.07410962123305,-82.07447202991862,-82.0793336018604,-82.02115889496086,-82.04312975653035,-82.15275446376505],"lat":[39.55416240632119,39.56048755418452,39.5896145025497,39.59592995154744,39.65207519706325,39.7386835293579,39.74174615429929,39.82642156544379,39.8311692207106,39.91821638568926,39.92787830803754,39.92665925422933,39.91676453774993,39.90943497022768,39.90384989964914,39.81782716072232,39.81170091390047,39.77043249807362,39.72434678865923,39.72289090903643,39.54916125858514,39.55416240632119]}]],[[{"lng":[-84.48279465294095,-84.41973810335496,-84.15835211031418,-84.15636015032885,-84.05001008613256,-84.05022675457143,-84.05214399480886,-84.08713667276906,-84.10652734986992,-84.28409846257098,-84.36217009942128,-84.47521565347375,-84.48279465294095],"lat":[39.91875999584556,39.91955819906876,39.92094557430269,39.88650110067426,39.87980126761535,39.84934948511115,39.83749887594196,39.83927443460011,39.58014235678204,39.59155858618108,39.58815236612865,39.58734463749617,39.91875999584556]}]],[[{"lng":[-84.47521565347375,-84.47677552876398,-84.81103232453762,-84.80869965032203,-84.80615197882054,-84.48279465294095,-84.47521565347375],"lat":[39.58734463749617,39.56640094950596,39.56401281048669,39.73332388590844,39.91713968982213,39.91875999584556,39.58734463749617]}]],[[{"lng":[-81.27778618132749,-81.27477776483461,-81.31732419628051,-81.31403245244985,-81.23422817058803,-80.82592127628526,-80.81910606809892,-80.87072978100406,-80.856454563642,-80.83229268154916,-80.83278491069075,-80.86341542232897,-80.87274207092244,-80.88110824567096,-80.91258829702474,-80.93261271426601,-80.98365125949533,-81.03256341580995,-81.03738708847393,-81.03502041891193,-81.23961241636651,-81.2416875849199,-81.26017375260432,-81.25807961551516,-81.27778618132749],"lat":[39.59865277043997,39.70083705505766,39.70226031933677,39.86616324905987,39.86491025026025,39.83969794145715,39.80896318132272,39.76001704393978,39.73630346777202,39.71879124988291,39.70338443930683,39.68035819759559,39.6624382740532,39.62406302716376,39.60733163532913,39.60698455827536,39.58177373311894,39.54410650059876,39.53266168702223,39.56996589952093,39.57666220909805,39.57071101377105,39.57013047116158,39.59878831644912,39.59865277043997]}]],[[{"lng":[-83.97525111329833,-84.10652734986992,-84.08713667276906,-84.05214399480886,-84.05022675457143,-83.93672879010921,-83.93598711879123,-83.82372807450787,-83.82320868705072,-83.74310638547651,-83.74246673481207,-83.6472384240779,-83.65538407834224,-83.67341829797519,-83.97525111329833],"lat":[39.5706090936825,39.58014235678204,39.83927443460011,39.83749887594196,39.84934948511115,39.84255237043612,39.82761801521578,39.82058799892939,39.7942068810746,39.79054438317876,39.78326283150906,39.77079204390654,39.71178084291236,39.55182562065767,39.5706090936825]}]],[[{"lng":[-83.26497816082497,-83.25117687346361,-83.2428156011749,-82.82666747237216,-82.84166549281414,-82.83267951299815,-82.84846568606059,-82.73001997149944,-82.73715298851185,-83.00125066540217,-82.99144036756067,-83.00446918762638,-83.26497816082497],"lat":[39.51230917661795,39.69149821645062,39.80445180838083,39.78877848261311,39.64376059967427,39.64372258033923,39.55815205273592,39.54817336951145,39.45706818644648,39.46930971806746,39.48929922546771,39.50367069225783,39.51230917661795]}]],[[{"lng":[-81.84677202307407,-82.05355530853258,-82.04312975653035,-82.02115889496086,-82.0793336018604,-82.07447202991862,-81.69667780638478,-81.64379227540053,-81.64175487480429,-81.58425989574404,-81.58821744561855,-81.71774239270815,-81.73105159508167,-81.73000031152654,-81.72840540818744,-81.70622496036903,-81.70821913059299,-81.75119706886842,-81.76122801047981,-81.82548724670477,-81.8283234052123,-81.84677202307407],"lat":[39.45218412250674,39.45887430041955,39.54916125858514,39.72289090903643,39.72434678865923,39.77043249807362,39.75322290807144,39.75001435002338,39.6624469212604,39.66121864565551,39.58343976796417,39.58145046923032,39.56370725518418,39.53560152731177,39.528853739302,39.5273687398838,39.47969136361883,39.48005238899508,39.48827676903201,39.49513674302521,39.45285761219188,39.45218412250674]}]],[[{"lng":[-83.3804133001188,-83.58646666399621,-83.57534580081892,-83.67341829797519,-83.65538407834224,-83.25117687346361,-83.26497816082497,-83.3804133001188],"lat":[39.37477427603471,39.37172547170346,39.54440222293611,39.55182562065767,39.71178084291236,39.69149821645062,39.51230917661795,39.37477427603471]}]],[[{"lng":[-82.2886951658075,-82.51420144649776,-82.52167024960141,-82.63946023848017,-82.64097211538196,-82.74739566997245,-82.73715298851185,-82.73001997149944,-82.72690340654813,-82.61295144858052,-82.60848502292455,-82.49341844502754,-82.48706496025028,-82.37082470351778,-82.37958142403504,-82.26142113740053,-82.26367528379993,-82.15275446376505,-82.16709801939271,-82.27540755170637,-82.2886951658075],"lat":[39.37928824453779,39.39134844393305,39.361517501481,39.36712541896637,39.35485041389392,39.35996815616679,39.45706818644648,39.54817336951145,39.56281546435017,39.55706522004058,39.60352750658362,39.59956784086582,39.65478938958429,39.65207519706325,39.59592995154744,39.5896145025497,39.56048755418452,39.55416240632119,39.46193491041289,39.46692432783245,39.37928824453779]}]],[[{"lng":[-81.37591285697842,-81.43397461023841,-81.44795680078151,-81.46500417302109,-81.54065423034584,-81.55739329640153,-81.57268701035859,-81.66751723957788,-81.68952320263701,-81.69789864285239,-81.72307160242995,-81.72106271016642,-81.81583325265343,-81.81337095479647,-81.83536783257206,-81.83349633751735,-81.85498261847701,-81.84677202307407,-81.8283234052123,-81.82548724670477,-81.76122801047981,-81.75119706886842,-81.70821913059299,-81.70622496036903,-81.72840540818744,-81.73000031152654,-81.73105159508167,-81.71774239270815,-81.58821744561855,-81.4762439402846,-81.47478148584653,-81.44671029159829,-81.44946806128243,-81.41058374567429,-81.41156652660312,-81.39312327362897,-81.3947811831529,-81.3535512445432,-81.35360521614875,-81.27776233384814,-81.27778618132749,-81.25807961551516,-81.26017375260432,-81.2416875849199,-81.23961241636651,-81.03502041891193,-81.03738708847393,-81.09823995968213,-81.11709087798972,-81.18056932058977,-81.20030767032377,-81.22494583480299,-81.23762037014966,-81.28401710187352,-81.33883820115213,-81.37591285697842],"lat":[39.34571987666883,39.40597982141451,39.41106290657089,39.40685111067062,39.35273033051622,39.33264751980842,39.26589333459521,39.27052453039229,39.26021408350753,39.21997580068982,39.21324432462809,39.2704755986255,39.27363470144098,39.30230604459023,39.30197006825502,39.32018506499578,39.32129072357806,39.45218412250674,39.45285761219188,39.49513674302521,39.48827676903201,39.48005238899508,39.47969136361883,39.5273687398838,39.528853739302,39.53560152731177,39.56370725518418,39.58145046923032,39.58343976796417,39.57845628975188,39.63883164490375,39.63930340020537,39.62424552073445,39.62366862812821,39.60861785468073,39.61012338273018,39.59642198311831,39.59637454320227,39.58637282750596,39.58684918108476,39.59865277043997,39.59878831644912,39.57013047116158,39.57071101377105,39.57666220909805,39.56996589952093,39.53266168702223,39.49649385685024,39.46782267585318,39.43782609321068,39.41589781422415,39.40837389817958,39.38843500133333,39.38706949801391,39.3536730964389,39.34571987666883]}]],[[{"lng":[-84.25819256155081,-84.27148345091419,-84.34873740870161,-84.32910155776419,-84.36059419682842,-84.36217009942128,-84.28409846257098,-84.10652734986992,-83.97525111329833,-84.00545350634822,-84.25819256155081],"lat":[39.26440283647908,39.29177442295052,39.28939557070603,39.55496682686893,39.54640306529839,39.58815236612865,39.59155858618108,39.58014235678204,39.5706090936825,39.24922599093844,39.26440283647908]}]],[[{"lng":[-84.81207637909266,-84.81202402914764,-84.81110665969378,-84.81103232453762,-84.47677552876398,-84.47521565347375,-84.36217009942128,-84.36059419682842,-84.32910155776419,-84.34873740870161,-84.64178559378162,-84.66601732954807,-84.81207637909266],"lat":[39.3030513612096,39.31233019997187,39.51312242138997,39.56401281048669,39.56640094950596,39.58734463749617,39.58815236612865,39.54640306529839,39.55496682686893,39.28939557070603,39.31157292278159,39.30333536421834,39.3030513612096]}]],[[{"lng":[-83.98086897301258,-84.00545350634822,-83.97525111329833,-83.67341829797519,-83.57534580081892,-83.58646666399621,-83.77995266904132,-83.80269624024082,-83.81482225271935,-83.83117283057189,-83.8289715274349,-83.86171779939946,-83.98086897301258],"lat":[39.24733598970405,39.24922599093844,39.5706090936825,39.55182562065767,39.54440222293611,39.37172547170346,39.25807477282098,39.23879091937611,39.21408440231579,39.22413806795704,39.239686693872,39.23987705266671,39.24733598970405]}]],[[{"lng":[-82.26434080397412,-82.25723281419002,-82.29731705114187,-82.2886951658075,-82.27540755170637,-82.16709801939271,-82.15275446376505,-82.04312975653035,-82.05355530853258,-81.84677202307407,-81.85498261847701,-81.83349633751735,-81.83536783257206,-81.81337095479647,-81.81583325265343,-81.72106271016642,-81.72307160242995,-81.75891123311308,-82.26434080397412],"lat":[39.19961639615823,39.29060966799698,39.29368395138567,39.37928824453779,39.46692432783245,39.46193491041289,39.55416240632119,39.54916125858514,39.45887430041955,39.45218412250674,39.32129072357806,39.32018506499578,39.30197006825502,39.30230604459023,39.27363470144098,39.2704755986255,39.21324432462809,39.17571124782316,39.19961639615823]}]],[[{"lng":[-83.35086790743068,-83.3425984048219,-83.35355813128676,-83.35429069644772,-83.36890306648635,-83.38583601895141,-83.38229639076461,-83.39590588865144,-83.38479594546342,-83.3804133001188,-83.26497816082497,-83.00446918762638,-82.99144036756067,-83.00125066540217,-82.73715298851185,-82.74739566997245,-82.76086394735435,-82.76620455794311,-82.78470272813989,-83.35086790743068],"lat":[39.19410617957355,39.23895993011084,39.24207236434563,39.25115708727046,39.24049978765836,39.24375773597704,39.2661735280783,39.27238090200559,39.28963677302778,39.37477427603471,39.51230917661795,39.50367069225783,39.48929922546771,39.46930971806746,39.45706818644648,39.35996815616679,39.20091757285271,39.15984027867238,39.16090991171251,39.19410617957355]}]],[[{"lng":[-82.43441748417976,-82.42468691987946,-82.53830752824514,-82.53732422996043,-82.65912492000133,-82.65553990726679,-82.76086394735435,-82.74739566997245,-82.64097211538196,-82.63946023848017,-82.52167024960141,-82.51420144649776,-82.2886951658075,-82.29731705114187,-82.25723281419002,-82.26434080397412,-82.30362380454318,-82.32291409558415,-82.43441748417976],"lat":[39.03455449750138,39.1361336636542,39.13847363594908,39.17569976812025,39.18339953994883,39.19984928030773,39.20091757285271,39.35996815616679,39.35485041389392,39.36712541896637,39.361517501481,39.39134844393305,39.37928824453779,39.29368395138567,39.29060966799698,39.19961639615823,39.20035478405496,39.02578052575991,39.03455449750138]}]],[[{"lng":[-83.38328287627361,-83.62210624303121,-83.67197398325571,-83.86985209441981,-83.86171779939946,-83.8289715274349,-83.83117283057189,-83.81482225271935,-83.80269624024082,-83.77995266904132,-83.58646666399621,-83.3804133001188,-83.38479594546342,-83.39590588865144,-83.38229639076461,-83.38583601895141,-83.36890306648635,-83.35429069644772,-83.35355813128676,-83.3425984048219,-83.35086790743068,-83.38328287627361],"lat":[39.05127635906322,39.01794930564982,39.01825848737559,39.02094225760458,39.23987705266671,39.239686693872,39.22413806795704,39.21408440231579,39.23879091937611,39.25807477282098,39.37172547170346,39.37477427603471,39.28963677302778,39.27238090200559,39.2661735280783,39.24375773597704,39.24049978765836,39.25115708727046,39.24207236434563,39.23895993011084,39.19410617957355,39.05127635906322]}]],[[{"lng":[-84.51529758891135,-84.59306284924121,-84.62265186609972,-84.66748881572087,-84.742874592709,-84.78993217994204,-84.811482042553,-84.81207637909266,-84.66601732954807,-84.64178559378162,-84.34873740870161,-84.27148345091419,-84.25819256155081,-84.31629227906997,-84.31070056377146,-84.27952482806256,-84.26920607140977,-84.29161656687316,-84.31330894592263,-84.34577896511145,-84.39131723368824,-84.41973571207163,-84.42568011639415,-84.44491438832438,-84.49205291780837,-84.51529758891135],"lat":[39.09423935611031,39.07024765690493,39.07491568601296,39.08963555616152,39.14209072337547,39.10706142247764,39.1025748816409,39.3030513612096,39.30333536421834,39.31157292278159,39.28939557070603,39.29177442295052,39.26440283647908,39.21078517718614,39.20193640498759,39.20597192870764,39.19743434765354,39.16986861298243,39.01404355547741,39.03779805371384,39.03576080278756,39.04736110686058,39.08474946734894,39.1118362120975,39.1073694222703,39.09423935611031]}]],[[{"lng":[-84.22870341470332,-84.23529593187483,-84.26152077918167,-84.29013394105563,-84.31330894592263,-84.29161656687316,-84.26920607140977,-84.27952482806256,-84.31070056377146,-84.31629227906997,-84.25819256155081,-84.00545350634822,-83.98086897301258,-84.05380687328929,-84.08886397008645,-84.17674809254305,-84.22870341470332],"lat":[38.81264723186887,38.87453330987757,38.91749383731845,38.94452579028962,39.01404355547741,39.16986861298243,39.19743434765354,39.20597192870764,39.20193640498759,39.21078517718614,39.26440283647908,39.24922599093844,39.24733598970405,38.76375123556573,38.76553180926061,38.78848829407709,38.81264723186887]}]],[[{"lng":[-83.91254435910751,-83.96216626666642,-84.05380687328929,-83.98086897301258,-83.86171779939946,-83.86985209441981,-83.67197398325571,-83.71282379821936,-83.77022438052528,-83.79046232344854,-83.83752825732289,-83.8575532160816,-83.91254435910751],"lat":[38.75799044529823,38.77764346278781,38.76375123556573,39.24733598970405,39.23987705266671,39.02094225760458,39.01825848737559,38.63558481099304,38.65081636478091,38.69385088432212,38.71190743601498,38.74493404519321,38.75799044529823]}]],[[{"lng":[-82.6475315781226,-82.76681751822156,-82.76035266775848,-82.80918498396558,-82.78470272813989,-82.76620455794311,-82.76086394735435,-82.65553990726679,-82.65912492000133,-82.53732422996043,-82.53830752824514,-82.42468691987946,-82.43441748417976,-82.45588076627966,-82.56866770169748,-82.56967227137976,-82.6475315781226],"lat":[38.84431671190884,38.84933086570134,38.93989504052882,38.94329298301064,39.16090991171251,39.15984027867238,39.20091757285271,39.19984928030773,39.18339953994883,39.17569976812025,39.13847363594908,39.1361336636542,39.03455449750138,38.84488081813755,38.85035867096145,38.83944202128499,38.84431671190884]}]],[[{"lng":[-82.10120791418709,-82.09605235527766,-82.32326629074402,-82.32291409558415,-82.30362380454318,-82.26434080397412,-81.75891123311308,-81.74470192888896,-81.75356733575094,-81.78636393213881,-81.81956386108968,-81.82427320567956,-81.81346424633006,-81.77567988393164,-81.7817319295801,-81.76229800861117,-81.78322325365434,-81.82378235813947,-81.84090944729002,-81.8668005316454,-81.89269241052882,-81.91524321037717,-81.93185356567446,-81.89860922302729,-81.92783049530425,-81.93773591971438,-81.9751829319016,-81.99967634021404,-82.04288101892323,-82.05850544039848,-82.08501918074066,-82.10120791418709],"lat":[38.95212154010109,39.00173082089267,39.01307126939611,39.02578052575991,39.20035478405496,39.19961639615823,39.17571124782316,39.12588216769341,39.09473715382528,39.07721935044096,39.0769907270225,39.06641460039159,39.04414301845428,39.01682635152665,38.96848596315643,38.93013642187324,38.92359987787256,38.94846211468339,38.93788693376918,38.88570248116657,38.87343225025121,38.88443169358219,38.89475339264659,38.93223046872181,38.98426664748082,38.99121613480998,38.99298170533083,39.01530206562656,39.01411281822965,38.98910164028185,38.97723383764199,38.95212154010109]}]],[[{"lng":[-82.80918498396558,-83.19983611250618,-83.23401670365318,-83.26928891194065,-83.31046465367291,-83.31336767012722,-83.38328287627361,-83.35086790743068,-82.78470272813989,-82.80918498396558],"lat":[38.94329298301064,38.95991773317304,39.01017430028092,39.01354764316246,39.03886740038642,39.05277495083568,39.05127635906322,39.19410617957355,39.16090991171251,38.94329298301064]}]],[[{"lng":[-83.64318737814837,-83.65576257767881,-83.67853102208842,-83.71282379821936,-83.67197398325571,-83.62210624303121,-83.38328287627361,-83.31336767012722,-83.31046465367291,-83.26928891194065,-83.27275275060151,-83.29004557958662,-83.30653405892267,-83.32032104209321,-83.33001935736294,-83.37142017862855,-83.45361243366506,-83.50007365692838,-83.52655035410847,-83.61838384831921,-83.63323867731509,-83.64318737814837],"lat":[38.63582845953757,38.62392087241259,38.6209688678487,38.63558481099304,39.01825848737559,39.01794930564982,39.05127635906322,39.05277495083568,39.03886740038642,39.01354764316246,38.60928645427654,38.59660494623233,38.59628097187647,38.60655036800588,38.63194677118415,38.65499151455229,38.66374710046377,38.69015296891673,38.69607072517363,38.67801186816067,38.66497436969617,38.63582845953757]}]],[[{"lng":[-82.10120791418709,-82.1393124386732,-82.14609928023326,-82.19772117009356,-82.21674668463022,-82.18397622466152,-82.18897171167573,-82.17366006084546,-82.18425058936845,-82.21365957150695,-82.27089714777767,-82.28996887160584,-82.36211934247525,-82.356224466399,-82.47713098208153,-82.47203023153247,-82.49112934538414,-82.49013763833128,-82.57572658799074,-82.56967227137976,-82.56866770169748,-82.45588076627966,-82.43441748417976,-82.32291409558415,-82.32326629074402,-82.09605235527766,-82.10120791418709],"lat":[38.95212154010109,38.8994013130084,38.83877980362955,38.80465005206279,38.77895165149837,38.71026149347155,38.67785986350624,38.63214614997505,38.59500205292088,38.58487815367229,38.59490411582239,38.58009682222874,38.58360477027661,38.67234511419127,38.67980147983315,38.73492396002865,38.73774563494221,38.76641349907275,38.77331046169845,38.83944202128499,38.85035867096145,38.84488081813755,39.03455449750138,39.02578052575991,39.01307126939611,39.00173082089267,38.95212154010109]}]],[[{"lng":[-83.27275275060151,-83.26928891194065,-83.23401670365318,-83.19983611250618,-82.80918498396558,-82.76035266775848,-82.76681751822156,-82.6475315781226,-82.65886721360155,-82.69555498401796,-82.69969615375319,-82.71304687016131,-82.77694795902462,-82.77789333496683,-82.75011777947002,-82.82699351786786,-82.85385784077056,-82.86003271760495,-82.88000921272294,-82.87319234072145,-82.89031268194721,-82.92130252806921,-82.97248019632735,-83.02694654833266,-83.06087489346073,-83.11124562802904,-83.14314793017084,-83.18193433998549,-83.24501259384152,-83.27275275060151],"lat":[38.60928645427654,39.01354764316246,39.01017430028092,38.95991773317304,38.94329298301064,38.93989504052882,38.84933086570134,38.84431671190884,38.74539727230093,38.74613226617388,38.68831209286363,38.67685354210489,38.67869324938551,38.65092526217094,38.60124307748298,38.57168324929271,38.60045617050194,38.65235091477179,38.68329893142503,38.71900084639698,38.74278377510311,38.74642326501452,38.71962006308744,38.71454329106253,38.68574697940063,38.66484480121147,38.61930192596127,38.60984458169807,38.62414875230741,38.60928645427654]}]],[[{"lng":[-82.58660727458059,-82.61373797594308,-82.66976078762161,-82.69558247533102,-82.74194882950522,-82.80236874159627,-82.82699351786786,-82.75011777947002,-82.77789333496683,-82.77694795902462,-82.71304687016131,-82.69969615375319,-82.69555498401796,-82.65886721360155,-82.6475315781226,-82.56967227137976,-82.57572658799074,-82.49013763833128,-82.49112934538414,-82.47203023153247,-82.47713098208153,-82.356224466399,-82.36211934247525,-82.28996887160584,-82.31423600475243,-82.32918000306455,-82.39475983570803,-82.41489126447968,-82.49499055365489,-82.54754728850502,-82.5754255279808,-82.58660727458059],"lat":[38.41253450146058,38.47263048453969,38.50212304449079,38.5391484551963,38.55306562935253,38.55728704420304,38.57168324929271,38.60124307748298,38.65092526217094,38.67869324938551,38.67685354210489,38.68831209286363,38.74613226617388,38.74539727230093,38.84431671190884,38.83944202128499,38.77331046169845,38.76641349907275,38.73774563494221,38.73492396002865,38.67980147983315,38.67234511419127,38.58360477027661,38.58009682222874,38.46519979502692,38.44196135526594,38.42849258275233,38.43041399134695,38.40580904272736,38.40053087675352,38.40394423327314,38.41253450146058]}]],[[{"lng":[-81.00427706926327,-81.00093761124167,-80.99977111607542,-80.52058763261338,-80.52264111412107,-80.52392006312003,-81.00427706926327],"lat":[41.49563830851119,41.71190344470261,41.8502511572792,41.98687395262898,41.85079034637631,41.49510347211948,41.49563830851119]}]],[[{"lng":[-81.00093761124167,-81.09203047781561,-81.09370000619103,-81.28666438014544,-81.28530784641431,-81.37988606094571,-81.47643467748007,-81.4782604613992,-81.36226375905616,-80.99977111607542,-81.00093761124167],"lat":[41.71190344470261,41.71213681173459,41.63665530516019,41.63516511774661,41.56437124041743,41.56427781830801,41.56635028180063,41.63173541539454,41.72430266650635,41.8502511572792,41.71190344470261]}]]],["X39095","X39051","X39055","X39171","X39035","X39123","X39173","X39093","X39143","X39155","X39069","X39043","X39039","X39153","X39133","X39077","X39103","X39147","X39125","X39063","X39137","X39099","X39005","X39033","X39139","X39169","X39161","X39175","X39151","X39029","X39003","X39065","X39107","X39019","X39117","X39101","X39011","X39075","X39157","X39081","X39083","X39091","X39159","X39149","X39031","X39041","X39067","X39037","X39089","X39021","X39059","X39109","X39013","X39119","X39049","X39097","X39023","X39121","X39045","X39127","X39113","X39135","X39111","X39057","X39129","X39115","X39047","X39073","X39167","X39165","X39017","X39027","X39009","X39141","X39163","X39071","X39061","X39025","X39015","X39079","X39105","X39131","X39001","X39053","X39145","X39087","X39007","X39085"],"df",{"interactive":true,"className":"","pane":"tmap401","stroke":true,"color":"#666666","weight":1,"opacity":1,"fill":true,"fillColor":["#B51F2E","#D8E8F1","#FBE0D0","#D1E5F0","#B51F2E","#D1E5F0","#D1E5F0","#E8896C","#D1E5F0","#E8896C","#FBE0D0","#FBE0D0","#D8E8F1","#B51F2E","#FBE0D0","#FBE0D0","#FBE0D0","#FBE0D0","#D8E8F1","#E8896C","#D8E8F1","#B51F2E","#FBE0D0","#FBE0D0","#E8896C","#FBE0D0","#D1E5F0","#FBE0D0","#E8896C","#E8896C","#FBE0D0","#D1E5F0","#D1E5F0","#D8E8F1","#FBE0D0","#FBE0D0","#FBE0D0","#D8E8F1","#FBE0D0","#E8896C","#FBE0D0","#E8896C","#D1E5F0","#FBE0D0","#D8E8F1","#FBE0D0","#D8E8F1","#D8E8F1","#E8896C","#D8E8F1","#FBE0D0","#FBE0D0","#FBE0D0","#E8896C","#B51F2E","#D1E5F0","#FBE0D0","#D1E5F0","#E8896C","#D1E5F0","#B51F2E","#D8E8F1","#FBE0D0","#FBE0D0","#FBE0D0","#D1E5F0","#FBE0D0","#FBE0D0","#D8E8F1","#FBE0D0","#E8896C","#D1E5F0","#FBE0D0","#FBE0D0","#D1E5F0","#FBE0D0","#B51F2E","#E8896C","#FBE0D0","#FBE0D0","#D8E8F1","#D8E8F1","#D1E5F0","#D1E5F0","#E8896C","#FBE0D0","#E8896C","#E8896C"],"fillOpacity":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"dashArray":"none","smoothFactor":1,"noClip":false},["<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39095<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>27<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39051<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39055<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>3<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39171<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39035<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>88<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39123<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39173<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39093<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>11<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39143<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39155<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>11<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39069<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39043<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>4<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39039<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39153<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>24<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39133<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39077<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39103<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>3<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39147<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39125<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39063<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>6<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39137<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39099<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>19<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39005<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39033<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39139<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>6<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39169<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>4<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39161<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39175<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39151<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>12<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39029<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>8<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39003<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39065<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39107<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39019<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39117<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39101<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39011<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39075<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39157<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39081<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>10<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39083<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>3<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39091<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>6<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39159<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39149<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39031<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39041<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>3<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39067<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39037<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39089<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>7<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39021<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39059<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>4<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39109<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>4<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39013<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>4<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39119<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>7<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39049<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>45<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39097<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39023<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39121<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39045<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>6<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39127<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39113<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>23<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39135<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39111<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39057<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>4<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39129<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>3<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39115<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39047<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39073<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>3<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39167<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39165<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39017<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>9<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39027<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39009<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39141<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39163<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39071<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39061<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>62<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39025<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>6<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39015<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39079<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39105<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39131<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39001<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39053<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39145<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>7<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39087<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>4<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39007<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>7<\/nobr><\/td><\/tr><\/table><\/div>","<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:0px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>39085<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>LFW68<\/nobr><\/td><td align=\"right\"><nobr>7<\/nobr><\/td><\/tr><\/table><\/div>"],null,["39095","39051","39055","39171","39035","39123","39173","39093","39143","39155","39069","39043","39039","39153","39133","39077","39103","39147","39125","39063","39137","39099","39005","39033","39139","39169","39161","39175","39151","39029","39003","39065","39107","39019","39117","39101","39011","39075","39157","39081","39083","39091","39159","39149","39031","39041","39067","39037","39089","39021","39059","39109","39013","39119","39049","39097","39023","39121","39045","39127","39113","39135","39111","39057","39129","39115","39047","39073","39167","39165","39017","39027","39009","39141","39163","39071","39061","39025","39015","39079","39105","39131","39001","39053","39145","39087","39007","39085"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#CAE1EE","#D1E5F0","#D8E8F1","#FBE0D0","#E8896C","#B51F2E"],"labels":["lower outlier","< 25%","25% - 50%","50% - 75%","> 75%","upper outlier"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"unknown","title":"LFW68","extra":null,"layerId":"legend401","className":"info legend df","group":"df"}]},{"method":"addLayersControl","args":[[],"df",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[38.40053087675352,41.98687395262898],"lng":[-84.81207637909266,-80.51999721727628]},"fitBounds":[38.40053087675352,-84.81207637909266,41.98687395262898,-80.51999721727628,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n\t\t\t\t\t\tfunction(el, x) {\n\t\t\t\t\t\t\tvar tldiv = el.getElementsByClassName(\"leaflet-top leaflet-left\")[0];\n\t\t\t\t\t\t\tvar titlediv = document.createElement('div');\n\t\t\t\t\t\t\ttitlediv.className = \"info legend leaflet-control\";\n\t\t\t\t\t\t\ttitlediv.innerHTML = \"<b>Box Map<\/b>\";\n\t\t\t\t\t\t\ttldiv.insertBefore(titlediv, tldiv.childNodes[0]);\n\t\t\t\t\t\t}).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<p>Anyone familiar with the geography of Ohio will recognize the outliers as the
+counties with the largest populations, i.e., the metropolitan areas of
+Cincinnati, Columbus, Cleveland, etc. The labels for these cities in the base
+layer make this clear. This highlights a major problem with spatially
+extensive variables like total counts, in that they tend to vary with the
+size (population) of the areal units. So, everything else being the same, we
+would expect to have more lung cancer cases in counties with larger
+populations</p>
+<p>Instead, we opt for a spatially intensive variable, such as the ratio of the
+number of cases over the population. More formally, if <span class="math inline">\(O_i\)</span> is the number of cancer cases in area i, and <span class="math inline">\(P_i\)</span> is the corresponding population at risk (in
+our example, the total number of white females), then the raw or crude rate
+or proportion follows as:</p>
+<p><span class="math display">\[r_i = \frac{O_i}{P_i}\]</span></p>
+</div>
+<div id="variance-instability" class="section level4 hasAnchor" number="5.2.1.2">
+<h4><span class="header-section-number">5.2.1.2</span> Variance instability<a href="rate-mapping.html#variance-instability" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The crude rate is an estimator for the unknown underlying risk. In our
+example, that would be the risk of a white woman to be exposed to lung
+cancer. The crude rate is an unbiased estimator for the risk, which is a
+desirable property. However, its variance has an undesirable property, namely</p>
+<p><span class="math display">\[Var[r_i] = \frac{\pi_i(1-\pi_i)}{P_i}\]</span>
+where <span class="math inline">\(\pi_i\)</span> is the underlying risk in area i. This implies that the larger
+the population of an area (<span class="math inline">\(P_i\)</span> in the denominator), the smaller the
+variance for the estimator, or, in other words, the greater the precision.</p>
+<p>The flip side of this result is that for areas with sparse populations
+(small <span class="math inline">\(P_i\)</span>), the estimate for the risk will be imprecise (large variance).
+Moreover, since the population typically varies across the areas under
+consideration, the precision of each rate will vary as well. This variance
+instability needs to somehow be reflected in the map, or corrected for, to
+avoid a spurious representation of the spatial distribution of the underlying
+risk. This is the main motivation for smoothing rates, to which we return
+below.</p>
+</div>
+</div>
+<div id="raw-rate-map" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Raw rate map<a href="rate-mapping.html#raw-rate-map" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To compute the raw rate, we just divide the count of events by the population for each
+county.</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="rate-mapping.html#cb283-1" aria-hidden="true" tabindex="-1"></a>ohio_lung<span class="sc">$</span>raw_rate <span class="ot">&lt;-</span> ohio_lung<span class="sc">$</span>LFW68 <span class="sc">/</span> ohio_lung<span class="sc">$</span>POPFW68</span></code></pre></div>
+<p>We don’t need the basemap for the rest of the notebook, so we switch back to plot
+mode in <strong>tmap</strong>. This is done with <code>tmap_mode</code> plot. Using the <code>boxmap</code> function
+from earlier we make a map of the lung cancer counts and the raw population based
+rates.</p>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="rate-mapping.html#cb284-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</span>
+<span id="cb284-2"><a href="rate-mapping.html#cb284-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">boxmap</span>(<span class="st">&quot;LFW68&quot;</span>, ohio_lung)</span>
+<span id="cb284-3"><a href="rate-mapping.html#cb284-3" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">boxmap</span>(<span class="st">&quot;raw_rate&quot;</span>, ohio_lung)</span>
+<span id="cb284-4"><a href="rate-mapping.html#cb284-4" aria-hidden="true" tabindex="-1"></a>p2</span></code></pre></div>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
+<p>With <code>tmap_arrange</code>, we can get a side by side comparison of the two maps.</p>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="rate-mapping.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(p1,p2,<span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
+<p>With the adjustment for population, the map becomes more meaningful than just
+the raw count data. We see different upper outliers and a new spatial distribution after
+this adjustment.</p>
+</div>
+</div>
+<div id="excess-risk" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Excess risk<a href="rate-mapping.html#excess-risk" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="relative-risk" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Relative risk<a href="rate-mapping.html#relative-risk" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A commonly used notion in demography and public health analysis is the
+concept of a standardized mortality rate (SMR), sometimes also referred to as
+relative risk or excess risk. The idea is to compare the observed mortality
+rate to a national (or regional) standard. More specifically, the observed
+number of events is compared to the number of events that would be expected
+had a reference risk been applied.</p>
+<p>In most applications, the reference risk is estimated from the aggregate of
+all the observations under consideration. For example, if we considered all
+the counties in Ohio, the reference rate would be the sum of all the events
+over the sum of all the populations at risk. Note that this average is not
+the average of the county rates. Instead, it is calculated as the ratio of
+the total sum of all events over the total sum of all populations at risk
+(e.g., in our example, all the white female deaths in the state over the
+state white female population). Formally, this is expressed as:</p>
+<p><span class="math display">\[\pi=\frac{\Sigma_{i=1}^{i=n}O_i}{\Sigma_{i=1}^{i=n}P_i}\]</span></p>
+<p>which yields the expected number of events for each area i as:</p>
+<p><span class="math display">\[E_i=\pi*P_i\]</span></p>
+<p>The relative risk then follows as the ratio of the observed number of events
+(e.g., cancer cases) over the expected number:</p>
+<p><span class="math display">\[SMR_i=\frac{O_i}{E_i}\]</span></p>
+</div>
+<div id="excess-risk-map" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> Excess risk map<a href="rate-mapping.html#excess-risk-map" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To calculate the excess risk of each county, we need to do a series of computations
+first as opposed to GeoDa, which does it automatically. We start by calculating the
+reference rate, which is just the sum of events over the sum of the population.</p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="rate-mapping.html#cb286-1" aria-hidden="true" tabindex="-1"></a>sum_observed <span class="ot">&lt;-</span> <span class="fu">sum</span>(ohio_lung<span class="sc">$</span>LFW68)</span>
+<span id="cb286-2"><a href="rate-mapping.html#cb286-2" aria-hidden="true" tabindex="-1"></a>sum_population <span class="ot">&lt;-</span> <span class="fu">sum</span>(ohio_lung<span class="sc">$</span>POPFW68)</span>
+<span id="cb286-3"><a href="rate-mapping.html#cb286-3" aria-hidden="true" tabindex="-1"></a>p_i <span class="ot">&lt;-</span> sum_observed <span class="sc">/</span> sum_population</span></code></pre></div>
+<p>Next we calculate the expected number of events for each county based on the reference rate
+for the whole state and the population for each county.</p>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="rate-mapping.html#cb287-1" aria-hidden="true" tabindex="-1"></a>E_i <span class="ot">&lt;-</span> p_i <span class="sc">*</span> ohio_lung<span class="sc">$</span>POPFW68</span></code></pre></div>
+<p>Lasty, we divide the actual count by the expected count to get the relative risk rate.
+This ratio will show us which counties have a higher than expected number of lung
+cancer cases, and which counties have a lower than expected count.</p>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="rate-mapping.html#cb288-1" aria-hidden="true" tabindex="-1"></a>ohio_lung<span class="sc">$</span>smr <span class="ot">&lt;-</span> ohio_lung<span class="sc">$</span>LFW68 <span class="sc">/</span> E_i</span></code></pre></div>
+<p>In the excess risk map, blue counties will indicate a risk lower than the state average, or
+<span class="math inline">\(SMR_i &lt; 1\)</span>. Red counties indicate a risk higher than the state average, or <span class="math inline">\(SMR_i &gt; 1\)</span>.</p>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="rate-mapping.html#cb289-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(ohio_lung) <span class="sc">+</span></span>
+<span id="cb289-2"><a href="rate-mapping.html#cb289-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">tm_fill</span>(<span class="st">&quot;smr&quot;</span>,<span class="at">title=</span><span class="st">&quot;Excess risk&quot;</span>,<span class="at">breaks=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">100</span>,.<span class="dv">25</span>,.<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">1000</span>),<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;.25&quot;</span>, <span class="st">&quot;.25 - .50&quot;</span>, <span class="st">&quot;.50 - 1.00&quot;</span>,<span class="st">&quot;1.00 - 2.00&quot;</span>, <span class="st">&quot;2.00 - 4.00&quot;</span>, <span class="st">&quot;&gt; 4.00&quot;</span> ), <span class="at">palette =</span> <span class="st">&quot;-RdBu&quot;</span>)  <span class="sc">+</span></span>
+<span id="cb289-3"><a href="rate-mapping.html#cb289-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
+<span id="cb289-4"><a href="rate-mapping.html#cb289-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span>, <span class="at">legend.outside.position =</span> <span class="st">&quot;right&quot;</span>)</span>
+<span id="cb289-5"><a href="rate-mapping.html#cb289-5" aria-hidden="true" tabindex="-1"></a>p1</span></code></pre></div>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-201-1.png" width="672" /></p>
+<p>Additionally, we can examine the excess risk rate in the form of a boxmap. The boxmap
+utilizes the full distribution of the rates to identify outliers, compared to the relative
+risk map, which identifies them as having a value greater than two.</p>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="rate-mapping.html#cb290-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">boxmap</span>(<span class="st">&quot;smr&quot;</span>,ohio_lung)</span>
+<span id="cb290-2"><a href="rate-mapping.html#cb290-2" aria-hidden="true" tabindex="-1"></a>p2</span></code></pre></div>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-202-1.png" width="672" /></p>
+<p>Here we use <code>tmap_arrange</code> to get a side by side comparison again.</p>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="rate-mapping.html#cb291-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(p1,p2,<span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-203-1.png" width="672" /></p>
+</div>
+</div>
+<div id="empirical-bayes-smoothed-rate-map" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Empirical Bayes Smoothed Rate Map<a href="rate-mapping.html#empirical-bayes-smoothed-rate-map" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="borrowing-strength" class="section level3 hasAnchor" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Borrowing strength<a href="rate-mapping.html#borrowing-strength" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As mentioned in the introduction, rates have an intrinsic variance instability,
+which may lead to the identification of spurious outliers. In order to correct
+for this, we can use smoothing approaches (also called shrinkage estimators),
+which improve on the precision of the crude rate by borrowing strength from the
+other observations. This idea goes back to the fundamental contributions of James
+and Stein (the so-called James-Stein paradox), who showed that in some instances
+biased estimators may have better precision in a mean squared error sense.</p>
+<p>GeoDa includes three methods to smooth the rates: an Empirical Bayes approach, a
+spatial averaging approach, and a combination between the two. We will consider
+the spatial approaches after we discuss distance-based spatial weights. Here, we
+focus on the Empirical Bayes (EB) method. First, we provide some formal
+background on the principles behind smoothing and shrinkage estimators.</p>
+</div>
+<div id="bayes-law" class="section level3 hasAnchor" number="5.4.2">
+<h3><span class="header-section-number">5.4.2</span> Bayes law<a href="rate-mapping.html#bayes-law" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The formal logic behind the idea of smoothing is situated in a Bayesian
+framework, in which the distribution of a random variable is updated after
+observing data. The principle behind this is the so-called Bayes Law, which
+follows from the decomposition of a joint probability (or density) into two
+conditional probabilities:</p>
+<p><span class="math display">\[P[AB] = P[A|B]*P[B] = P[B|A]*P[A]\]</span></p>
+<p>where A and B are random events, and | stands for the conditional probability of
+one event, given a value for the other. The second equality yields the formal
+expression of Bayes law as:</p>
+<p><span class="math display">\[P[A|B] = \frac{P[B|A]*P[A]}{P[B]}\]</span>
+In most instances in practice, the denominator in this expression can be ignored,
+and the equality sign is replaced by a proportionality sign:</p>
+<p><span class="math display">\[P[A|B]\propto P[B|A]*P[A]\]</span></p>
+<p><span class="math display">\[P[\pi|y]\propto P[Y|\pi] * P[\pi]\]</span></p>
+</div>
+<div id="the-poisson-gamma-model" class="section level3 hasAnchor" number="5.4.3">
+<h3><span class="header-section-number">5.4.3</span> The Poisson-Gamma model<a href="rate-mapping.html#the-poisson-gamma-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For each particular estimation problem, we need to specify distributions for the
+prior and the likelihood in such a way that a proper posterior distribution
+results. In the context of rate estimation, the standard approach is to specify a
+Poisson distribution for the observed count of events (conditional upon the risk
+parameter), and a Gamma distribution for the prior of the risk parameter <span class="math inline">\(\pi\)</span>.
+This is referred to as the Poisson-Gamma model.</p>
+<p>In this model, the prior distribution for the (unknown) risk parameter <span class="math inline">\(\pi\)</span> is
+<span class="math inline">\(Gamma(\alpha,\beta)\)</span>, where <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the shape and scale
+parameters of the Gamma distribution. In terms of the more familiar notions of
+mean and variance, this implies:</p>
+<p><span class="math display">\[E[\pi] = \alpha/\beta\]</span>
+and</p>
+<p><span class="math display">\[Var[\pi] = \alpha/\beta^2\]</span></p>
+<p>Using standard Bayesian principles, the combination of a Gamma prior for the risk
+parameter with a Poisson distribution for the count of events (O) yields the
+posterior distribution as <span class="math inline">\(Gamma(O+\alpha,P + \beta)\)</span>. The new shape and scale
+parameters yield the mean and variance of the posterior distribution for the risk
+parameter as:</p>
+<p><span class="math display">\[E[\pi]= \frac{O+ \alpha}{P + \beta}\]</span></p>
+<p>and</p>
+<p><span class="math display">\[Var[\pi] = \frac{O + \alpha}{(P+\beta)^2}\]</span></p>
+<p>Different values for the <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> parameters (reflecting more or less
+precise prior information) will yield smoothed rate estimates from the posterior
+distribution. In other words, the new risk estimate adjusts the crude rate with
+parameters from the prior Gamma distribution.</p>
+</div>
+<div id="the-empirical-bayes-approach" class="section level3 hasAnchor" number="5.4.4">
+<h3><span class="header-section-number">5.4.4</span> The Empirical Bayes approach<a href="rate-mapping.html#the-empirical-bayes-approach" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In the Empirical Bayes approach, values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> of the prior
+Gamma distribution are estimated from the actual data. The smoothed rate is then
+expressed as a weighted average of the crude rate, say r, and the prior estimate,
+say <span class="math inline">\(\theta\)</span>. The latter is estimated as a reference rate, typically the overall
+statewide average or some other standard.</p>
+<p>In essense, the EB technique consists of computing a weighted average between the
+raw rate for each county and the state average, with weights proportional to the
+underlying population at risk. Simply put, small counties (i.e., with a small
+population at risk) will tend to have their rates adjusted considerably, whereas
+for larger counties the rates will barely change.</p>
+<p>More formally, the EB estimate for the risk in location i is:
+<span class="math display">\[\pi_i^{EB}=w_ir_i + (1-w_i)\theta\]</span></p>
+<p>In this expression, the weights are:</p>
+<p><span class="math display">\[w_i = \frac{\sigma^2}{(\sigma^2 + \mu/P_i)}\]</span></p>
+<p>with <span class="math inline">\(P_i\)</span> as the population at risk in area i, and <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> as the
+mean and variance of the prior distribution.</p>
+<p>In the empirical Bayes approach, the mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span> of the
+prior (which determine the scale and shape parameters of the Gamma distribution)
+are estimated from the data.</p>
+<p>For <span class="math inline">\(\mu\)</span> this estimate is simply the reference rate(the same reference used in
+the computation of SMR), <span class="math inline">\(\Sigma_{i=1}^{i=n}O_i/\Sigma_{i=1}^{i=n}P_i\)</span>. The
+estimate of the variance is a bit more complex:</p>
+<p><span class="math display">\[\sigma^2=\frac{\Sigma_{i=1}^{i=n}P_i(r_i-\mu)^2}{\Sigma_{i=1}^{i=n}P_i}-\frac{\mu}{\Sigma_{i=1}^{i=n}P_i/n}\]</span></p>
+<p>While easy to calculate, the estimate for the variance can yield negative values.
+In such instances, the conventional approach is to set <span class="math inline">\(\sigma^2\)</span> to zero. As a
+result, the weight <span class="math inline">\(w_i\)</span> becomes zero, which in essence equates the smoothed rate
+estimate to the reference rate.</p>
+</div>
+</div>
+<div id="eb-rate-map" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> EB rate map<a href="rate-mapping.html#eb-rate-map" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We start by computing all of the necessary parameters for the variance formula above.
+This includes <span class="math inline">\(\mu\)</span>, n , the crude rate, <span class="math inline">\(r_i\)</span>, <span class="math inline">\(O_i\)</span>, and <span class="math inline">\(P_i\)</span>.</p>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="rate-mapping.html#cb292-1" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">sum</span>(ohio_lung<span class="sc">$</span>LFW68) <span class="sc">/</span> <span class="fu">sum</span>(ohio_lung<span class="sc">$</span>POPFW68)</span>
+<span id="cb292-2"><a href="rate-mapping.html#cb292-2" aria-hidden="true" tabindex="-1"></a>O_i <span class="ot">&lt;-</span> ohio_lung<span class="sc">$</span>LFW68</span>
+<span id="cb292-3"><a href="rate-mapping.html#cb292-3" aria-hidden="true" tabindex="-1"></a>P_i <span class="ot">&lt;-</span> ohio_lung<span class="sc">$</span>POPFW68</span>
+<span id="cb292-4"><a href="rate-mapping.html#cb292-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(ohio_lung<span class="sc">$</span>POPFW68)</span>
+<span id="cb292-5"><a href="rate-mapping.html#cb292-5" aria-hidden="true" tabindex="-1"></a>r_i <span class="ot">&lt;-</span> O_i <span class="sc">/</span> P_i</span></code></pre></div>
+<p>Next we compute the variance, to similify the code, we compute the top left portion or
+<span class="math display">\[\Sigma_{i=1}^{i=n}P_i(r_i-\mu)^2\]</span> as <strong>top_left</strong>, then compute the variance with the
+next line.</p>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="rate-mapping.html#cb293-1" aria-hidden="true" tabindex="-1"></a>top_left <span class="ot">&lt;-</span> <span class="fu">sum</span>(P_i <span class="sc">*</span> (r_i <span class="sc">-</span> mu)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb293-2"><a href="rate-mapping.html#cb293-2" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">&lt;-</span> top_left <span class="sc">/</span> <span class="fu">sum</span>(P_i) <span class="sc">-</span> mu <span class="sc">/</span> <span class="fu">sum</span>(P_i <span class="sc">/</span> n)</span></code></pre></div>
+<p>Now that we have the variance, we can compute the <span class="math inline">\(w_i\)</span> values.</p>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="rate-mapping.html#cb294-1" aria-hidden="true" tabindex="-1"></a>w_i <span class="ot">&lt;-</span> variance <span class="sc">/</span> (variance <span class="sc">+</span> mu<span class="sc">/</span>P_i)</span></code></pre></div>
+<p>Here we use the final formula for the smoothed rates.</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="rate-mapping.html#cb295-1" aria-hidden="true" tabindex="-1"></a>ohio_lung<span class="sc">$</span>eb_bayes <span class="ot">&lt;-</span> w_i <span class="sc">*</span> r_i <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> w_i) <span class="sc">*</span> mu </span>
+<span id="cb295-2"><a href="rate-mapping.html#cb295-2" aria-hidden="true" tabindex="-1"></a>ohio_lung<span class="sc">$</span>eb_bayes</span></code></pre></div>
+<pre><code>##  [1] 1.150783e-04 1.065711e-04 1.079228e-04 1.029445e-04 1.169062e-04
+##  [6] 1.025309e-04 9.454283e-05 1.038335e-04 9.849086e-05 1.064611e-04
+## [11] 1.109825e-04 1.096707e-04 1.058050e-04 1.009664e-04 9.588061e-05
+## [16] 1.166735e-04 1.048742e-04 1.143876e-04 1.091126e-04 1.175319e-04
+## [21] 1.069775e-04 1.191585e-04 1.176190e-04 1.068460e-04 1.069400e-04
+## [26] 1.071089e-04 1.036440e-04 1.119544e-04 9.280937e-05 1.153709e-04
+## [31] 1.071074e-04 1.035920e-04 1.026519e-04 1.086969e-04 1.123365e-04
+## [36] 1.143454e-04 1.087786e-04 1.084304e-04 1.023274e-04 1.243397e-04
+## [41] 1.114789e-04 1.228748e-04 1.050183e-04 1.089482e-04 1.063903e-04
+## [46] 1.115513e-04 1.095161e-04 1.037763e-04 1.128505e-04 1.070939e-04
+## [51] 1.158590e-04 1.074788e-04 1.082377e-04 1.179104e-04 1.167411e-04
+## [56] 1.044656e-04 1.010171e-04 1.071996e-04 1.157866e-04 1.041863e-04
+## [61] 9.693106e-05 1.063645e-04 1.130748e-04 1.027615e-04 1.122900e-04
+## [66] 1.070648e-04 1.113361e-04 1.156885e-04 1.024824e-04 1.015521e-04
+## [71] 1.021452e-04 1.035587e-04 1.064004e-04 1.055062e-04 1.074256e-04
+## [76] 1.208589e-04 1.339407e-04 1.122428e-04 1.113038e-04 1.107139e-04
+## [81] 1.089123e-04 1.090464e-04 1.058359e-04 1.048680e-04 1.176496e-04
+## [86] 1.124378e-04 1.147444e-04 9.951653e-05</code></pre>
+<p>Lastly, we plot the EB smoothed rates with the <code>boxmap</code> function.</p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="rate-mapping.html#cb297-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxmap</span>(<span class="st">&quot;eb_bayes&quot;</span>,ohio_lung)</span></code></pre></div>
+<p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
+<p>In comparison to the box map for the crude rates and the excess rate map, none of the
+original outliers remain identified as such in the smoothed map. Instead, a new outlier is
+shown in the very southwestern corner of the state (Hamilton county).</p>
+<p>Since many of the original outlier counties have small populations at risk (check in the
+data table), their EB smoothed rates are quite different (lower) from the original. In
+contrast, Hamilton county is one of the most populous counties (it contains the city of
+Cincinnati), so that its raw rate is barely adjusted. Because of that, it percolates to the
+top of the distribution and becomes an outlier.</p>
+
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="18">
+<li id="fn18"><p>Use
+<code>install.packages(packagename)</code>.<a href="rate-mapping.html#fnref18" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="basic-mapping.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="contiguity-based-spatial-weights.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/spatialanalysis/handsonspatialdata/edit/master/05-rate-mapping.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
