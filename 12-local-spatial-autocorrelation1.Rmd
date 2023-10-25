@@ -73,7 +73,6 @@ library(sf)
 library(tmap)
 library(rgeoda)
 library(geodaData)
-library(spatmap)
 library(RColorBrewer)
 ```
 
