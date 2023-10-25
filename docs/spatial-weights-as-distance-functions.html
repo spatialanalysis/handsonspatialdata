@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Spatial Weights as Distance Functions | Hands-On Spatial Data Science with R</title>
   <meta name="description" content="Chapter 8 Spatial Weights as Distance Functions | Hands-On Spatial Data Science with R" />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Spatial Weights as Distance Functions | Hands-On Spatial Data Science with R" />
   <meta property="og:type" content="book" />
-  
   
   
   <meta name="github-repo" content="spatialanalysis/handsonspatialdata" />
@@ -24,7 +23,7 @@
 <meta name="author" content="Luc Anselin, Grant Morrison, Angela Li, Karina Acosta" />
 
 
-<meta name="date" content="2020-07-02" />
+<meta name="date" content="2023-10-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,8 @@
   
 <link rel="prev" href="distance-based-spatial-weights.html"/>
 <link rel="next" href="applications-of-spatial-weights.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,61 +49,117 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.3/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.0.3/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-binding-2.2.0/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.0/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -119,95 +175,120 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#disclaimer"><i class="fa fa-check"></i>Disclaimer</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#using-this-book"><i class="fa fa-check"></i>Using This Book</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#who-this-book-is-for"><i class="fa fa-check"></i>Who This Book Is For</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html"><i class="fa fa-check"></i><b>1</b> Spatial Data Handling</a><ul>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction-1"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html"><i class="fa fa-check"></i><b>1</b> Spatial Data Handling</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#introduction-1"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#objectives"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#preliminaries"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#preliminaries"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#obtaining-data-from-the-chicago-open-data-portal"><i class="fa fa-check"></i>Obtaining data from the Chicago Open Data portal</a></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#selecting-observations-for-a-given-time-period"><i class="fa fa-check"></i>Selecting Observations for a Given Time Period</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#selecting-observations-for-a-given-time-period"><i class="fa fa-check"></i>Selecting Observations for a Given Time Period</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#extracting-observations-for-the-desired-time-period"><i class="fa fa-check"></i>Extracting observations for the desired time period</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#selecting-the-variables-for-the-final-table"><i class="fa fa-check"></i>Selecting the variables for the final table</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-point-layer"><i class="fa fa-check"></i>Creating a Point Layer</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-point-layer"><i class="fa fa-check"></i>Creating a Point Layer</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-point-layer-from-coordinates-in-a-table---principle"><i class="fa fa-check"></i>Creating a point layer from coordinates in a table - principle</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-spatial-points-object"><i class="fa fa-check"></i>Creating a spatial points object</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#abandoned-vehicles-by-community-area"><i class="fa fa-check"></i>Abandoned Vehicles by Community Area</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#abandoned-vehicles-by-community-area"><i class="fa fa-check"></i>Abandoned Vehicles by Community Area</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#community-area-boundary-file"><i class="fa fa-check"></i>Community Area boundary file</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#spatial-join"><i class="fa fa-check"></i>Spatial join</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#counts-by-community-area"><i class="fa fa-check"></i>Counts by community area</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#mapping-the-vehicle-counts"><i class="fa fa-check"></i>Mapping the vehicle counts</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#community-area-population-data"><i class="fa fa-check"></i>Community Area Population Data</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#community-area-population-data"><i class="fa fa-check"></i>Community Area Population Data</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#extracting-a-pdf-file"><i class="fa fa-check"></i>Extracting a pdf file</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#parsing-the-pdf-file"><i class="fa fa-check"></i>Parsing the pdf file</a></li>
 <li class="chapter" data-level="1.0.1" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#extracting-the-population-values"><i class="fa fa-check"></i><b>1.0.1</b> Extracting the population values</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#creating-a-data-frame-with-population-values"><i class="fa fa-check"></i>Creating a data frame with population values</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#mapping-community-area-abandoned-vehicles-per-capita"><i class="fa fa-check"></i>Mapping Community Area Abandoned Vehicles Per Capita</a><ul>
+<li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#mapping-community-area-abandoned-vehicles-per-capita"><i class="fa fa-check"></i>Mapping Community Area Abandoned Vehicles Per Capita</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#computing-abandoned-vehicles-per-capita"><i class="fa fa-check"></i>Computing abandoned vehicles per capita</a></li>
 <li class="chapter" data-level="" data-path="spatial-data-handling.html"><a href="spatial-data-handling.html#final-choropleth-map"><i class="fa fa-check"></i>Final choropleth map</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html"><i class="fa fa-check"></i><b>2</b> Exploratory Data Analysis 1</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-2"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="2" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html"><i class="fa fa-check"></i><b>2</b> Exploratory Data Analysis 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#introduction-2"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#objectives-1"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#preliminaries-1"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#preliminaries-1"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#load-packages"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#obtaining-the-data"><i class="fa fa-check"></i>Obtaining the data</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#analyzing-the-distribution-of-a-single-variable"><i class="fa fa-check"></i>Analyzing the Distribution of a Single Variable</a><ul>
-<li><a href="exploratory-data-analysis-1.html#a-quick-introduction-to-ggplot">A quick introduction to <strong>ggplot</strong></a></li>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#analyzing-the-distribution-of-a-single-variable"><i class="fa fa-check"></i>Analyzing the Distribution of a Single Variable</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#a-quick-introduction-to-ggplot"><i class="fa fa-check"></i>A quick introduction to <strong>ggplot</strong></a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#histogram"><i class="fa fa-check"></i>Histogram</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#box-plot"><i class="fa fa-check"></i>Box plot</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#bivariate-analysis-the-scatter-plot"><i class="fa fa-check"></i>Bivariate Analysis: The Scatter Plot</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#bivariate-analysis-the-scatter-plot"><i class="fa fa-check"></i>Bivariate Analysis: The Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#smoothing-the-scatter-plot"><i class="fa fa-check"></i>Smoothing the scatter plot</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#spatial-heterogeneity"><i class="fa fa-check"></i>Spatial heterogeneity</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#spatial-heterogeneity"><i class="fa fa-check"></i>Spatial heterogeneity</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#structural-breaks-in-the-scatter-plot"><i class="fa fa-check"></i>Structural breaks in the scatter plot</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-1.html"><a href="exploratory-data-analysis-1.html#chow-test"><i class="fa fa-check"></i>Chow test</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html"><i class="fa fa-check"></i><b>3</b> Exploratory Data Analysis 2</a><ul>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-3"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="3" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html"><i class="fa fa-check"></i><b>3</b> Exploratory Data Analysis 2</a>
+<ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#introduction-3"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#objectives-2"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#preliminaries-2"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#preliminaries-2"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#load-packages-1"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#obtaining-the-data-1"><i class="fa fa-check"></i>Obtaining the data</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#scatter-plot-matrix"><i class="fa fa-check"></i>Scatter Plot Matrix</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#scatter-plot-matrix"><i class="fa fa-check"></i>Scatter Plot Matrix</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#basic-scatter-plot-matrix"><i class="fa fa-check"></i>Basic scatter plot matrix</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#scatter-plot-matrix-with-smoothing"><i class="fa fa-check"></i>Scatter plot matrix with smoothing</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#three-variables-bubble-chart-and-3d-scatter-plot"><i class="fa fa-check"></i>Three Variables: Bubble Chart and 3D Scatter Plot</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#three-variables-bubble-chart-and-3d-scatter-plot"><i class="fa fa-check"></i>Three Variables: Bubble Chart and 3D Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#bubble-chart"><i class="fa fa-check"></i>Bubble chart</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#d-scatter-plot"><i class="fa fa-check"></i>3D Scatter Plot</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#true-multivariate-eda-parallel-coordinate-plot-and-conditional-plots"><i class="fa fa-check"></i>True Multivariate EDA: Parallel Coordinate Plot and Conditional Plots</a><ul>
+<li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#true-multivariate-eda-parallel-coordinate-plot-and-conditional-plots"><i class="fa fa-check"></i>True Multivariate EDA: Parallel Coordinate Plot and Conditional Plots</a>
+<ul>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#parallel-coordinate-plot-pcp"><i class="fa fa-check"></i>Parallel Coordinate Plot (PCP)</a></li>
 <li class="chapter" data-level="" data-path="exploratory-data-analysis-2.html"><a href="exploratory-data-analysis-2.html#conditional-plots"><i class="fa fa-check"></i>Conditional Plots</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="basic-mapping.html"><a href="basic-mapping.html"><i class="fa fa-check"></i><b>4</b> Basic Mapping</a><ul>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-4"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="4" data-path="basic-mapping.html"><a href="basic-mapping.html"><i class="fa fa-check"></i><b>4</b> Basic Mapping</a>
+<ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#introduction-4"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#objectives-3"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#preliminaries-3"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#preliminaries-3"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#load-packages-2"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#obtaining-the-data-2"><i class="fa fa-check"></i>Obtaining the data</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#basic-choropleth-mapping"><i class="fa fa-check"></i>Basic Choropleth Mapping</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#basic-choropleth-mapping"><i class="fa fa-check"></i>Basic Choropleth Mapping</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#default-settings-1"><i class="fa fa-check"></i>Default settings</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#color-palette"><i class="fa fa-check"></i>Color palette</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#legend"><i class="fa fa-check"></i>Legend</a></li>
@@ -217,41 +298,50 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#saving-a-map-as-a-file"><i class="fa fa-check"></i>Saving a map as a file</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#shape-centers"><i class="fa fa-check"></i>Shape centers</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#common-map-classifications"><i class="fa fa-check"></i>Common Map Classifications</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#common-map-classifications"><i class="fa fa-check"></i>Common Map Classifications</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#quantile-map"><i class="fa fa-check"></i>Quantile map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#natural-breaks-map"><i class="fa fa-check"></i>Natural breaks map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#equal-intervals-map"><i class="fa fa-check"></i>Equal intervals map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#custom-breaks"><i class="fa fa-check"></i>Custom breaks</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#extreme-value-maps"><i class="fa fa-check"></i>Extreme Value Maps</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#extreme-value-maps"><i class="fa fa-check"></i>Extreme Value Maps</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#percentile-map"><i class="fa fa-check"></i>Percentile map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#box-map"><i class="fa fa-check"></i>Box map</a></li>
 <li class="chapter" data-level="4.0.1" data-path="basic-mapping.html"><a href="basic-mapping.html#standard-deviation-map"><i class="fa fa-check"></i><b>4.0.1</b> Standard deviation map</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#mapping-categorical-variables"><i class="fa fa-check"></i>Mapping Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#mapping-categorical-variables"><i class="fa fa-check"></i>Mapping Categorical Variables</a>
+<ul>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#unique-value-map"><i class="fa fa-check"></i>Unique value map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#co-location-map"><i class="fa fa-check"></i>Co-location map</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#conditional-map"><i class="fa fa-check"></i>Conditional Map</a></li>
 <li class="chapter" data-level="" data-path="basic-mapping.html"><a href="basic-mapping.html#cartogram"><i class="fa fa-check"></i>Cartogram</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="rate-mapping.html"><a href="rate-mapping.html"><i class="fa fa-check"></i><b>5</b> Rate Mapping</a><ul>
-<li class="chapter" data-level="" data-path="rate-mapping.html"><a href="rate-mapping.html#introduction-5"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="5" data-path="rate-mapping.html"><a href="rate-mapping.html"><i class="fa fa-check"></i><b>5</b> Rate Mapping</a>
+<ul>
+<li class="chapter" data-level="" data-path="rate-mapping.html"><a href="rate-mapping.html#introduction-5"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="5.0.1" data-path="rate-mapping.html"><a href="rate-mapping.html#objectives-4"><i class="fa fa-check"></i><b>5.0.1</b> Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="5.1" data-path="rate-mapping.html"><a href="rate-mapping.html#preliminaries-4"><i class="fa fa-check"></i><b>5.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="5.1" data-path="rate-mapping.html"><a href="rate-mapping.html#preliminaries-4"><i class="fa fa-check"></i><b>5.1</b> Preliminaries</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="rate-mapping.html"><a href="rate-mapping.html#load-packages-3"><i class="fa fa-check"></i><b>5.1.1</b> Load packages</a></li>
 <li class="chapter" data-level="5.1.2" data-path="rate-mapping.html"><a href="rate-mapping.html#geodadata"><i class="fa fa-check"></i><b>5.1.2</b> geodaData</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="rate-mapping.html"><a href="rate-mapping.html#choropleth-map-for-rates"><i class="fa fa-check"></i><b>5.2</b> Choropleth Map for Rates</a><ul>
+<li class="chapter" data-level="5.2" data-path="rate-mapping.html"><a href="rate-mapping.html#choropleth-map-for-rates"><i class="fa fa-check"></i><b>5.2</b> Choropleth Map for Rates</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="rate-mapping.html"><a href="rate-mapping.html#spatially-extensive-and-intensive-variables"><i class="fa fa-check"></i><b>5.2.1</b> Spatially extensive and intensive variables</a></li>
 <li class="chapter" data-level="5.2.2" data-path="rate-mapping.html"><a href="rate-mapping.html#raw-rate-map"><i class="fa fa-check"></i><b>5.2.2</b> Raw rate map</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk"><i class="fa fa-check"></i><b>5.3</b> Excess risk</a><ul>
+<li class="chapter" data-level="5.3" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk"><i class="fa fa-check"></i><b>5.3</b> Excess risk</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="rate-mapping.html"><a href="rate-mapping.html#relative-risk"><i class="fa fa-check"></i><b>5.3.1</b> Relative risk</a></li>
 <li class="chapter" data-level="5.3.2" data-path="rate-mapping.html"><a href="rate-mapping.html#excess-risk-map"><i class="fa fa-check"></i><b>5.3.2</b> Excess risk map</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="rate-mapping.html"><a href="rate-mapping.html#empirical-bayes-smoothed-rate-map"><i class="fa fa-check"></i><b>5.4</b> Empirical Bayes Smoothed Rate Map</a><ul>
+<li class="chapter" data-level="5.4" data-path="rate-mapping.html"><a href="rate-mapping.html#empirical-bayes-smoothed-rate-map"><i class="fa fa-check"></i><b>5.4</b> Empirical Bayes Smoothed Rate Map</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="rate-mapping.html"><a href="rate-mapping.html#borrowing-strength"><i class="fa fa-check"></i><b>5.4.1</b> Borrowing strength</a></li>
 <li class="chapter" data-level="5.4.2" data-path="rate-mapping.html"><a href="rate-mapping.html#bayes-law"><i class="fa fa-check"></i><b>5.4.2</b> Bayes law</a></li>
 <li class="chapter" data-level="5.4.3" data-path="rate-mapping.html"><a href="rate-mapping.html#the-poisson-gamma-model"><i class="fa fa-check"></i><b>5.4.3</b> The Poisson-Gamma model</a></li>
@@ -259,161 +349,200 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="rate-mapping.html"><a href="rate-mapping.html#eb-rate-map"><i class="fa fa-check"></i><b>5.5</b> EB rate map</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html"><i class="fa fa-check"></i><b>6</b> Contiguity-Based Spatial Weights</a><ul>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#introduction-6"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="6" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html"><i class="fa fa-check"></i><b>6</b> Contiguity-Based Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#introduction-6"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#objectives-5"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#preliminaries-5"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#preliminaries-5"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#load-packages-4"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#geodadata-1"><i class="fa fa-check"></i>geodaData</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#contiguity-weights"><i class="fa fa-check"></i>Contiguity Weights</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#contiguity-weights"><i class="fa fa-check"></i>Contiguity Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#rook-contiguity"><i class="fa fa-check"></i>Rook Contiguity</a></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#queen-contiguity"><i class="fa fa-check"></i>Queen Contiguity</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#higher-order-contiguity"><i class="fa fa-check"></i>Higher Order Contiguity</a></li>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#visualizing-contiguity-neighbors"><i class="fa fa-check"></i>Visualizing Contiguity Neighbors</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#visualizing-contiguity-neighbors"><i class="fa fa-check"></i>Visualizing Contiguity Neighbors</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#connectivity-graph"><i class="fa fa-check"></i>Connectivity Graph</a></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#connectivity-histogram"><i class="fa fa-check"></i>Connectivity Histogram</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#saving-neighbors"><i class="fa fa-check"></i>Saving Neighbors</a><ul>
+<li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#saving-neighbors"><i class="fa fa-check"></i>Saving Neighbors</a>
+<ul>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#oldstyle"><i class="fa fa-check"></i>Oldstyle</a></li>
 <li class="chapter" data-level="" data-path="contiguity-based-spatial-weights.html"><a href="contiguity-based-spatial-weights.html#geoda-header-format"><i class="fa fa-check"></i>GeoDA Header Format</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html"><i class="fa fa-check"></i><b>7</b> Distance-Based Spatial Weights</a><ul>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#introduction-7"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="7" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html"><i class="fa fa-check"></i><b>7</b> Distance-Based Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#introduction-7"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#objectives-6"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#preliminaries-6"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#preliminaries-6"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#load-packages-5"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#geodadata-2"><i class="fa fa-check"></i>geodaData</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#visualizing-point-data"><i class="fa fa-check"></i>Visualizing point data</a></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-band-weights"><i class="fa fa-check"></i>Distance-Band Weights</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-band-weights"><i class="fa fa-check"></i>Distance-Band Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#concepts"><i class="fa fa-check"></i>Concepts</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#creating-distance-band-weights"><i class="fa fa-check"></i>Creating distance-band weights</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#weights-characteristics"><i class="fa fa-check"></i>Weights characteristics</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#isolates"><i class="fa fa-check"></i>Isolates</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#k-nearest-neighbor-weights"><i class="fa fa-check"></i>K-Nearest Neighbor Weights</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#k-nearest-neighbor-weights"><i class="fa fa-check"></i>K-Nearest Neighbor Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#concept"><i class="fa fa-check"></i>Concept</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#creating-knn-weights"><i class="fa fa-check"></i>Creating KNN Weights</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#properties-of-knn-weights"><i class="fa fa-check"></i>Properties of KNN weights</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#generalizing-the-concept-of-contiguity"><i class="fa fa-check"></i>Generalizing the Concept of Contiguity</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#generalizing-the-concept-of-contiguity"><i class="fa fa-check"></i>Generalizing the Concept of Contiguity</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#contiguity-based-weights-for-points"><i class="fa fa-check"></i>Contiguity-based weights for points</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#contiguity-weights-for-thiessen-polygons"><i class="fa fa-check"></i>Contiguity weights for Thiessen polygons</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-based-weights-for-polygons"><i class="fa fa-check"></i>Distance-based weights for polygons</a><ul>
+<li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#distance-based-weights-for-polygons"><i class="fa fa-check"></i>Distance-based weights for polygons</a>
+<ul>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#getting-the-data"><i class="fa fa-check"></i>Getting the data</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-the-centroids"><i class="fa fa-check"></i>Computing the centroids</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-the-critical-threshold"><i class="fa fa-check"></i>Computing the critical threshold</a></li>
 <li class="chapter" data-level="" data-path="distance-based-spatial-weights.html"><a href="distance-based-spatial-weights.html#computing-distance-band-neighbors"><i class="fa fa-check"></i>Computing distance-band neighbors</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html"><i class="fa fa-check"></i><b>8</b> Spatial Weights as Distance Functions</a><ul>
-<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#introduction-8"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="8" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html"><i class="fa fa-check"></i><b>8</b> Spatial Weights as Distance Functions</a>
+<ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#introduction-8"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#objectives-7"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#preliminaries-7"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#preliminaries-7"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#load-packages-6"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#obtaining-the-data-from-the-geoda-website"><i class="fa fa-check"></i>Obtaining the Data from the GeoDa website</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#inverse-distance-weights"><i class="fa fa-check"></i>Inverse Distance Weights</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#inverse-distance-weights"><i class="fa fa-check"></i>Inverse Distance Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#concepts-1"><i class="fa fa-check"></i>Concepts</a></li>
 <li class="chapter" data-level="8.0.1" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-distance-bands"><i class="fa fa-check"></i><b>8.0.1</b> Creating inverse distance functions for distance bands</a></li>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-k-nearest-neighbors"><i class="fa fa-check"></i>Creating inverse distance functions for k-nearest neighbors</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#kernal-weights"><i class="fa fa-check"></i>Kernal Weights</a><ul>
+<li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#kernal-weights"><i class="fa fa-check"></i>Kernal Weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#concepts-2"><i class="fa fa-check"></i>Concepts</a></li>
 <li class="chapter" data-level="" data-path="spatial-weights-as-distance-functions.html"><a href="spatial-weights-as-distance-functions.html#creating-kernal-weights"><i class="fa fa-check"></i>Creating Kernal weights</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html"><i class="fa fa-check"></i><b>9</b> Applications of Spatial Weights</a><ul>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#introduction-9"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="9" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html"><i class="fa fa-check"></i><b>9</b> Applications of Spatial Weights</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#introduction-9"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#objectives-8"><i class="fa fa-check"></i>Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-8"><i class="fa fa-check"></i>Preliminaries</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-8"><i class="fa fa-check"></i>Preliminaries</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#load-packages-7"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#geodadata-3"><i class="fa fa-check"></i>geodaData</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables"><i class="fa fa-check"></i>Spatially lagged variables</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables"><i class="fa fa-check"></i>Spatially lagged variables</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#creating-a-spatially-lagged-variable"><i class="fa fa-check"></i>Creating a spatially lagged variable</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-inverse-distance-weights"><i class="fa fa-check"></i>Spatially lagged variables from inverse distance weights</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-inverse-distance-weights"><i class="fa fa-check"></i>Spatially lagged variables from inverse distance weights</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle"><i class="fa fa-check"></i>Principle</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#default-approach"><i class="fa fa-check"></i>Default approach</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-lags-with-row-standardized-inverse-distance-weights"><i class="fa fa-check"></i>Spatial lags with row-standardized inverse distance weights</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-lagged-variables-from-kernel-weights"><i class="fa fa-check"></i>Spatially lagged variables from kernel weights</a></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-rate-smoothing"><i class="fa fa-check"></i>Spatial rate smoothing</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-rate-smoothing"><i class="fa fa-check"></i>Spatial rate smoothing</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle-1"><i class="fa fa-check"></i>Principle</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#preliminaries-9"><i class="fa fa-check"></i>Preliminaries</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#simple-window-average-of-rates"><i class="fa fa-check"></i>Simple window average of rates</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatially-smoothed-rates"><i class="fa fa-check"></i>Spatially Smoothed Rates</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-empirical-bayes-smoothing"><i class="fa fa-check"></i>Spatial Empirical Bayes smoothing</a><ul>
+<li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-empirical-bayes-smoothing"><i class="fa fa-check"></i>Spatial Empirical Bayes smoothing</a>
+<ul>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#principle-2"><i class="fa fa-check"></i>Principle</a></li>
 <li class="chapter" data-level="" data-path="applications-of-spatial-weights.html"><a href="applications-of-spatial-weights.html#spatial-eb-rate-smoother"><i class="fa fa-check"></i>Spatial EB rate smoother</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>10</b> Global Spatial Autocorrelation 1</a><ul>
-<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#introduction-10"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="10" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>10</b> Global Spatial Autocorrelation 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#introduction-10"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="10.0.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#objectives-9"><i class="fa fa-check"></i><b>10.0.1</b> Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="10.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#preliminaries-10"><i class="fa fa-check"></i><b>10.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="10.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#preliminaries-10"><i class="fa fa-check"></i><b>10.1</b> Preliminaries</a>
+<ul>
 <li class="chapter" data-level="10.1.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#load-packages-8"><i class="fa fa-check"></i><b>10.1.1</b> Load packages</a></li>
 <li class="chapter" data-level="" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#geodadata-website"><i class="fa fa-check"></i>geodaData website</a></li>
 <li class="chapter" data-level="10.1.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#making-the-weights"><i class="fa fa-check"></i><b>10.1.2</b> Making the weights</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#the-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2</b> The Moran Scatter Plot</a><ul>
+<li class="chapter" data-level="10.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#the-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2</b> The Moran Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#concept-1"><i class="fa fa-check"></i><b>10.2.1</b> Concept</a></li>
 <li class="chapter" data-level="10.2.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#creating-a-moran-scatter-plot"><i class="fa fa-check"></i><b>10.2.2</b> Creating a Moran scatter plot</a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#spatial-correlogram"><i class="fa fa-check"></i><b>10.3</b> Spatial Correlogram</a><ul>
+<li class="chapter" data-level="10.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#spatial-correlogram"><i class="fa fa-check"></i><b>10.3</b> Spatial Correlogram</a>
+<ul>
 <li class="chapter" data-level="10.3.1" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#concept-2"><i class="fa fa-check"></i><b>10.3.1</b> Concept</a></li>
 <li class="chapter" data-level="10.3.2" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#creating-a-spatial-correlogram"><i class="fa fa-check"></i><b>10.3.2</b> Creating a spatial correlogram</a></li>
 <li class="chapter" data-level="10.3.3" data-path="global-spatial-autocorrelation-1.html"><a href="global-spatial-autocorrelation-1.html#interpretation-1"><i class="fa fa-check"></i><b>10.3.3</b> Interpretation</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html"><i class="fa fa-check"></i><b>11</b> Global Spatial Autocorrelation 2</a><ul>
-<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#introduction-11"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="11" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html"><i class="fa fa-check"></i><b>11</b> Global Spatial Autocorrelation 2</a>
+<ul>
+<li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#introduction-11"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="11.0.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#objectives-10"><i class="fa fa-check"></i><b>11.0.1</b> Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="11.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#preliminaries-11"><i class="fa fa-check"></i><b>11.1</b> Preliminaries</a><ul>
+<li class="chapter" data-level="11.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#preliminaries-11"><i class="fa fa-check"></i><b>11.1</b> Preliminaries</a>
+<ul>
 <li class="chapter" data-level="11.1.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#load-packages-9"><i class="fa fa-check"></i><b>11.1.1</b> Load packages</a></li>
 <li class="chapter" data-level="" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#obtaining-the-data-from-the-geoda-website-1"><i class="fa fa-check"></i>Obtaining the Data from the GeoDa website</a></li>
 <li class="chapter" data-level="11.1.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#creating-the-weights-2"><i class="fa fa-check"></i><b>11.1.2</b> Creating the weights</a></li>
 </ul></li>
 <li class="chapter" data-level="11.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-spatial-correlation---a-word-of-caution"><i class="fa fa-check"></i><b>11.2</b> Bivariate spatial correlation - a Word of Caution</a></li>
-<li class="chapter" data-level="11.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3</b> Bivariate Moran Scatter Plot</a><ul>
+<li class="chapter" data-level="11.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3</b> Bivariate Moran Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="11.3.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-3"><i class="fa fa-check"></i><b>11.3.1</b> Concept</a></li>
 <li class="chapter" data-level="11.3.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#creating-a-bivariate-moran-scatter-plot"><i class="fa fa-check"></i><b>11.3.2</b> Creating a bivariate Moran scatter plot</a></li>
 <li class="chapter" data-level="11.3.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#a-closer-look-at-bivariate-spatial-correlation"><i class="fa fa-check"></i><b>11.3.3</b> A closer look at bivariate spatial correlation</a></li>
 </ul></li>
-<li class="chapter" data-level="11.4" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#differential-moran-scatter-plot"><i class="fa fa-check"></i><b>11.4</b> Differential Moran Scatter Plot</a><ul>
+<li class="chapter" data-level="11.4" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#differential-moran-scatter-plot"><i class="fa fa-check"></i><b>11.4</b> Differential Moran Scatter Plot</a>
+<ul>
 <li class="chapter" data-level="11.4.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-4"><i class="fa fa-check"></i><b>11.4.1</b> Concept</a></li>
 <li class="chapter" data-level="11.4.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#implementation"><i class="fa fa-check"></i><b>11.4.2</b> Implementation</a></li>
 <li class="chapter" data-level="11.4.3" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#options"><i class="fa fa-check"></i><b>11.4.3</b> Options</a></li>
 </ul></li>
-<li class="chapter" data-level="11.5" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#moran-scatter-plot-for-eb-rates"><i class="fa fa-check"></i><b>11.5</b> Moran Scatter Plot for EB Rates</a><ul>
+<li class="chapter" data-level="11.5" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#moran-scatter-plot-for-eb-rates"><i class="fa fa-check"></i><b>11.5</b> Moran Scatter Plot for EB Rates</a>
+<ul>
 <li class="chapter" data-level="11.5.1" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#concept-5"><i class="fa fa-check"></i><b>11.5.1</b> Concept</a></li>
 <li class="chapter" data-level="11.5.2" data-path="global-spatial-autocorrelation-2.html"><a href="global-spatial-autocorrelation-2.html#implementation-1"><i class="fa fa-check"></i><b>11.5.2</b> Implementation</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>12</b> Local Spatial Autocorrelation 1</a><ul>
-<li class="chapter" data-level="" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#introduction-12"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="12" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html"><i class="fa fa-check"></i><b>12</b> Local Spatial Autocorrelation 1</a>
+<ul>
+<li class="chapter" data-level="" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#introduction-12"><i class="fa fa-check"></i>Introduction</a>
+<ul>
 <li class="chapter" data-level="12.0.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#objectives-11"><i class="fa fa-check"></i><b>12.0.1</b> Objectives</a></li>
 </ul></li>
-<li class="chapter" data-level="12.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#preliminaries-12"><i class="fa fa-check"></i><b>12.1</b> Preliminaries</a><ul>
-<li class="chapter" data-level="12.1.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#installing-spatmap-and-geodadata"><i class="fa fa-check"></i><b>12.1.1</b> Installing spatmap and geodaData</a></li>
-<li class="chapter" data-level="12.1.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#load-packages-10"><i class="fa fa-check"></i><b>12.1.2</b> Load packages</a></li>
-<li class="chapter" data-level="12.1.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#spatmap"><i class="fa fa-check"></i><b>12.1.3</b> spatmap</a></li>
-<li class="chapter" data-level="12.1.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#geodadata-5"><i class="fa fa-check"></i><b>12.1.4</b> geodaData</a></li>
-<li class="chapter" data-level="12.1.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#univariate-analysis"><i class="fa fa-check"></i><b>12.1.5</b> Univariate analysis</a></li>
+<li class="chapter" data-level="12.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#preliminaries-12"><i class="fa fa-check"></i><b>12.1</b> Preliminaries</a>
+<ul>
+<li class="chapter" data-level="12.1.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#load-packages-10"><i class="fa fa-check"></i><b>12.1.1</b> Load packages</a></li>
+<li class="chapter" data-level="12.1.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#spatmap"><i class="fa fa-check"></i><b>12.1.2</b> spatmap</a></li>
+<li class="chapter" data-level="12.1.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#geodadata-5"><i class="fa fa-check"></i><b>12.1.3</b> geodaData</a></li>
+<li class="chapter" data-level="12.1.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#univariate-analysis"><i class="fa fa-check"></i><b>12.1.4</b> Univariate analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="12.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-moran"><i class="fa fa-check"></i><b>12.2</b> Local Moran</a><ul>
+<li class="chapter" data-level="12.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-moran"><i class="fa fa-check"></i><b>12.2</b> Local Moran</a>
+<ul>
 <li class="chapter" data-level="12.2.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-3"><i class="fa fa-check"></i><b>12.2.1</b> Principle</a></li>
 <li class="chapter" data-level="12.2.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-2"><i class="fa fa-check"></i><b>12.2.2</b> Implementation</a></li>
 <li class="chapter" data-level="12.2.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#randomization-options"><i class="fa fa-check"></i><b>12.2.3</b> Randomization Options</a></li>
@@ -421,16 +550,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.2.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#interpretation-of-clusters"><i class="fa fa-check"></i><b>12.2.5</b> Interpretation of clusters</a></li>
 <li class="chapter" data-level="12.2.6" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#conditional-local-cluster-maps"><i class="fa fa-check"></i><b>12.2.6</b> Conditional local cluster maps</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-geary"><i class="fa fa-check"></i><b>12.3</b> Local Geary</a><ul>
+<li class="chapter" data-level="12.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-geary"><i class="fa fa-check"></i><b>12.3</b> Local Geary</a>
+<ul>
 <li class="chapter" data-level="12.3.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-4"><i class="fa fa-check"></i><b>12.3.1</b> Principle</a></li>
 <li class="chapter" data-level="12.3.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-3"><i class="fa fa-check"></i><b>12.3.2</b> Implementation</a></li>
 </ul></li>
-<li class="chapter" data-level="12.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#getis-ord-statistics"><i class="fa fa-check"></i><b>12.4</b> Getis-Ord Statistics</a><ul>
+<li class="chapter" data-level="12.4" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#getis-ord-statistics"><i class="fa fa-check"></i><b>12.4</b> Getis-Ord Statistics</a>
+<ul>
 <li class="chapter" data-level="12.4.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-5"><i class="fa fa-check"></i><b>12.4.1</b> Principle</a></li>
 <li class="chapter" data-level="12.4.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-4"><i class="fa fa-check"></i><b>12.4.2</b> Implementation</a></li>
 <li class="chapter" data-level="12.4.3" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#interpretation-and-significance-1"><i class="fa fa-check"></i><b>12.4.3</b> Interpretation and significance</a></li>
 </ul></li>
-<li class="chapter" data-level="12.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-join-count-statistic"><i class="fa fa-check"></i><b>12.5</b> Local Join Count Statistic</a><ul>
+<li class="chapter" data-level="12.5" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#local-join-count-statistic"><i class="fa fa-check"></i><b>12.5</b> Local Join Count Statistic</a>
+<ul>
 <li class="chapter" data-level="12.5.1" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#principle-6"><i class="fa fa-check"></i><b>12.5.1</b> Principle</a></li>
 <li class="chapter" data-level="12.5.2" data-path="local-spatial-autocorrelation-1.html"><a href="local-spatial-autocorrelation-1.html#implementation-5"><i class="fa fa-check"></i><b>12.5.2</b> Implementation</a></li>
 </ul></li>
@@ -453,32 +585,35 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="spatial-weights-as-distance-functions" class="section level1">
-<h1><span class="header-section-number">Chapter 8</span> Spatial Weights as Distance Functions</h1>
-<div id="introduction-8" class="section level2 unnumbered">
-<h2>Introduction</h2>
+<div id="spatial-weights-as-distance-functions" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Spatial Weights as Distance Functions<a href="spatial-weights-as-distance-functions.html#spatial-weights-as-distance-functions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-8" class="section level2 unnumbered hasAnchor">
+<h2>Introduction<a href="spatial-weights-as-distance-functions.html#introduction-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This notebook covers the functionality of the <a href="https://geodacenter.github.io/workbook/4c_distance_functions/lab4c.html">Spatial Weights as Distance Functions</a> section of the GeoDa workbook. We refer to that document for details on the methodology, references, etc. The goal of these notes is to approximate as closely as possible the operations carried out using GeoDa by means of a range of R packages.</p>
-<p>The notes are written with R beginners in mind, more seasoned R users can probably skip most of the comments on data structures and other R particulars. Also, as always in R, there are typically several ways to achieve a specific objective, so what is shown here is just one way that works, but there often are others (that may even be more elegant, work faster, or scale better).</p>
+<p>The notes are written with R beginners in mind, more seasoned R users can probably skip most of the comments
+on data structures and other R particulars. Also, as always in R, there are typically several ways to achieve a specific objective, so what is shown here is just one way that works, but there often are others (that may even be more elegant, work faster, or scale better).</p>
 <p>For this notebook, we use Cleveland house price data. Our goal in this lab is show how to assign spatial weights based on different distance functions.</p>
-<div id="objectives-7" class="section level3 unnumbered">
-<h3>Objectives</h3>
+<div id="objectives-7" class="section level3 unnumbered hasAnchor">
+<h3>Objectives<a href="spatial-weights-as-distance-functions.html#objectives-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>After completing the notebook, you should know how to carry out the following tasks:</p>
 <ul>
 <li><p>Compute inverse distance functions</p></li>
 <li><p>Compute kernal weights functions</p></li>
 <li><p>Assess the characteristics of weights based on distance functions</p></li>
 </ul>
-<div id="r-packages-used-7" class="section level4 unnumbered">
-<h4>R Packages used</h4>
+<div id="r-packages-used-7" class="section level4 unnumbered hasAnchor">
+<h4>R Packages used<a href="spatial-weights-as-distance-functions.html#r-packages-used-7" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li><p><strong>sf</strong>: To read in the shapefile.</p></li>
 <li><p><strong>spdep</strong>: To create k-nearest neighbors and distance-band neighbors, calculate distances between neighbors, convert to a weights structure, and coercion methods to sparse matrices.</p></li>
 <li><p><strong>geodaData</strong>: To access the data for this notebook.</p></li>
 </ul>
 </div>
-<div id="r-commands-used-7" class="section level4 unnumbered">
-<h4>R Commands used</h4>
-<p>Below follows a list of the commands used in this notebook. For further details and a comprehensive list of options, please consult the <a href="https://www.rdocumentation.org">R documentation</a>.</p>
+<div id="r-commands-used-7" class="section level4 unnumbered hasAnchor">
+<h4>R Commands used<a href="spatial-weights-as-distance-functions.html#r-commands-used-7" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Below follows a list of the commands used in this notebook. For further details
+and a comprehensive list of options, please consult the
+<a href="https://www.rdocumentation.org">R documentation</a>.</p>
 <ul>
 <li><p><strong>Base R</strong>: <code>install.packages</code>, <code>library</code>, <code>setwd</code>, <code>class</code>, <code>str</code>, <code>lapply</code>, <code>attributes</code>, <code>summary</code>, <code>head</code>, <code>seq</code>, <code>as</code>, <code>cbind</code>, <code>max</code>, <code>unlist</code>, <code>length</code>, <code>sqrt</code>, <code>exp</code>, <code>diag</code>, <code>sort</code>, <code>append</code></p></li>
 <li><p><strong>sf</strong>: <code>st_read</code>, <code>plot</code></p></li>
@@ -487,76 +622,147 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 </div>
 </div>
-<div id="preliminaries-7" class="section level2 unnumbered">
-<h2>Preliminaries</h2>
-<p>Before starting, make sure to have the latest version of R and of packages that are compiled for the matching version of R (this document was created using R 3.5.1 of 2018-07-02). Also, optionally, set a working directory, even though we will not actually be saving any files.<a href="#fn23" class="footnoteRef" id="fnref23"><sup>23</sup></a></p>
-<div id="load-packages-6" class="section level3 unnumbered">
-<h3>Load packages</h3>
-<p>First, we load all the required packages using the <code>library</code> command. If you don't have some of these in your system, make sure to install them first as well as their dependencies.<a href="#fn24" class="footnoteRef" id="fnref24"><sup>24</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
-<span class="kw">library</span>(spdep)
-<span class="kw">library</span>(geodaData)</code></pre></div>
+<div id="preliminaries-7" class="section level2 unnumbered hasAnchor">
+<h2>Preliminaries<a href="spatial-weights-as-distance-functions.html#preliminaries-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before starting, make sure to have the latest version of R and of packages that are compiled for the matching version of R (this document was created using R 3.5.1 of 2018-07-02). Also, optionally, set a working directory, even though we will not
+actually be saving any files.<a href="#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a></p>
+<div id="load-packages-6" class="section level3 unnumbered hasAnchor">
+<h3>Load packages<a href="spatial-weights-as-distance-functions.html#load-packages-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First, we load all the required packages using the <code>library</code> command. If you don’t have some of these in your system, make sure to install them first as well as
+their dependencies.<a href="#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a> You will get an error message if something is missing. If needed, just install the missing piece and everything will work after that.</p>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="spatial-weights-as-distance-functions.html#cb389-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb389-2"><a href="spatial-weights-as-distance-functions.html#cb389-2" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb389-3"><a href="spatial-weights-as-distance-functions.html#cb389-3" tabindex="-1"></a><span class="fu">library</span>(geodaData)</span>
+<span id="cb389-4"><a href="spatial-weights-as-distance-functions.html#cb389-4" tabindex="-1"></a><span class="fu">library</span>(spatialreg)</span></code></pre></div>
 </div>
-<div id="obtaining-the-data-from-the-geoda-website" class="section level3 unnumbered">
-<h3>Obtaining the Data from the GeoDa website</h3>
-<p>All of the data for the R notebooks is available in the <strong>geodaData</strong> package. We loaded the library earlier, now to access the individual data sets, we use the double colon notation. This works similar to to accessing a variable with <code>$</code>, in that a drop down menu will appear with a list of the datasets included in the package. For this notebook, we use <code>clev_pts</code>.</p>
-<p>Otherwise, Tt get the data for this notebook, you will and to go to <a href="https://geodacenter.github.io/data-and-lab//clev_sls_154_core/">Cleveland Home Sales</a> The download format is a zipfile, so you will need to unzip it by double clicking on the file in your file finder. From there move the resulting folder titled: nyc into your working directory to continue. Once that is done, you can use the <strong>sf</strong> function: <code>st_read()</code> to read the shapefile into your R environment.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">clev.points &lt;-<span class="st"> </span>geodaData<span class="op">::</span>clev_pts</code></pre></div>
+<div id="obtaining-the-data-from-the-geoda-website" class="section level3 unnumbered hasAnchor">
+<h3>Obtaining the Data from the GeoDa website<a href="spatial-weights-as-distance-functions.html#obtaining-the-data-from-the-geoda-website" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>All of the data for the R notebooks is available in the <strong>geodaData</strong>
+package. We loaded the library earlier, now to access the individual
+data sets, we use the double colon notation. This works similar to
+to accessing a variable with <code>$</code>, in that a drop down menu will
+appear with a list of the datasets included in the package. For this
+notebook, we use <code>clev_pts</code>.</p>
+<p>Otherwise, Tt get the data for this notebook, you will and to go to <a href="https://geodacenter.github.io/data-and-lab//clev_sls_154_core/">Cleveland Home Sales</a> The download format is a
+zipfile, so you will need to unzip it by double clicking on the file in your file
+finder. From there move the resulting folder titled: nyc into your working directory
+to continue. Once that is done, you can use the <strong>sf</strong> function: <code>st_read()</code> to read
+the shapefile into your R environment.</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="spatial-weights-as-distance-functions.html#cb390-1" tabindex="-1"></a>clev.points <span class="ot">&lt;-</span> geodaData<span class="sc">::</span>clev_pts</span></code></pre></div>
 </div>
 </div>
-<div id="inverse-distance-weights" class="section level2 unnumbered">
-<h2>Inverse Distance Weights</h2>
-<div id="concepts-1" class="section level3 unnumbered">
-<h3>Concepts</h3>
-<p>One can readily view spatial weights based on a distance cut-off as representing a step function, with a value of 1 for neighbors with <span class="math inline">\(d_{ij} &lt; \delta\)</span>, and a value of 0 for others. As before, <span class="math inline">\(d_{ij}\)</span> stands for the distance between observations i and j, and <span class="math inline">\(\delta\)</span> is the bandwidth.</p>
-<p>A straightforward extension of this principle is to consider a continuous parameterized function of distance itself: <span class="math display">\[w_{ij}=f(d_{ij},\theta)\]</span> with f as a functional form and <span class="math inline">\(\theta\)</span> a vector of parameters.</p>
-<p>In order to conform to Tobler’s first law of geography, a distance decay effect must be respected. In other words, the value of the function of distance needs to decrease with a growing distance. More formally, the partial derivative of the distance function with respect to distance should be negative, <span class="math inline">\(\partial{}w_{ij}/\partial{}d_{ij}&lt;0\)</span> .</p>
-<p>Commonly used distance functions are the inverse, with <span class="math inline">\(w_{ij}=1/d_{ij}^\alpha\)</span>(and <span class="math inline">\(\alpha\)</span> as a parameter), and the negative exponential, with <span class="math inline">\(w_{ij}=e^{-\beta d_{ij}}\)</span>(and <span class="math inline">\(\beta\)</span> as a parameter). The functions are often combined with a distance cut-off criterion, such that <span class="math inline">\(w_{ij}=0\)</span> for <span class="math inline">\(d_{ij}&gt;\delta\)</span>.</p>
-<p>In practice, the parameters are seldom estimated, but typically set to a fixed value, such as <span class="math inline">\(\alpha=1\)</span> for inverse distance weights (<span class="math inline">\(1/d_{ij}\)</span>), and <span class="math inline">\(\alpha=2\)</span> for gravity weights (<span class="math inline">\(1/d_{ij}^2\)</span>). By convention, the diagonal elements of the spatial weights are set to zero and not computed. Plugging in a value of <span class="math inline">\(d_{ii}=0\)</span> would yield division by zero for inverse distance weights.</p>
-<p>The distance-based weights depend not only on the parameter value and functional form, but also on the metric used for distance. Since the weights are inversely related to distance, large values for the latter will yield small values for the former, and vice versa. This may be a problem in practice when the distances are so large (i.e., measured in small units) that the corresponding inverse distance weights become close to zero, possibly resulting in a zero spatial weights matrix.</p>
-<p>In addition, a potential problem may occur when the distance metric is such that distances take on values less than one. As a consequence, some inverse distance values may be larger than one, which is typically not a desired result.</p>
+<div id="inverse-distance-weights" class="section level2 unnumbered hasAnchor">
+<h2>Inverse Distance Weights<a href="spatial-weights-as-distance-functions.html#inverse-distance-weights" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="concepts-1" class="section level3 unnumbered hasAnchor">
+<h3>Concepts<a href="spatial-weights-as-distance-functions.html#concepts-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>One can readily view spatial weights based on a distance cut-off as representing a step
+function, with a value of 1 for neighbors with <span class="math inline">\(d_{ij} &lt; \delta\)</span>, and a value of 0 for others. As before,
+<span class="math inline">\(d_{ij}\)</span> stands for the distance between observations i and j, and <span class="math inline">\(\delta\)</span> is the bandwidth.</p>
+<p>A straightforward extension of this principle is to consider a continuous parameterized
+function of distance itself:
+<span class="math display">\[w_{ij}=f(d_{ij},\theta)\]</span>
+with f as a functional form and <span class="math inline">\(\theta\)</span> a vector of parameters.</p>
+<p>In order to conform to Tobler’s first law of geography, a distance decay effect must be
+respected. In other words, the value of the function of distance needs to decrease with a
+growing distance. More formally, the partial derivative of the distance function with respect
+to distance should be negative, <span class="math inline">\(\partial{}w_{ij}/\partial{}d_{ij}&lt;0\)</span>
+.</p>
+<p>Commonly used distance functions are the inverse, with <span class="math inline">\(w_{ij}=1/d_{ij}^\alpha\)</span>(and <span class="math inline">\(\alpha\)</span> as a parameter), and the negative exponential, with <span class="math inline">\(w_{ij}=e^{-\beta d_{ij}}\)</span>(and <span class="math inline">\(\beta\)</span> as a parameter). The functions are often
+combined with a distance cut-off criterion, such that <span class="math inline">\(w_{ij}=0\)</span> for <span class="math inline">\(d_{ij}&gt;\delta\)</span>.</p>
+<p>In practice, the parameters are seldom estimated, but typically set to a fixed value, such as
+<span class="math inline">\(\alpha=1\)</span> for inverse distance weights (<span class="math inline">\(1/d_{ij}\)</span>), and <span class="math inline">\(\alpha=2\)</span> for gravity weights (<span class="math inline">\(1/d_{ij}^2\)</span>). By convention,
+the diagonal elements of the spatial weights are set to zero and not computed. Plugging in a
+value of <span class="math inline">\(d_{ii}=0\)</span> would yield division by zero for inverse distance weights.</p>
+<p>The distance-based weights depend not only on the parameter value and functional form, but also
+on the metric used for distance. Since the weights are inversely related to distance, large
+values for the latter will yield small values for the former, and vice versa. This may be a
+problem in practice when the distances are so large (i.e., measured in small units) that the
+corresponding inverse distance weights become close to zero, possibly resulting in a zero
+spatial weights matrix.</p>
+<p>In addition, a potential problem may occur when the distance metric is such that distances take
+on values less than one. As a consequence, some inverse distance values may be larger than one,
+which is typically not a desired result.</p>
 <p>Rescaling of the coordinates will fix both problems.</p>
 </div>
-<div id="creating-inverse-distance-functions-for-distance-bands" class="section level3">
-<h3><span class="header-section-number">8.0.1</span> Creating inverse distance functions for distance bands</h3>
-<p>To create our inverse disatnce weights, we follow the steps involved with creating distance-band neighbors along with a few additional steps to calculate and assign the weight values. Here we will go over a basic outline of the steps to create the inverse distance weights. First we calculate our distance-band neighbors. Next we get the distances between each neighbors stored in the same format as the neighbors data structure. Then we apply a function to each element in this structure, giving us the inverse distances. Finally we assign these as the weight values when converting from class <strong>nb</strong> to class <strong>listw</strong>.</p>
+<div id="creating-inverse-distance-functions-for-distance-bands" class="section level3 hasAnchor" number="8.0.1">
+<h3><span class="header-section-number">8.0.1</span> Creating inverse distance functions for distance bands<a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-distance-bands" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To create our inverse disatnce weights, we follow the steps involved with creating
+distance-band neighbors along with a few additional steps to calculate and assign the
+weight values. Here we will go over a basic outline of the steps to create the inverse
+distance weights. First we calculate our distance-band neighbors. Next we get the
+distances between each neighbors stored in the same format as the neighbors data structure. Then
+we apply a function to each element in this structure, giving us the inverse distances.
+Finally we assign these as the weight values when converting from class <strong>nb</strong> to
+class <strong>listw</strong>.</p>
 <p>We begin by putting our coordinates in a separate matrix from <strong>clev.points</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coords &lt;-<span class="st"> </span><span class="kw">cbind</span>(clev.points<span class="op">$</span>x,clev.points<span class="op">$</span>y)</code></pre></div>
-<p>In order to calulate our distance-band neighbors, we need an upper and lower distance bound. The lower is always 0 for the most part. We can put anything for the upper, but we will pick a value, that keeps isolates out of our distance-band-neighbors. To do this we need to find the k-nearest neighbors for k = 1, then get the maximum distance between points. This is covered in the distance-band spatial weights notebook, but we will go through the steps here.</p>
-<p>To get the k-nearest neighbors for k = 1, we need two function from the <strong>spdep</strong> library: <code>knn2nb</code> and <code>knearneigh</code>. <code>knearneigh</code> calculates the neighbors and stores the information in class <strong>knn</strong>, and <code>knn2nb</code> converts the class to <strong>nb</strong>, so we can work with it further.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k1 &lt;-<span class="st"> </span><span class="kw">knn2nb</span>(<span class="kw">knearneigh</span>(coords))</code></pre></div>
-<p>Computing the critcal threshold will require a few functions now that we have a neighbors list. First step is to get the distances between each point and it's closest neighbor. This can be done with the <code>nbdists</code>. With these distances, we just need to find the maximum. For this we use the <code>max</code> command. However, we cannot do this with lists, so we must first get a data type that works for the <code>max</code> command, in our case, we use <code>unlist</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">critical.threshold &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">unlist</span>(<span class="kw">nbdists</span>(k1,coords)))
-critical.threshold</code></pre></div>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="spatial-weights-as-distance-functions.html#cb391-1" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">cbind</span>(clev.points<span class="sc">$</span>x,clev.points<span class="sc">$</span>y)</span></code></pre></div>
+<p>In order to calulate our distance-band neighbors, we need an upper and lower distance
+bound. The lower is always 0 for the most part. We can put anything for the upper,
+but we will pick a value, that keeps isolates out of our distance-band-neighbors.
+To do this we need to find the k-nearest neighbors for k = 1, then get the maximum
+distance between points. This is covered in the distance-band spatial weights notebook,
+but we will go through the steps here.</p>
+<p>To get the k-nearest neighbors for k = 1, we need two function from the <strong>spdep</strong>
+library: <code>knn2nb</code> and <code>knearneigh</code>. <code>knearneigh</code> calculates the neighbors and
+stores the information in class <strong>knn</strong>, and <code>knn2nb</code> converts the class to <strong>nb</strong>,
+so we can work with it further.</p>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="spatial-weights-as-distance-functions.html#cb392-1" tabindex="-1"></a>k1 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords))</span></code></pre></div>
+<p>Computing the critcal threshold will require a few functions now that we have a neighbors
+list. First step is to get the distances between each point and it’s closest neighbor.
+This can be done with the <code>nbdists</code>. With these distances, we just need to find the
+maximum. For this we use the <code>max</code> command. However, we cannot do this with lists, so we must
+first get a data type that works for the <code>max</code> command, in our case, we use <code>unlist</code></p>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="spatial-weights-as-distance-functions.html#cb393-1" tabindex="-1"></a>critical.threshold <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">unlist</span>(<span class="fu">nbdists</span>(k1,coords)))</span>
+<span id="cb393-2"><a href="spatial-weights-as-distance-functions.html#cb393-2" tabindex="-1"></a>critical.threshold</span></code></pre></div>
 <pre><code>## [1] 3598.055</code></pre>
-<p>We have all the necessary components to calculate the distance-band neighbors. To get these we use <code>dnearneigh</code>. The parameters needed are the coordinates, a lower distance bound and an upper distance bound.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nb.dist.band &lt;-<span class="st"> </span><span class="kw">dnearneigh</span>(coords, <span class="dv">0</span>, critical.threshold)</code></pre></div>
-<p>To get inverse distance, we need to calculate the distances between all of the neighbors. for this we will use <code>nbdists</code>, which gives us the distances in a similar structure to our input neighbors list. To use this function we need to input the neighbors list and the coordinates.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">distances &lt;-<span class="st"> </span><span class="kw">nbdists</span>(nb.dist.band,coords)
-distances[<span class="dv">1</span>]</code></pre></div>
+<p>We have all the necessary components to calculate the distance-band neighbors. To get
+these we use <code>dnearneigh</code>. The parameters needed are the coordinates, a lower distance
+bound and an upper distance bound.</p>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="spatial-weights-as-distance-functions.html#cb395-1" tabindex="-1"></a>nb.dist.band <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, <span class="dv">0</span>, critical.threshold)</span></code></pre></div>
+<p>To get inverse distance, we need to calculate the distances between all of the neighbors.
+for this we will use <code>nbdists</code>, which gives us the distances in a similar structure to
+our input neighbors list. To use this function we need to input the neighbors list and
+the coordinates.</p>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="spatial-weights-as-distance-functions.html#cb396-1" tabindex="-1"></a>distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(nb.dist.band,coords)</span>
+<span id="cb396-2"><a href="spatial-weights-as-distance-functions.html#cb396-2" tabindex="-1"></a>distances[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1]  385.161 3013.071 1160.312 1858.904 3367.150 2525.503 3253.025 3390.735
 ## [9] 3369.644</code></pre>
-<p>Calculating the inverse distances will require a function that applies 1/x over the entire <strong>distances</strong> data structure. We will use <code>lapply</code> to accomplish this. The parameters needed are the distances, and a function which we specify in <code>lapply</code>. We use the <code>function</code> operator with <strong>(1/x)</strong> to get the appropriate function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">invd1 &lt;-<span class="st"> </span><span class="kw">lapply</span>(distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="op">/</span>x))</code></pre></div>
-<p>Here we check the length of the inverse distances to make sure it lines up with our neighbors list.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(invd1)</code></pre></div>
+<p>Calculating the inverse distances will require a function that applies 1/x over the
+entire <strong>distances</strong> data structure. We will use <code>lapply</code> to accomplish this. The parameters
+needed are the distances, and a function which we specify in <code>lapply</code>. We use the <code>function</code>
+operator with <strong>(1/x)</strong> to get the appropriate function.</p>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="spatial-weights-as-distance-functions.html#cb398-1" tabindex="-1"></a>invd1 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>x))</span></code></pre></div>
+<p>Here we check the length of the inverse distances to make sure it lines up with our neighbors
+list.</p>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="spatial-weights-as-distance-functions.html#cb399-1" tabindex="-1"></a><span class="fu">length</span>(invd1)</span></code></pre></div>
 <pre><code>## [1] 205</code></pre>
-<p>We check the first element of the resulting data structure to make sure it is in line with the neighbors list structure. This is important because we will need the structures to correspond in order to assign the inverse distances as the weight values when converting from a neighbors list or class <strong>nb</strong> to a weight structure: class <strong>listw</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">invd1[<span class="dv">1</span>]</code></pre></div>
+<p>We check the first element of the resulting data structure to make sure it is in line with
+the neighbors list structure. This is important because we will need the structures to
+correspond in order to assign the inverse distances as the weight values when converting from
+a neighbors list or class <strong>nb</strong> to a weight structure: class <strong>listw</strong>.</p>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="spatial-weights-as-distance-functions.html#cb401-1" tabindex="-1"></a>invd1[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.0025963168 0.0003318873 0.0008618371 0.0005379514 0.0002969871
 ## [6] 0.0003959608 0.0003074062 0.0002949213 0.0002967673</code></pre>
-<p>A key insight from the first element of the inverse distance structure is that the values are very small, or too close to zero. The unit of distance for our dataset is in feet. This means distance values between points can be quite large and result in small inverses. To correct for this scale dependence, we can rescale the distances by repeating the inverse calculations, while adjusting the scale. We can make this adjustment by dividing <strong>x</strong> in our function by 100, before calculating the inverses.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">invd1a &lt;-<span class="st"> </span><span class="kw">lapply</span>(distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="op">/</span>(x<span class="op">/</span><span class="dv">100</span>)))
-invd1a[<span class="dv">1</span>]</code></pre></div>
+<p>A key insight from the first element of the inverse distance structure is that the values are
+very small, or too close to zero. The unit of distance for our dataset is in feet. This
+means distance values between points can be quite large and result in small inverses. To
+correct for this scale dependence, we can rescale the distances by repeating the inverse
+calculations, while adjusting the scale. We can make this adjustment by dividing <strong>x</strong> in
+our function by 100, before calculating the inverses.</p>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="spatial-weights-as-distance-functions.html#cb403-1" tabindex="-1"></a>invd1a <span class="ot">&lt;-</span> <span class="fu">lapply</span>(distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>(x<span class="sc">/</span><span class="dv">100</span>)))</span>
+<span id="cb403-2"><a href="spatial-weights-as-distance-functions.html#cb403-2" tabindex="-1"></a>invd1a[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.25963168 0.03318873 0.08618371 0.05379514 0.02969871 0.03959608 0.03074062
 ## [8] 0.02949213 0.02967673</code></pre>
-<p>Now that we have properly scaled inverse distances, we can assign them as weight values. This is done in the conversion function <code>nb2listw</code>. To assign the weights, we use the <code>glist =</code> argument. For this to work we also have to specify <code>style = &quot;B&quot;</code>, otherwise the <code>listw</code> function will use the default row standardization.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">invd.weights &lt;-<span class="st"> </span><span class="kw">nb2listw</span>(nb.dist.band,<span class="dt">glist =</span> invd1a,<span class="dt">style =</span> <span class="st">&quot;B&quot;</span>)</code></pre></div>
+<p>Now that we have properly scaled inverse distances, we can assign them as weight values.
+This is done in the conversion function <code>nb2listw</code>. To assign the weights, we use the
+<code>glist =</code> argument. For this to work we also have to specify <code>style = "B"</code>, otherwise the
+<code>listw</code> function will use the default row standardization.</p>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="spatial-weights-as-distance-functions.html#cb405-1" tabindex="-1"></a>invd.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(nb.dist.band,<span class="at">glist =</span> invd1a,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
 <p>Here we take a cursory look at our weights with <code>summary</code> to get basic imformation and statistics.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(invd.weights)</code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="spatial-weights-as-distance-functions.html#cb406-1" tabindex="-1"></a><span class="fu">summary</span>(invd.weights)</span></code></pre></div>
 <pre><code>## Characteristics of weights list object:
 ## Neighbour list object:
 ## Number of regions: 205 
@@ -579,47 +785,66 @@ invd1a[<span class="dv">1</span>]</code></pre></div>
 ##     n    nn       S0       S1       S2
 ## B 205 42025 180.2882 145.9202 1018.442</code></pre>
 <p>We can check the values of the weights by using <code>$weights</code> to access the values.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">invd.weights<span class="op">$</span>weights[<span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="spatial-weights-as-distance-functions.html#cb408-1" tabindex="-1"></a>invd.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.25963168 0.03318873 0.08618371 0.05379514 0.02969871 0.03959608 0.03074062
 ## [8] 0.02949213 0.02967673</code></pre>
-<div id="properties-of-inverse-distance-weights" class="section level4 unnumbered">
-<h4>Properties of inverse distance weights</h4>
-<p>Since the properties only pertain to the connectivity structure implied by the weights, they are identical to the ones obtained for the standard distance-band weights. It is important to keep in mind that the actual values for the weights are ignored in this operation.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(invd.weights, coords, <span class="dt">lwd=</span>.<span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">cex =</span> .<span class="dv">5</span>)</code></pre></div>
+<div id="properties-of-inverse-distance-weights" class="section level4 unnumbered hasAnchor">
+<h4>Properties of inverse distance weights<a href="spatial-weights-as-distance-functions.html#properties-of-inverse-distance-weights" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Since the properties only pertain to the connectivity structure implied by the weights,
+they are identical to the ones obtained for the standard distance-band weights. It is
+important to keep in mind that the actual values for the weights are ignored in this
+operation.</p>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="spatial-weights-as-distance-functions.html#cb410-1" tabindex="-1"></a><span class="fu">plot</span>(invd.weights, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-300-1.png" width="672" /></p>
-<p>The connectivity map and the connectivity graph associated with the weights are the same as before as well.</p>
+<p>The connectivity map and the connectivity graph associated with the weights are the
+same as before as well.</p>
 </div>
-<div id="using-non-geographical-coordinates" class="section level4 unnumbered">
-<h4>Using non-geographical coordinates</h4>
-<p>So far we have been using x and y coordinates for the inputs into distance calculates, but it is important to note that you can use any two variables contained in the dataset in place of x and y coordinates. For example, this allows for the computation of so-called socio-economic weights, where the difference between two locations on any two variables can be used as the distance metric. We don't do this in this notebook, as the only meaningful variable in our dataset is housing prices.</p>
+<div id="using-non-geographical-coordinates" class="section level4 unnumbered hasAnchor">
+<h4>Using non-geographical coordinates<a href="spatial-weights-as-distance-functions.html#using-non-geographical-coordinates" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>So far we have been using x and y coordinates for the inputs into distance calculates, but
+it is important to note that you can use any two variables contained in the dataset in place
+of x and y coordinates. For example, this allows for the computation of so-called
+socio-economic weights, where the difference between two locations on any two variables can be
+used as the distance metric. We don’t do this in this notebook, as the only meaningful
+variable in our dataset is housing prices.</p>
 </div>
 </div>
-<div id="creating-inverse-distance-functions-for-k-nearest-neighbors" class="section level3 unnumbered">
-<h3>Creating inverse distance functions for k-nearest neighbors</h3>
-<p>We can compute inverse distance weights for k-nearest neighbors using the same approach as for distance-band neighbors. The only difference being that we don't have to calculate a critical threshold for k-nearest neighbors.</p>
-<p>We start by getting the k-nearest neighbors for k = 6. We do this with <code>knearneigh</code> and <code>knn2nb</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k6 &lt;-<span class="st"> </span><span class="kw">knn2nb</span>(<span class="kw">knearneigh</span>(coords, <span class="dt">k =</span> <span class="dv">6</span>))</code></pre></div>
-<p>Now that we have the neighbors list we need all of the distances between neighbors in a similar data structure, which we use <code>nbdist</code> for again.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k.distances &lt;-<span class="st"> </span><span class="kw">nbdists</span>(k6, coords)</code></pre></div>
-<p>Here we calculate the inverse distances, keeping in mind the scale from the distance-band weights from earlier.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">invd2a &lt;-<span class="st"> </span><span class="kw">lapply</span>(k.distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="op">/</span>(x<span class="op">/</span><span class="dv">100</span>)))
-invd2a[<span class="dv">1</span>]</code></pre></div>
+<div id="creating-inverse-distance-functions-for-k-nearest-neighbors" class="section level3 unnumbered hasAnchor">
+<h3>Creating inverse distance functions for k-nearest neighbors<a href="spatial-weights-as-distance-functions.html#creating-inverse-distance-functions-for-k-nearest-neighbors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can compute inverse distance weights for k-nearest neighbors using the same approach
+as for distance-band neighbors. The only difference being that we don’t have to calculate
+a critical threshold for k-nearest neighbors.</p>
+<p>We start by getting the k-nearest neighbors for k = 6. We do this with <code>knearneigh</code> and
+<code>knn2nb</code>.</p>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="spatial-weights-as-distance-functions.html#cb411-1" tabindex="-1"></a>k6 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">6</span>))</span></code></pre></div>
+<p>Now that we have the neighbors list we need all of the distances between neighbors in a
+similar data structure, which we use <code>nbdist</code> for again.</p>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="spatial-weights-as-distance-functions.html#cb412-1" tabindex="-1"></a>k.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k6, coords)</span></code></pre></div>
+<p>Here we calculate the inverse distances, keeping in mind the scale from the distance-band
+weights from earlier.</p>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="spatial-weights-as-distance-functions.html#cb413-1" tabindex="-1"></a>invd2a <span class="ot">&lt;-</span> <span class="fu">lapply</span>(k.distances, <span class="cf">function</span>(x) (<span class="dv">1</span><span class="sc">/</span>(x<span class="sc">/</span><span class="dv">100</span>)))</span>
+<span id="cb413-2"><a href="spatial-weights-as-distance-functions.html#cb413-2" tabindex="-1"></a>invd2a[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.25963168 0.03318873 0.08618371 0.05379514 0.03959608 0.03074062</code></pre>
-<p>Lastly, we assign the weight values with the <code>glist =</code> parameter and speficy the <code>style</code> as &quot;B&quot; to avoid default computations.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">invd.weights.knn &lt;-<span class="st"> </span><span class="kw">nb2listw</span>(k6,<span class="dt">glist =</span> invd2a,<span class="dt">style =</span> <span class="st">&quot;B&quot;</span>)
-invd.weights.knn<span class="op">$</span>weights[<span class="dv">1</span>]</code></pre></div>
+<p>Lastly, we assign the weight values with the <code>glist =</code> parameter and speficy the <code>style</code> as
+“B” to avoid default computations.</p>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="spatial-weights-as-distance-functions.html#cb415-1" tabindex="-1"></a>invd.weights.knn <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> invd2a,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb415-2"><a href="spatial-weights-as-distance-functions.html#cb415-2" tabindex="-1"></a>invd.weights.knn<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.25963168 0.03318873 0.08618371 0.05379514 0.03959608 0.03074062</code></pre>
 </div>
 </div>
-<div id="kernal-weights" class="section level2 unnumbered">
-<h2>Kernal Weights</h2>
-<div id="concepts-2" class="section level3 unnumbered">
-<h3>Concepts</h3>
-<p>Kernel weights are used in non-parametric approaches to model spatial covariance, such as in the HAC method for heteroskedastic and spatial autocorrelation consistent variance estimates.</p>
-<p>The kernel weights are defined as a function K(z) of the ratio between the distance dij from i to j, and the bandwidth <span class="math inline">\(h_i\)</span>, with <span class="math inline">\(z=d_{ij}/h_i\)</span>. This ensures that z is always less than 1. For distances greater than the bandwidth, K(z)=0.</p>
+<div id="kernal-weights" class="section level2 unnumbered hasAnchor">
+<h2>Kernal Weights<a href="spatial-weights-as-distance-functions.html#kernal-weights" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="concepts-2" class="section level3 unnumbered hasAnchor">
+<h3>Concepts<a href="spatial-weights-as-distance-functions.html#concepts-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Kernel weights are used in non-parametric approaches to model spatial covariance, such
+as in the HAC method for heteroskedastic and spatial autocorrelation consistent
+variance estimates.</p>
+<p>The kernel weights are defined as a function K(z) of the ratio between the distance dij
+from i to j, and the bandwidth <span class="math inline">\(h_i\)</span>, with <span class="math inline">\(z=d_{ij}/h_i\)</span>. This ensures that z is
+always less than 1. For distances greater than the bandwidth, K(z)=0.</p>
 <p>We will go over five different kernal weights functions that are supported by GeoDa:</p>
 <ul>
 <li><p>Uniform, <span class="math inline">\(K(z) = 1/2\)</span> for <span class="math inline">\(\mid z \mid &lt; 1\)</span></p></li>
@@ -628,217 +853,222 @@ invd.weights.knn<span class="op">$</span>weights[<span class="dv">1</span>]</cod
 <li><p>Quartic, <span class="math inline">\(K(z) = (15/16)(1 - z^2)^2\)</span> for <span class="math inline">\(\mid z \mid &lt; 1\)</span></p></li>
 <li><p>Gaussian, <span class="math inline">\(K(z) = (2\pi)^{1/2}\exp(-z^2/2)\)</span></p></li>
 </ul>
-<p>Typically, the value for the diagonal elements of the weights is set to 1, although GeoDa allows for the actual kernel value to be used as well. We will go through both of these options too.</p>
-<p>Many careful decisions must be made in selecting a kernel weights function. Apart from the choice of a functional form for K( ), a crucial aspect is the selection of the bandwidth. In the literature, the latter is found to be more important than the functional form.</p>
-<p>A drawback of fixed bandwidth kernel weights is that the number of non-zero weights can vary considerably, especially when the density of the point locations is not uniform throughout space. This is the same problem encountered for the distance band spatial weights.</p>
-<p>In GeoDa, there are two types of fixed bandwidths for kernel weights. One is the max-min distance used earlier (the largest of the nearest-neighbor distances). The other is the maximum distance for a given specification of k-nearest neighbors. For example, with knn set to a given value, this is the distance between the selected k-nearest neighbors pairs that are the farthest apart.</p>
+<p>Typically, the value for the diagonal elements of the weights is set to 1, although GeoDa
+allows for the actual kernel value to be used as well. We will go through both of these
+options too.</p>
+<p>Many careful decisions must be made in selecting a kernel weights function. Apart from the
+choice of a functional form for K( ), a crucial aspect is the selection of the bandwidth. In
+the literature, the latter is found to be more important than the functional form.</p>
+<p>A drawback of fixed bandwidth kernel weights is that the number of non-zero weights can vary
+considerably, especially when the density of the point locations is not uniform throughout
+space. This is the same problem encountered for the distance band spatial weights.</p>
+<p>In GeoDa, there are two types of fixed bandwidths for kernel weights. One is the max-min
+distance used earlier (the largest of the nearest-neighbor distances). The other is the maximum
+distance for a given specification of k-nearest neighbors. For example, with knn set to a given
+value, this is the distance between the selected k-nearest neighbors pairs that are the
+farthest apart.</p>
 </div>
-<div id="creating-kernal-weights" class="section level3 unnumbered">
-<h3>Creating Kernal weights</h3>
-<p>In creating kernal weights, we will cover two important options: the fixed bandwidth and the variable bandwidth. For the fixed bandwidth, we will be using distance-band neighbors. For the variable bandwidth we will need kth-nearest neighbors.</p>
-<p>To start, we will compute a new distance-band neighbors list with the critcial threshold, calculated earlier in the notebook.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">kernal.nb &lt;-<span class="st"> </span><span class="kw">dnearneigh</span>(coords, <span class="dv">0</span>, critical.threshold)</code></pre></div>
-<p>Before we start computing kernal weights, we need to add the diagonal elements to our neighbors list. We do this because in the kernal weights methods, the diagonal element is either assigned a value of 1 or is computed in the kernal function with a distance of 0. It is important to note that the diagonal element means a point is a neighbor of its own self when include in the neighbors list.</p>
-<p><strong>spdep</strong> has a built in function for this. <code>include.self</code> can be used to add the diagonal elements to a neighbors list of class <strong>nb</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">include.self</span>(kernal.nb)</code></pre></div>
+<div id="creating-kernal-weights" class="section level3 unnumbered hasAnchor">
+<h3>Creating Kernal weights<a href="spatial-weights-as-distance-functions.html#creating-kernal-weights" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In creating kernal weights, we will cover two important options: the fixed bandwidth
+and the variable bandwidth. For the fixed bandwidth, we will be using distance-band
+neighbors. For the variable bandwidth we will need kth-nearest neighbors.</p>
+<p>To start, we will compute a new distance-band neighbors list with the critcial threshold,
+calculated earlier in the notebook.</p>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="spatial-weights-as-distance-functions.html#cb417-1" tabindex="-1"></a>kernal.nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(coords, <span class="dv">0</span>, critical.threshold)</span></code></pre></div>
+<p>Before we start computing kernal weights, we need to add the diagonal elements to our
+neighbors list. We do this because in the kernal weights methods, the diagonal element
+is either assigned a value of 1 or is computed in the kernal function with a distance of
+0. It is important to note that the diagonal element means a point is a neighbor of its
+own self when include in the neighbors list.</p>
+<p><strong>spdep</strong> has a built in function for this. <code>include.self</code> can be used to add the diagonal
+elements to a neighbors list of class <strong>nb</strong>.</p>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="spatial-weights-as-distance-functions.html#cb418-1" tabindex="-1"></a><span class="fu">include.self</span>(kernal.nb)</span></code></pre></div>
 <pre><code>## Neighbour list object:
 ## Number of regions: 205 
 ## Number of nonzero links: 2797 
 ## Percentage nonzero weights: 6.655562 
 ## Average number of links: 13.6439</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">kernal.nb[[<span class="dv">2</span>]]</code></pre></div>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="spatial-weights-as-distance-functions.html#cb420-1" tabindex="-1"></a>kernal.nb[[<span class="dv">2</span>]]</span></code></pre></div>
 <pre><code>## [1]  1  6  7  8  9 10 31 32 34</code></pre>
-<p>With the diagonal elements, we can proceed further. To compute the kernal weight values, we need the corresponding distances for each neighbor. We do this with <code>nbdists</code>, same as earlier.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">kernalw.distances &lt;-<span class="st"> </span><span class="kw">nbdists</span>(kernal.nb, coords)
-kernalw.distances[<span class="dv">1</span>]</code></pre></div>
+<p>With the diagonal elements, we can proceed further. To compute the kernal weight values,
+we need the corresponding distances for each neighbor. We do this with <code>nbdists</code>, same
+as earlier.</p>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="spatial-weights-as-distance-functions.html#cb422-1" tabindex="-1"></a>kernalw.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(kernal.nb, coords)</span>
+<span id="cb422-2"><a href="spatial-weights-as-distance-functions.html#cb422-2" tabindex="-1"></a>kernalw.distances[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1]  385.161 3013.071 1160.312 1858.904 3367.150 2525.503 3253.025 3390.735
 ## [9] 3369.644</code></pre>
-<p>When checking the first row of the distances, we see a 0. This is the distance value for the diagonal element.</p>
-<div id="uniform" class="section level4 unnumbered">
-<h4>Uniform</h4>
+<p>When checking the first row of the distances, we see a 0. This is the distance value
+for the diagonal element.</p>
+<div id="uniform" class="section level4 unnumbered hasAnchor">
+<h4>Uniform<a href="spatial-weights-as-distance-functions.html#uniform" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><span class="math inline">\(K(z) = 1/2\)</span> for <span class="math inline">\(\mid z \mid &lt; 1\)</span></p>
-<p>To get uniform weights, we use a similar method to the inverse disatnce weights. We use <code>lapply</code> to apply a function to all elements of our distance structure. The function, in this case, is <code>0 * x + .5</code>. We do this to assign uniform weights of .5, the <code>0*x</code> is a necessary addition to get <code>lapply</code> to work properly.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">uniform &lt;-<span class="st"> </span><span class="kw">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) x<span class="op">*</span><span class="dv">0</span> <span class="op">+</span><span class="st"> </span>.<span class="dv">5</span>)
-uniform[<span class="dv">1</span>]</code></pre></div>
+<p>To get uniform weights, we use a similar method to the inverse disatnce weights. We
+use <code>lapply</code> to apply a function to all elements of our distance structure. The function,
+in this case, is <code>0 * x + .5</code>. We do this to assign uniform weights of .5, the <code>0*x</code> is a necessary
+addition to get <code>lapply</code> to work properly.</p>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="spatial-weights-as-distance-functions.html#cb424-1" tabindex="-1"></a>uniform <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) x<span class="sc">*</span><span class="dv">0</span> <span class="sc">+</span> .<span class="dv">5</span>)</span>
+<span id="cb424-2"><a href="spatial-weights-as-distance-functions.html#cb424-2" tabindex="-1"></a>uniform[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5</code></pre>
-<p>Then to assign the weights, we use the same procedure as the inverse distance weights. We use the <code>glist</code> argument to explicity assign the weight we calculated above.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">uniform.weights &lt;-<span class="st"> </span><span class="kw">nb2listw</span>(kernal.nb,<span class="dt">glist =</span> uniform,<span class="dt">style =</span> <span class="st">&quot;B&quot;</span>)</code></pre></div>
+<p>Then to assign the weights, we use the same procedure as the inverse distance weights. We use the
+<code>glist</code> argument to explicity assign the weight we calculated above.</p>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="spatial-weights-as-distance-functions.html#cb426-1" tabindex="-1"></a>uniform.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> uniform,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
 </div>
-<div id="triangular" class="section level4 unnumbered">
-<h4>Triangular</h4>
+<div id="triangular" class="section level4 unnumbered hasAnchor">
+<h4>Triangular<a href="spatial-weights-as-distance-functions.html#triangular" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><span class="math inline">\(K(z) = (1 - \mid z \mid )\)</span> for <span class="math inline">\(\mid z \mid &lt; 1\)</span></p>
-<p>Same process, for triangular, we just apply a different function to the distances. We use <code>abs</code> to get the absolute value in our caluculations.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">triangular &lt;-<span class="st"> </span><span class="kw">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) <span class="dv">1</span><span class="op">-</span><span class="st"> </span><span class="kw">abs</span>((x<span class="op">/</span>critical.threshold)))
-triangular[<span class="dv">1</span>]</code></pre></div>
+<p>Same process, for triangular, we just apply a different function to the distances. We
+use <code>abs</code> to get the absolute value in our caluculations.</p>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="spatial-weights-as-distance-functions.html#cb427-1" tabindex="-1"></a>triangular <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) <span class="dv">1</span><span class="sc">-</span> <span class="fu">abs</span>((x<span class="sc">/</span>critical.threshold)))</span>
+<span id="cb427-2"><a href="spatial-weights-as-distance-functions.html#cb427-2" tabindex="-1"></a>triangular[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.89295300 0.16258344 0.67751688 0.48335866 0.06417492 0.29809225 0.09589360
 ## [8] 0.05762014 0.06348183</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">triang.weights &lt;-<span class="st"> </span><span class="kw">nb2listw</span>(kernal.nb,<span class="dt">glist =</span> triangular,<span class="dt">style =</span> <span class="st">&quot;B&quot;</span>)</code></pre></div>
-<pre><code>## Warning in nb2listw(kernal.nb, glist = triangular, style = &quot;B&quot;): zero sum
-## general weights</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">triang.weights<span class="op">$</span>weights[<span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="spatial-weights-as-distance-functions.html#cb429-1" tabindex="-1"></a>triang.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> triangular,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb429-2"><a href="spatial-weights-as-distance-functions.html#cb429-2" tabindex="-1"></a>triang.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.89295300 0.16258344 0.67751688 0.48335866 0.06417492 0.29809225 0.09589360
 ## [8] 0.05762014 0.06348183</code></pre>
 </div>
-<div id="epanechnikov" class="section level4 unnumbered">
-<h4>Epanechnikov</h4>
+<div id="epanechnikov" class="section level4 unnumbered hasAnchor">
+<h4>Epanechnikov<a href="spatial-weights-as-distance-functions.html#epanechnikov" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Quadratic or Epanechnikov, <span class="math inline">\(K(z) = (3/4)(1 - z^2)\)</span> for <span class="math inline">\(\mid z \mid &lt; 1\)</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epanechnikov &lt;-<span class="st"> </span><span class="kw">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) .<span class="dv">75</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>(x<span class="op">/</span>critical.threshold)<span class="op">^</span><span class="dv">2</span>))
-epanechnikov[<span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="spatial-weights-as-distance-functions.html#cb431-1" tabindex="-1"></a>epanechnikov <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) .<span class="dv">75</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(x<span class="sc">/</span>critical.threshold)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb431-2"><a href="spatial-weights-as-distance-functions.html#cb431-2" tabindex="-1"></a>epanechnikov[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.74140570 0.22405013 0.67200348 0.54981129 0.09317357 0.38049413 0.13694371
 ## [8] 0.08394016 0.09220029</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epan.weights &lt;-<span class="st"> </span><span class="kw">nb2listw</span>(kernal.nb,<span class="dt">glist =</span> epanechnikov,<span class="dt">style =</span> <span class="st">&quot;B&quot;</span>)</code></pre></div>
-<pre><code>## Warning in nb2listw(kernal.nb, glist = epanechnikov, style = &quot;B&quot;): zero sum
-## general weights</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epan.weights<span class="op">$</span>weights[<span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="spatial-weights-as-distance-functions.html#cb433-1" tabindex="-1"></a>epan.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> epanechnikov,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb433-2"><a href="spatial-weights-as-distance-functions.html#cb433-2" tabindex="-1"></a>epan.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.74140570 0.22405013 0.67200348 0.54981129 0.09317357 0.38049413 0.13694371
 ## [8] 0.08394016 0.09220029</code></pre>
 </div>
-<div id="quartic" class="section level4 unnumbered">
-<h4>Quartic</h4>
+<div id="quartic" class="section level4 unnumbered hasAnchor">
+<h4>Quartic<a href="spatial-weights-as-distance-functions.html#quartic" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><span class="math inline">\(K(z) = (15/16)(1 - z^2)^2\)</span> for <span class="math inline">\(\mid z \mid &lt; 1\)</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quartic &lt;-<span class="st"> </span><span class="kw">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) (<span class="dv">15</span><span class="op">/</span><span class="dv">16</span>)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>(x<span class="op">/</span>critical.threshold)<span class="op">^</span><span class="dv">2</span>)<span class="op">^</span><span class="dv">2</span>)
-quartic[<span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="spatial-weights-as-distance-functions.html#cb435-1" tabindex="-1"></a>quartic <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) (<span class="dv">15</span><span class="sc">/</span><span class="dv">16</span>)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(x<span class="sc">/</span>critical.threshold)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb435-2"><a href="spatial-weights-as-distance-functions.html#cb435-2" tabindex="-1"></a>quartic[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.91613736 0.08366410 0.75264779 0.50382076 0.01446886 0.24129297 0.03125597
 ## [8] 0.01174325 0.01416816</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quartic.weights &lt;-<span class="st"> </span><span class="kw">nb2listw</span>(kernal.nb,<span class="dt">glist =</span> quartic,<span class="dt">style =</span> <span class="st">&quot;B&quot;</span>)</code></pre></div>
-<pre><code>## Warning in nb2listw(kernal.nb, glist = quartic, style = &quot;B&quot;): zero sum general
-## weights</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">quartic.weights<span class="op">$</span>weights[<span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="spatial-weights-as-distance-functions.html#cb437-1" tabindex="-1"></a>quartic.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> quartic,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb437-2"><a href="spatial-weights-as-distance-functions.html#cb437-2" tabindex="-1"></a>quartic.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 0.91613736 0.08366410 0.75264779 0.50382076 0.01446886 0.24129297 0.03125597
 ## [8] 0.01174325 0.01416816</code></pre>
 </div>
-<div id="gaussian" class="section level4 unnumbered">
-<h4>Gaussian</h4>
+<div id="gaussian" class="section level4 unnumbered hasAnchor">
+<h4>Gaussian<a href="spatial-weights-as-distance-functions.html#gaussian" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><span class="math inline">\(K(z) = (2\pi)^{1/2}\exp(-z^2/2)\)</span></p>
-<p>For this formula we need the <code>sqrt</code> function and the <code>exp</code> function, but other than that, it is a similar contruction as the others.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gaussian.w &lt;-<span class="st"> </span><span class="kw">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) <span class="kw">sqrt</span>(<span class="dv">2</span><span class="op">*</span>pi)<span class="op">*</span><span class="kw">exp</span>((<span class="op">-</span>(x<span class="op">/</span>critical.threshold)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="dv">2</span>))
-gaussian.w[<span class="dv">1</span>]</code></pre></div>
+<p>For this formula we need the <code>sqrt</code> function and the <code>exp</code> function, but other than that,
+it is a similar contruction as the others.</p>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="spatial-weights-as-distance-functions.html#cb439-1" tabindex="-1"></a>gaussian.w <span class="ot">&lt;-</span> <span class="fu">lapply</span>(kernalw.distances, <span class="cf">function</span>(x) <span class="fu">sqrt</span>(<span class="dv">2</span><span class="sc">*</span>pi)<span class="sc">*</span><span class="fu">exp</span>((<span class="sc">-</span>(x<span class="sc">/</span>critical.threshold)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb439-2"><a href="spatial-weights-as-distance-functions.html#cb439-2" tabindex="-1"></a>gaussian.w[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 2.492308 1.765273 2.379620 2.193458 1.617779 1.959327 1.665681 1.607851
 ## [9] 1.616730</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gaussian.weights &lt;-<span class="st"> </span><span class="kw">nb2listw</span>(kernal.nb,<span class="dt">glist =</span> gaussian.w,<span class="dt">style =</span> <span class="st">&quot;B&quot;</span>)
-gaussian.weights<span class="op">$</span>weights[<span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="spatial-weights-as-distance-functions.html#cb441-1" tabindex="-1"></a>gaussian.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(kernal.nb,<span class="at">glist =</span> gaussian.w,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb441-2"><a href="spatial-weights-as-distance-functions.html#cb441-2" tabindex="-1"></a>gaussian.weights<span class="sc">$</span>weights[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 2.492308 1.765273 2.379620 2.193458 1.617779 1.959327 1.665681 1.607851
 ## [9] 1.616730</code></pre>
 </div>
-<div id="variable-bandwidth" class="section level4 unnumbered">
-<h4>Variable bandwidth</h4>
-<p>Now that we have covered the 5 types of kernal weight function, implemented by GeoDa, we will work to emulate the example from the corresponding GeoDa workbook in R. The options in this example are conveniently done with GeoDa, but in our case there will be more leg work to get this done. We will be doiing a variable bandwidth with diagonal elements set to a value of 1 for a triangular kernal.</p>
-<p>For the variable bandwidth, we will be using <strong>k6</strong>: a k-nearest neighbors list, created earlier in the notebook. We already have the associated disatnces in <strong>k.distances</strong>. We will be directly altering the distance object, so we will assign a copy <strong>k.disatnces1</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k.distances1 &lt;-<span class="st"> </span>k.distances</code></pre></div>
-<p>In order to implement our variable bandwidth, we will need to loop through each element of <strong>k.distances</strong>, find the maximum distance of each row, then apply the triangular kernal weight function of that row with the bandwidth being used to calculate the z values for the K(z) function.</p>
-<p>To begin, we make a <code>for</code> loop using the <code>in</code> operator. The range we specify is 1 to the length of <strong>k.distances</strong>. We get this length with <code>length</code>. This will allow us to excute the statements in the loop on i-values 1 to 205.</p>
-<p>The first thing we need in the loop is the variable bandwidth value for the ith row. This is easily done by callling the <code>max</code> function on the row. We get the associated row by <strong>k.distances[[i]]</strong>.</p>
-<p>Next we compute the new row with our triagular kernal function. We use the <code>abs</code> function for absolute value. Lastly, we assign the new row values to the the ith row of the <strong>k.distances</strong> structure.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(k.distances1)){
-  bandwidth &lt;-<span class="st"> </span><span class="kw">max</span>(k.distances1[[i]])
-  new_row &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</span><span class="st"> </span><span class="kw">abs</span>(k.distances1[[i]] <span class="op">/</span><span class="st"> </span>bandwidth)
-  k.distances1[[i]] &lt;-<span class="st"> </span>new_row
-}
-k.distances1[[<span class="dv">1</span>]]</code></pre></div>
+<div id="variable-bandwidth" class="section level4 unnumbered hasAnchor">
+<h4>Variable bandwidth<a href="spatial-weights-as-distance-functions.html#variable-bandwidth" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Now that we have covered the 5 types of kernal weight function, implemented by GeoDa, we
+will work to emulate the example from the corresponding GeoDa workbook in R. The options
+in this example are conveniently done with GeoDa, but in our case there will be more leg work
+to get this done. We will be doiing a variable bandwidth with diagonal elements set to a
+value of 1 for a triangular kernal.</p>
+<p>For the variable bandwidth, we will be using <strong>k6</strong>: a k-nearest neighbors list, created
+earlier in the notebook. We already have the associated disatnces in <strong>k.distances</strong>. We
+will be directly altering the distance object, so we will assign a copy <strong>k.disatnces1</strong>.</p>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="spatial-weights-as-distance-functions.html#cb443-1" tabindex="-1"></a>k.distances1 <span class="ot">&lt;-</span> k.distances</span></code></pre></div>
+<p>In order to implement our variable bandwidth, we will need to loop through each element of
+<strong>k.distances</strong>, find the maximum distance of each row, then apply the triangular
+kernal weight function of that row with the bandwidth being used to calculate the z
+values for the K(z) function.</p>
+<p>To begin, we make a <code>for</code> loop using the <code>in</code> operator. The range we specify is 1 to the
+length of <strong>k.distances</strong>. We get this length with <code>length</code>. This will allow us to excute
+the statements in the loop on i-values 1 to 205.</p>
+<p>The first thing we need in the loop is the variable bandwidth value for the ith row. This
+is easily done by callling the <code>max</code> function on the row. We get the associated row by
+<strong>k.distances[[i]]</strong>.</p>
+<p>Next we compute the new row with our triagular kernal function. We use the <code>abs</code> function
+for absolute value. Lastly, we assign the new row values to the the ith row of the
+<strong>k.distances</strong> structure.</p>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="spatial-weights-as-distance-functions.html#cb444-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k.distances1)){</span>
+<span id="cb444-2"><a href="spatial-weights-as-distance-functions.html#cb444-2" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> <span class="fu">max</span>(k.distances1[[i]])</span>
+<span id="cb444-3"><a href="spatial-weights-as-distance-functions.html#cb444-3" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span> <span class="fu">abs</span>(k.distances1[[i]] <span class="sc">/</span> bandwidth)</span>
+<span id="cb444-4"><a href="spatial-weights-as-distance-functions.html#cb444-4" tabindex="-1"></a>  k.distances1[[i]] <span class="ot">&lt;-</span> new_row</span>
+<span id="cb444-5"><a href="spatial-weights-as-distance-functions.html#cb444-5" tabindex="-1"></a>}</span>
+<span id="cb444-6"><a href="spatial-weights-as-distance-functions.html#cb444-6" tabindex="-1"></a>k.distances1[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.88159911 0.07376327 0.64331286 0.42856135 0.22364475 0.00000000</code></pre>
-<p>There is one potential issue with what we have done so far for the variable bandwidth. Our bandwidth is the same as the largest distance in each row, so one neighbor will get 0 weight in the resulting weight structure for most of our functions. To give weight to this value, we will need to adjust the associated bandwidths, by getting a value that is between the 6th nearest neighbor and the 7th nearest neighbor. We will do this by taking the average of the two values for our bandwith calculations. This will require a few extra steps and adjustments to our <code>for</code> loop.</p>
-<p>The first thing we need to implement this is the k-nearest neighbors for k = 7. This is the same process as our previous calculations for k-nearest neighbors.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k7 &lt;-<span class="st"> </span><span class="kw">knn2nb</span>(<span class="kw">knearneigh</span>(coords, <span class="dt">k =</span> <span class="dv">7</span>))</code></pre></div>
+<p>There is one potential issue with what we have done so far for the variable bandwidth. Our bandwidth
+is the same as the largest distance in each row, so one neighbor will get 0 weight in the
+resulting weight structure for most of our functions. To give weight to this value, we
+will need to adjust the associated bandwidths, by getting a value that is between the
+6th nearest neighbor and the 7th nearest neighbor. We will do this by taking the average
+of the two values for our bandwith calculations. This will require a few extra steps and
+adjustments to our <code>for</code> loop.</p>
+<p>The first thing we need to implement this is the k-nearest neighbors for k = 7. This is the
+same process as our previous calculations for k-nearest neighbors.</p>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="spatial-weights-as-distance-functions.html#cb446-1" tabindex="-1"></a>k7 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coords, <span class="at">k =</span> <span class="dv">7</span>))</span></code></pre></div>
 <p>Next we get the associated distances using <code>nbdists</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k7.distances &lt;-<span class="st"> </span><span class="kw">nbdists</span>(k7, coords)</code></pre></div>
-<p>To avoid altering the original <strong>k.distances</strong>, we will assign a new variable to hold the necessary information.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k.distances2 &lt;-<span class="st"> </span>k.distances</code></pre></div>
-<p>Here we remake the previous <code>for</code> loop with a few changes. Now we loop through and find the max distance for both the 7th nearest neighbors and 6th nearest neighbors, then get the average between the two before computing the kernal weight function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(k.distances)){
-  maxk6 &lt;-<span class="st"> </span><span class="kw">max</span>(k.distances2[[i]])
-  maxk7 &lt;-<span class="st"> </span><span class="kw">max</span>(k7.distances[[i]])
-  bandwidth &lt;-<span class="st"> </span>(maxk6 <span class="op">+</span><span class="st"> </span>maxk7) <span class="op">/</span><span class="dv">2</span>
-  new_row &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</span><span class="st"> </span><span class="kw">abs</span>(k.distances2[[i]] <span class="op">/</span><span class="st"> </span>bandwidth)
-  k.distances2[[i]] &lt;-<span class="st"> </span>new_row
-}
-k.distances2[[<span class="dv">1</span>]]</code></pre></div>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="spatial-weights-as-distance-functions.html#cb447-1" tabindex="-1"></a>k7.distances <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(k7, coords)</span></code></pre></div>
+<p>To avoid altering the original <strong>k.distances</strong>, we will assign a new variable to hold the
+necessary information.</p>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="spatial-weights-as-distance-functions.html#cb448-1" tabindex="-1"></a>k.distances2 <span class="ot">&lt;-</span> k.distances</span></code></pre></div>
+<p>Here we remake the previous <code>for</code> loop with a few changes. Now we loop through and find
+the max distance for both the 7th nearest neighbors and 6th nearest neighbors, then get
+the average between the two before computing the kernal weight function.</p>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="spatial-weights-as-distance-functions.html#cb449-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k.distances)){</span>
+<span id="cb449-2"><a href="spatial-weights-as-distance-functions.html#cb449-2" tabindex="-1"></a>  maxk6 <span class="ot">&lt;-</span> <span class="fu">max</span>(k.distances2[[i]])</span>
+<span id="cb449-3"><a href="spatial-weights-as-distance-functions.html#cb449-3" tabindex="-1"></a>  maxk7 <span class="ot">&lt;-</span> <span class="fu">max</span>(k7.distances[[i]])</span>
+<span id="cb449-4"><a href="spatial-weights-as-distance-functions.html#cb449-4" tabindex="-1"></a>  bandwidth <span class="ot">&lt;-</span> (maxk6 <span class="sc">+</span> maxk7) <span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb449-5"><a href="spatial-weights-as-distance-functions.html#cb449-5" tabindex="-1"></a>  new_row <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span> <span class="fu">abs</span>(k.distances2[[i]] <span class="sc">/</span> bandwidth)</span>
+<span id="cb449-6"><a href="spatial-weights-as-distance-functions.html#cb449-6" tabindex="-1"></a>  k.distances2[[i]] <span class="ot">&lt;-</span> new_row</span>
+<span id="cb449-7"><a href="spatial-weights-as-distance-functions.html#cb449-7" tabindex="-1"></a>}</span>
+<span id="cb449-8"><a href="spatial-weights-as-distance-functions.html#cb449-8" tabindex="-1"></a>k.distances2[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.88364023 0.08973071 0.64946181 0.43841241 0.23702838 0.01723905</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">var.band.weights &lt;-<span class="st"> </span><span class="kw">nb2listw</span>(k6,<span class="dt">glist =</span> k.distances2,<span class="dt">style =</span> <span class="st">&quot;B&quot;</span>)
-var.band.weights<span class="op">$</span>weights[[<span class="dv">1</span>]]</code></pre></div>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="spatial-weights-as-distance-functions.html#cb451-1" tabindex="-1"></a>var.band.weights <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(k6,<span class="at">glist =</span> k.distances2,<span class="at">style =</span> <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb451-2"><a href="spatial-weights-as-distance-functions.html#cb451-2" tabindex="-1"></a>var.band.weights<span class="sc">$</span>weights[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 0.88364023 0.08973071 0.64946181 0.43841241 0.23702838 0.01723905</code></pre>
 <p>With our new weights structure all the neighbors included have a nonzero weight.</p>
 </div>
-<div id="treatment-of-diagonal-elements" class="section level4 unnumbered">
-<h4>Treatment of diagonal elements</h4>
-<p>As of now, we have just been applying the kernal function to the diagonal elements. The default in GeoDa is to assign a value of 1 to these elements. For us to do this, we need a little extra work. We will take advantage of the coercion methods that <strong>spdep</strong> provides from class <strong>listw</strong> to <strong>RsparseMatrix</strong> of the <strong>Matrix</strong> package. Once converted to class **RsparseMatrix, we can assign values of 1 to the diagonal elements, then convert back.</p>
-<p>To start we use the <code>as</code> function with <strong>var.band.weights</strong> as the first parameter. We specify the class to convert to with the string: &quot;RsparseMatrix&quot;. We use <strong>var.band.weights</strong> to remake the GeoDa workbook example.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">B &lt;-<span class="st"> </span><span class="kw">as</span>(var.band.weights, <span class="st">&quot;RsparseMatrix&quot;</span>)</code></pre></div>
-<pre><code>## Registered S3 methods overwritten by &#39;spatialreg&#39;:
-##   method                   from 
-##   residuals.stsls          spdep
-##   deviance.stsls           spdep
-##   coef.stsls               spdep
-##   print.stsls              spdep
-##   summary.stsls            spdep
-##   print.summary.stsls      spdep
-##   residuals.gmsar          spdep
-##   deviance.gmsar           spdep
-##   coef.gmsar               spdep
-##   fitted.gmsar             spdep
-##   print.gmsar              spdep
-##   summary.gmsar            spdep
-##   print.summary.gmsar      spdep
-##   print.lagmess            spdep
-##   summary.lagmess          spdep
-##   print.summary.lagmess    spdep
-##   residuals.lagmess        spdep
-##   deviance.lagmess         spdep
-##   coef.lagmess             spdep
-##   fitted.lagmess           spdep
-##   logLik.lagmess           spdep
-##   fitted.SFResult          spdep
-##   print.SFResult           spdep
-##   fitted.ME_res            spdep
-##   print.ME_res             spdep
-##   print.lagImpact          spdep
-##   plot.lagImpact           spdep
-##   summary.lagImpact        spdep
-##   HPDinterval.lagImpact    spdep
-##   print.summary.lagImpact  spdep
-##   print.sarlm              spdep
-##   summary.sarlm            spdep
-##   residuals.sarlm          spdep
-##   deviance.sarlm           spdep
-##   coef.sarlm               spdep
-##   vcov.sarlm               spdep
-##   fitted.sarlm             spdep
-##   logLik.sarlm             spdep
-##   anova.sarlm              spdep
-##   predict.sarlm            spdep
-##   print.summary.sarlm      spdep
-##   print.sarlm.pred         spdep
-##   as.data.frame.sarlm.pred spdep
-##   residuals.spautolm       spdep
-##   deviance.spautolm        spdep
-##   coef.spautolm            spdep
-##   fitted.spautolm          spdep
-##   print.spautolm           spdep
-##   summary.spautolm         spdep
-##   logLik.spautolm          spdep
-##   print.summary.spautolm   spdep
-##   print.WXImpact           spdep
-##   summary.WXImpact         spdep
-##   print.summary.WXImpact   spdep
-##   predict.SLX              spdep</code></pre>
-<p>Now that we have converted, we can assign values of 1 to the diagonal elements with the <code>diag</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diag</span>(B) &lt;-<span class="st"> </span><span class="dv">1</span></code></pre></div>
-<p>With this, we can now convert back to class <strong>listw</strong> with the <strong>spdep</strong> function <code>mat2listw</code>. The function is pretty self explanatory, as it converts from a matrix the <strong>listw</strong>. We need one extra step to accomplish the conversion. We first need to convert <strong>B</strong> to class <strong>dgTMatrix</strong> before we can use the <code>mat2listw</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">var.band.w2 &lt;-<span class="st"> </span><span class="kw">mat2listw</span>(<span class="kw">as</span>(B, <span class="st">&quot;dgTMatrix&quot;</span>))</code></pre></div>
+<div id="treatment-of-diagonal-elements" class="section level4 unnumbered hasAnchor">
+<h4>Treatment of diagonal elements<a href="spatial-weights-as-distance-functions.html#treatment-of-diagonal-elements" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>As of now, we have just been applying the kernal function to the diagonal elements. The
+default in GeoDa is to assign a value of 1 to these elements. For us to do this, we need
+a little extra work. We will take advantage of the coercion methods that <strong>spdep</strong> provides
+from class <strong>listw</strong> to <strong>RsparseMatrix</strong> of the <strong>Matrix</strong> package. Once converted to class
+**RsparseMatrix, we can assign values of 1 to the diagonal elements, then convert back.</p>
+<p>To start we use the <code>as</code> function with <strong>var.band.weights</strong> as the first parameter. We specify
+the class to convert to with the string: “RsparseMatrix”. We use <strong>var.band.weights</strong> to remake
+the GeoDa workbook example.</p>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="spatial-weights-as-distance-functions.html#cb453-1" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">as</span>(var.band.weights, <span class="st">&quot;RsparseMatrix&quot;</span>)</span></code></pre></div>
+<p>Now that we have converted, we can assign values of 1 to the diagonal elements with the
+<code>diag</code> function.</p>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="spatial-weights-as-distance-functions.html#cb454-1" tabindex="-1"></a><span class="fu">diag</span>(B) <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
+<p>With this, we can now convert back to class <strong>listw</strong> with the <strong>spdep</strong> function <code>mat2listw</code>.
+The function is pretty self explanatory, as it converts from a matrix the <strong>listw</strong>. We
+need one extra step to accomplish the conversion. We first need to convert <strong>B</strong> to class
+<strong>dgRMatrix</strong> before we can use the <code>mat2listw</code> function.</p>
+<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="spatial-weights-as-distance-functions.html#cb455-1" tabindex="-1"></a>var.band.w2 <span class="ot">&lt;-</span> <span class="fu">mat2listw</span>(<span class="fu">as</span>(B, <span class="st">&quot;dgRMatrix&quot;</span>))</span></code></pre></div>
 </div>
-<div id="properties-of-kernal-weights" class="section level4 unnumbered">
-<h4>Properties of kernal weights</h4>
-<p>The connectivity plot will be the same for kernal weights as the 6th nearest neighbors structure. This is because they have the same neighbors list and connectivity ignores the weights themselves. While our connectivity plot will be the same, the histogram and summary stats will be different from the ones in GeoDa. This is because we have to add the diagonal elements to the neighbors structure before moving forward. This is seen below when our 6th-nearest neighbors has an average of 7 links. To get a more accurate view of the connectivity properties, the structure will have to be examined before the diagonal elements are added.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(var.band.w2)</code></pre></div>
+<div id="properties-of-kernal-weights" class="section level4 unnumbered hasAnchor">
+<h4>Properties of kernal weights<a href="spatial-weights-as-distance-functions.html#properties-of-kernal-weights" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The connectivity plot will be the same for kernal weights as the 6th nearest neighbors structure.
+This is because they have the same neighbors list and connectivity ignores the weights themselves.
+While our connectivity plot will be the same, the histogram and summary stats will be different
+from the ones in GeoDa. This is because we have to add the diagonal elements to the neighbors
+structure before moving forward. This is seen below when our 6th-nearest neighbors has an average
+of 7 links. To get a more accurate view of the connectivity properties, the structure will have to
+be examined before the diagonal elements are added.</p>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="spatial-weights-as-distance-functions.html#cb456-1" tabindex="-1"></a><span class="fu">summary</span>(var.band.w2)</span></code></pre></div>
 <pre><code>## Characteristics of weights list object:
 ## Neighbour list object:
 ## Number of regions: 205 
@@ -859,7 +1089,7 @@ var.band.weights<span class="op">$</span>weights[[<span class="dv">1</span>]]</c
 ## Weights constants summary:
 ##     n    nn       S0       S1       S2
 ## M 205 42025 622.5036 844.1885 7916.201</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(var.band.w2, coords, <span class="dt">lwd=</span>.<span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">cex =</span> .<span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="spatial-weights-as-distance-functions.html#cb458-1" tabindex="-1"></a><span class="fu">plot</span>(var.band.w2, coords, <span class="at">lwd=</span>.<span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">cex =</span> .<span class="dv">5</span>)</span></code></pre></div>
 <p><img src="handsonspatialdata_files/figure-html/unnamed-chunk-328-1.png" width="672" /></p>
 
 </div>
@@ -869,8 +1099,9 @@ var.band.weights<span class="op">$</span>weights[[<span class="dv">1</span>]]</c
 <div class="footnotes">
 <hr />
 <ol start="23">
-<li id="fn23"><p>Use <code>setwd(directorypath)</code> to specify the working directory.<a href="spatial-weights-as-distance-functions.html#fnref23">↩</a></p></li>
-<li id="fn24"><p>Use <code>install.packages(packagename)</code>.<a href="spatial-weights-as-distance-functions.html#fnref24">↩</a></p></li>
+<li id="fn23"><p>Use <code>setwd(directorypath)</code> to specify the working directory.<a href="spatial-weights-as-distance-functions.html#fnref23" class="footnote-back">↩︎</a></p></li>
+<li id="fn24"><p>Use
+<code>install.packages(packagename)</code>.<a href="spatial-weights-as-distance-functions.html#fnref24" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -883,7 +1114,6 @@ var.band.weights<span class="op">$</span>weights[[<span class="dv">1</span>]]</c
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -902,6 +1132,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -922,6 +1153,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "section"
 }
@@ -934,8 +1169,8 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
